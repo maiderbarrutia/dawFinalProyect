@@ -1,0 +1,37 @@
+@import '@assets/styles/main.scss';
+
+.button {
+  display: block;
+  margin: auto auto rem(20);
+  border: none;
+  padding: rem(10) rem(30);
+  font-size: rem(14);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  @media (min-width: $size-tablet) {
+    font-size: rem(16);
+    padding: rem(15) rem(40);
+  }
+
+  &--primaryColor {
+    background-color: $primary-color;
+    color: $main-black;
+  }
+  
+  &--black {
+    background-color: $main-black;
+    color: $white;
+  }
+
+  &--white {
+    background-color: $white;
+    color: $main-black; 
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

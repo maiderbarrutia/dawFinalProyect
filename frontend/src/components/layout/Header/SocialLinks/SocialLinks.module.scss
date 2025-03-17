@@ -1,0 +1,14 @@
+@import '@assets/styles/main.scss';
+
+.socialLinks{
+    display: flex;
+    gap: rem(10);
+    z-index: 11;
+    
+    &__img{
+        &:hover{
+            opacity: 0.7;
+        }
+    }
+
+}

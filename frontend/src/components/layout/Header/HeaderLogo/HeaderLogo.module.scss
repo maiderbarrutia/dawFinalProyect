@@ -1,0 +1,23 @@
+@import '@assets/styles/main.scss';
+
+.header__logo{
+    z-index: 11;
+
+    &-link{
+        display: flex;
+        align-items: center;
+        gap: rem(10);
+        text-decoration: none;
+        cursor: pointer;
+    }
+    img{
+        width: rem(120);
+    }
+
+    &-text{
+        font-size: rem(18);
+        font-weight: bold;
+        color: $main-black;
+        display: none;
+    }
+}

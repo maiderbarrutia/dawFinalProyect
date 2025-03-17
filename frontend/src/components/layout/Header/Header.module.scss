@@ -1,0 +1,95 @@
+@import '@assets/styles/main.scss';
+
+
+.header {
+    background-color: $white;
+    
+    padding: rem(20) 0;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+
+    &__container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: $size-large;
+        margin: 0 auto;
+        padding-left: rem(20);
+        padding-right: rem(20);
+    }
+
+    &__menu{
+        display: flex;
+        gap: rem(20);
+        z-index: 10;
+    }
+
+    &__button {
+        display: block;
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        z-index: 11;
+    }
+
+    &__nav {
+        display: none;
+        opacity: 0;
+        flex-direction: column;
+        transition: opacity 0.3s ease;
+        padding: rem(15);
+        gap: rem(20);
+    }
+
+    &__nav--active {
+        display: flex;
+        opacity: 1;
+        flex-direction: column;
+        position: absolute;
+        top: rem(60);
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        background-color: $white;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    &--fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        transform: translateY(0);
+    }
+
+    &:not(&--fixed) {
+        transform: translateY(-100%); 
+    }
+
+    &--scrolled, &--notHome{
+        background-color: $white;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@media screen and (min-width: $size-tablet) {
+    .header {
+        &__button {
+            display: none;
+        }
+
+        &__nav {
+            display: flex;
+            opacity: 1;
+            flex-direction: row; 
+            height: auto; 
+            gap: rem(20);
+            align-items: center;
+            padding: 0;
+        }
+    }
+}
+

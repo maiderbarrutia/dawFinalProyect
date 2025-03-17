@@ -1,0 +1,30 @@
+@import '@assets/styles/main.scss';
+
+.header__mainMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: rem(20);
+    align-items: center;
+
+
+    &-link{
+        text-decoration: none;
+        color: $main-black;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: rem(15);
+
+        &:hover, &--selected{
+            color: $primary-color;
+        }
+    }
+}
+
+@media screen and (min-width: $size-tablet) {
+    .header__mainMenu {
+        flex-direction: row;
+        gap: rem(10);
+    }
+}
