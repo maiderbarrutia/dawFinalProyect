@@ -1,0 +1,3 @@
+Base de datos: aisiplan
+Usuario: aisiPlan_user
+contraseña: Zp8!rA7k@Xv2Lm9
