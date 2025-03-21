@@ -1,64 +1,70 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
-import { Empresa } from "./Empresa";
-import { Categoria } from "./Categoria";
-import { Inscripcion } from "./Inscripcion";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Empresa } from './Empresa';
+import { Categoria } from './Categoria';
 
-@Entity()
+@Entity('Actividad')
+@Index(['categoria_id'])
+@Index(['fecha_actividad'])
 export class Actividad {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id_actividad' })
   id_actividad!: number;
 
-  @Column()
+  @Column({ name: 'titulo_actividad', type: 'varchar', length: 255, nullable: false })
   titulo_actividad!: string;
 
-  @Column("text")
+  @Column({ name: 'descripcion_actividad', type: 'text', nullable: true })
   descripcion_actividad!: string;
 
-  @ManyToOne(() => Empresa, (empresa) => empresa.actividades, { onDelete: "CASCADE" })
+  @ManyToOne(() => Empresa, (empresa) => empresa.id_empresa, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'empresa_id' })
   empresa!: Empresa;
 
-  @ManyToOne(() => Categoria, (categoria) => categoria.actividades, { onDelete: "SET NULL" })
-  categoria!: Categoria;
+  @Column({ name: 'empresa_id', type: 'int', nullable: false })
+  empresa_id!: number;
 
-  @Column("date")
+  @Column({ name: 'fecha_actividad', type: 'date', nullable: true })
   fecha_actividad!: Date;
 
-  @Column("time")
+  @Column({ name: 'hora_actividad', type: 'time', nullable: true })
   hora_actividad!: string;
 
-  @Column("decimal", { precision: 10, scale: 2 })
+  @Column({ name: 'precio_actividad', type: 'decimal', precision: 10, scale: 2, nullable: true })
   precio_actividad!: number;
 
-  @Column()
+  @Column({ name: 'numero_plazas', type: 'int', nullable: true })
   numero_plazas!: number;
 
-  @Column()
+  @Column({ name: 'duracion_actividad', type: 'int', nullable: true })
   duracion_actividad!: number;
 
-  @Column("enum", { enum: ["fácil", "medio", "difícil"] })
-  nivel_dificultad!: "fácil" | "medio" | "difícil";
+  @Column({ name: 'nivel_dificultad', type: 'enum', enum: ['fácil', 'medio', 'difícil'], nullable: true })
+  nivel_dificultad!: string;
 
-  @Column()
+  @Column({ name: 'tipo_actividad', type: 'varchar', length: 100, nullable: true })
   tipo_actividad!: string;
 
-  @Column("text")
+  @ManyToOne(() => Categoria, (categoria) => categoria.id_categoria, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'categoria_id' })
+  categoria!: Categoria;
+
+  @Column({ name: 'categoria_id', type: 'int', nullable: true })
+  categoria_id!: number;
+
+  @Column({ name: 'ubicacion_actividad', type: 'text', nullable: true })
   ubicacion_actividad!: string;
 
-  @Column("json", { nullable: true })
-  imagenes_actividad!: string[];
+  @Column({ name: 'imagenes_actividad', type: 'json', nullable: true })
+  imagenes_actividad!: string;
 
-  @Column("json", { nullable: true })
-  videos_actividad!: string[];
+  @Column({ name: 'videos_actividad', type: 'json', nullable: true })
+  videos_actividad!: string;
 
-  @Column("text", { nullable: true })
+  @Column({ name: 'incluye', type: 'text', nullable: true })
   incluye!: string;
 
-  @Column("text", { nullable: true })
+  @Column({ name: 'no_incluye', type: 'text', nullable: true })
   no_incluye!: string;
 
-  @Column("boolean", { default: false })
+  @Column({ name: 'politica_privacidad', type: 'boolean', default: false })
   politica_privacidad!: boolean;
-
-  @OneToMany(() => Inscripcion, (inscripcion) => inscripcion.actividad)
-  inscripciones!: Inscripcion[];
 }

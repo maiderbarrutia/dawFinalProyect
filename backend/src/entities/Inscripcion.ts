@@ -1,35 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Actividad } from "./Actividad";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Usuario } from './Usuario';
+import { Actividad } from './Actividad';
 
-@Entity()
+@Entity('Inscripcion')
+@Index(['usuario_id'])
+@Index(['actividad_id'])
 export class Inscripcion {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id_inscripcion' })
   id_inscripcion!: number;
 
-  @ManyToOne(() => Actividad, (actividad) => actividad.inscripciones, { onDelete: "CASCADE" })
+  @ManyToOne(() => Usuario, (usuario) => usuario.id_usuario, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'usuario_id' })
+  usuario!: Usuario;
+
+  @Column({ name: 'usuario_id', type: 'int', nullable: false })
+  usuario_id!: number;
+
+  @ManyToOne(() => Actividad, (actividad) => actividad.id_actividad, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'actividad_id' })
   actividad!: Actividad;
 
-  @Column()
-  nombre_cliente!: string;
+  @Column({ name: 'actividad_id', type: 'int', nullable: false })
+  actividad_id!: number;
 
-  @Column()
-  apellidos_cliente!: string;
-
-  @Column()
-  email_cliente!: string;
-
-  @Column({ nullable: true })
-  telefono_cliente!: string;
-
-  @Column({ nullable: true })
-  ciudad_cliente!: string;
-
-  @Column("text", { nullable: true })
-  mensaje_cliente!: string;
-
-  @Column("boolean", { default: false })
-  aceptacion_terminos!: boolean;
-
-  @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: 'fecha_inscripcion', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fecha_inscripcion!: Date;
 }

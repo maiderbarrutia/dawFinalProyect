@@ -1,21 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Actividad } from "./Actividad";
+import { Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
 
-@Entity()
+@Entity('Categoria')
+@Unique(['nombre_categoria'])
 export class Categoria {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id_categoria' })
   id_categoria!: number;
 
-  @Column({ unique: true })
+  @Column({ name: 'nombre_categoria', type: 'varchar', length: 100, nullable: false })
   nombre_categoria!: string;
 
-  @Column("text")
+  @Column({ name: 'descripcion_categoria', type: 'text', nullable: true })
   descripcion_categoria!: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'imagen_categoria', type: 'varchar', length: 255, nullable: true })
   imagen_categoria!: string;
-
-  @OneToMany(() => Actividad, (actividad) => actividad.categoria)
-  actividades!: Actividad[];
 }
-

@@ -5,6 +5,7 @@ import { Actividad } from "../entities/Actividad";
 import { Empresa } from "../entities/Empresa";
 import { Categoria } from "../entities/Categoria";
 import { Inscripcion } from "../entities/Inscripcion";
+import { Usuario } from "../entities/Usuario";
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -19,12 +20,12 @@ const dataSource = new DataSource({
   password: process.env.DB_PASSWORD || "Zp8!rA7k@Xv2Lm9",
   database: process.env.DB_DATABASE || "aisiplan",
   // entities: [__dirname + "/../entities/*.ts"],
-  entities: [Actividad, Empresa, Categoria, Inscripcion], 
+  entities: [Actividad, Empresa, Categoria, Inscripcion, Usuario], 
   // entities: isProduction
   //   ? [__dirname + "/../entities/*.js"]  // Usar .js para producción
   //   : [__dirname + "/../entities/*.ts"], // Usar .ts para desarrollo
-  synchronize: true, // Cambiar a false en producción
-  logging: true,
+  synchronize: false, // Cambiar a false en producción
+  logging: false,
 });
 
 export default dataSource;

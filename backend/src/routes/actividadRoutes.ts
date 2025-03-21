@@ -1,29 +1,40 @@
-// import { Router } from "express";
-// import { getActividad, createActividad } from "../controllers/actividadController";
-// // import { getActividad } from "../controllers/getActividad";
-// // import { createActividad } from "../controllers/createActividad";
-
-// const actividadRoutes = Router();
-
-// actividadRoutes.get("/", getActividad); // Obtener todas las actividades
-// actividadRoutes.post("/", createActividad); // Crear una nueva actividad
-
-// export default actividadRoutes;
-
-
 import { Router } from "express";
-import { getActividad, createActividad, getActividadById, updateActividad, deleteActividad } from "../controllers/actividadController";
+import { getActividades, createActividad, getActividadById, updateActividad, deleteActividad } from "../controllers/actividadController";
 
 const actividadRoutes = Router();
 
-// Definición correcta de las rutas
-actividadRoutes.get("/", getActividad); // Obtener todas las actividades
-actividadRoutes.get("/:id", getActividadById); // Obtener una actividad por ID
-actividadRoutes.post("/", createActividad); // Crear una nueva actividad
-actividadRoutes.put("/:id", updateActividad); // Actualizar una actividad existente
-actividadRoutes.delete("/:id", deleteActividad); // Eliminar una actividad
+actividadRoutes.get("/", getActividades);
+actividadRoutes.get("/:id", getActividadById);
+actividadRoutes.post("/", createActividad);
+actividadRoutes.put("/:id", updateActividad);
+actividadRoutes.delete("/:id", deleteActividad);
 
 export default actividadRoutes;
 
 
 
+
+// import {postGetAllAction} from "./controller/PostGetAllAction";
+// import {postGetByIdAction} from "./controller/PostGetByIdAction";
+// import {postSaveAction} from "./controller/PostSaveAction";
+
+/**
+ * All application routes.
+ */
+// export const AppRoutes = [
+//     {
+//         path: "/posts",
+//         method: "get",
+//         action: postGetAllAction
+//     },
+//     {
+//         path: "/posts/:id",
+//         method: "get",
+//         action: postGetByIdAction
+//     },
+//     {
+//         path: "/posts",
+//         method: "post",
+//         action: postSaveAction
+//     }
+// ];

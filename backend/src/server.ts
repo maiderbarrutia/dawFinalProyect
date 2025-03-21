@@ -1,41 +1,44 @@
-// import express from "express";
-// import dotenv from "dotenv";
-// import dataSource from "./config/database";
-// import actividadRoutes from "./routes/actividadRoutes"; // Asegúrate de que el enrutador esté importado
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import dataSource from "./config/database";
+import actividadRoutes from "./routes/actividadRoutes";
+import categoriaRoutes from "./routes/categoriaRoutes";
+import empresaRoutes from "./routes/empresaRoutes";
+import inscripcionRoutes from "./routes/inscripcionRoutes";
+import usuarioRoutes from "./routes/usuarioRoutes";
+import { seedCategorias } from "./seeds/seedCategorias";
 
-// dotenv.config();
+dotenv.config();
 
-// const app = express();
-// app.use(express.json());
-
-// // Conexión a la base de datos
-// dataSource
-//   .initialize()
-//   .then(() => console.log("Conexión a la base de datos establecida."))
-//   .catch((error) => console.error("Error al conectar a la base de datos:", error));
-
-// // Aquí es donde estás usando el enrutador en tu aplicación
-// app.use("/api/actividades", actividadRoutes); // Usa el enrutador con el prefijo adecuado
-
-
-// const port = process.env.PORT || 3001;
-// app.listen(port, () => console.log(`Servidor corriendo en el puerto ${port}`));
-
-
-import express, { Application } from "express";
-import actividadRoutes from "./routes/actividadRoutes"; // Asegúrate de importar el enrutador
-
-const app: Application = express();
-
-// Middleware para analizar el cuerpo de las solicitudes (JSON, urlencoded)
+const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Usar el enrutador de actividades
-app.use("/api/actividades", actividadRoutes); // Definir la base de la ruta para las actividades
+app.use(cors());
 
-// Otros middlewares o rutas que puedas necesitar...
+const startServer = async () => {
+  try {
+    // Conectar a la base de datos
+    await dataSource.initialize();
+    console.log("Conexión a la base de datos establecida.");
 
-app.listen(3002, () => {
-  console.log("Servidor en ejecución en http://localhost:3002");
-});
+    // Ejecutar el seed de categorías
+    await seedCategorias(dataSource);
+    console.log("Seed de categorías ejecutado exitosamente.");
+
+    // Registrar las rutas
+    app.use("/api/usuarios", usuarioRoutes);
+    app.use("/api/actividades", actividadRoutes);
+    app.use("/api/categorias", categoriaRoutes);
+    app.use("/api/empresas", empresaRoutes);
+    app.use("/api/inscripciones", inscripcionRoutes);
+
+    // Iniciar el servidor
+    const port = process.env.PORT || 3003;
+    app.listen(port, () => console.log(`Servidor corriendo en el puerto ${port}`));
+  } catch (error) {
+    console.error("Error al iniciar el servidor:", error);
+  }
+};
+
+startServer();
