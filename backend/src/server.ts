@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path'
 import cors from "cors";
 import dotenv from "dotenv";
 import dataSource from "./config/database";
@@ -9,7 +10,9 @@ import inscripcionRoutes from "./routes/inscripcionRoutes";
 import usuarioRoutes from "./routes/usuarioRoutes";
 import { seedCategorias } from "./seeds/seedCategorias";
 
-dotenv.config();
+// dotenv.config();
+dotenv.config({path: path.resolve(__dirname, '../config/.env')});
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 const app = express();
 app.use(express.json());
