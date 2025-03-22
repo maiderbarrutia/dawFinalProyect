@@ -5,6 +5,10 @@ import Header from '@components/layout/Header/Header';
 import Home from '@/pages/home/Home';
 import Footer from '@components/layout/Footer/Footer';
 
+import Login from '../pages/login/Login';
+import Register from '../pages/register/Register';
+import Dashboard from '../pages/dashboard/Dashboard';
+
 
 const SiteRoutes: React.FC = () => {
   return (
@@ -13,6 +17,11 @@ const SiteRoutes: React.FC = () => {
         <Header />
         <main>
           <Routes>
+
+          <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
             {/* Ruta para la página principal donde estarán todas las secciones */}
             <Route path="/" element={<Home />} />
             
