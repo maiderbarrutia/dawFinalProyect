@@ -1,16 +1,11 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import { Actividad } from "../entities/Actividad";
-import { Empresa } from "../entities/Empresa";
-import { Categoria } from "../entities/Categoria";
-import { Inscripcion } from "../entities/Inscripcion";
-import { Usuario } from "../entities/Usuario";
 
 // Cargar las variables de entorno
 dotenv.config();
 
-// const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 const dataSource = new DataSource({
   type: "mysql",
@@ -19,11 +14,9 @@ const dataSource = new DataSource({
   username: process.env.DB_USERNAME || "aisiPlan_user",
   password: process.env.DB_PASSWORD || "Zp8!rA7k@Xv2Lm9",
   database: process.env.DB_DATABASE || "aisiplan",
-  // entities: [__dirname + "/../entities/*.ts"],
-  entities: [Actividad, Empresa, Categoria, Inscripcion, Usuario], 
-  // entities: isProduction
-  //   ? [__dirname + "/../entities/*.js"]  // Usar .js para producción
-  //   : [__dirname + "/../entities/*.ts"], // Usar .ts para desarrollo
+  entities: isProduction
+    ? [__dirname + "/../entities/*.js"]  // Usar .js para producción
+    : [__dirname + "/../entities/*.ts"], // Usar .ts para desarrollo
   synchronize: false, // Cambiar a false en producción
   logging: false,
 });

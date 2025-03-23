@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { Usuario } from "../../entities/Usuario";
 import dataSource from "../../config/database";
 
-
 export const getUsuarios = async (req: Request, res: Response): Promise<void> => {
   try {
     const usuarios = await dataSource.getRepository(Usuario).find();

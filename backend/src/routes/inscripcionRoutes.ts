@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getInscripciones, createInscripcion, getInscripcionById, updateInscripcion, deleteInscripcion } from "../controllers/inscripcionController";
+import { getInscripciones } from "../controllers/inscripcion/getInscripciones";
+import { getInscripcionById } from "../controllers/inscripcion/getInscripcionById";
+import { createInscripcion } from "../controllers/inscripcion/createInscripcion";
+import { updateInscripcion } from "../controllers/inscripcion/updateInscripcion";
+import { deleteInscripcion } from "../controllers/inscripcion/deleteInscripcion";
 
 const inscripcionRoutes = Router();
 

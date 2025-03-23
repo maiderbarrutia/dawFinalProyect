@@ -1,6 +1,9 @@
 import { Router } from "express";
-import { createUsuario, getUsuarioById, updateUsuario, deleteUsuario } from "../controllers/usuarioController";
 import { getUsuarios } from "../controllers/usuario/getUsuarios";
+import { getUsuarioById } from "../controllers/usuario/getUsuarioById";
+import { createUsuario } from "../controllers/usuario/createUsuario";
+import { updateUsuario } from "../controllers/usuario/updateUsuario";
+import { deleteUsuario } from "../controllers/usuario/deleteUsuario";
 
 const usuarioRoutes = Router();
 

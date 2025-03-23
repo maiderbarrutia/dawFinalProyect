@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getActividades, createActividad, getActividadById, updateActividad, deleteActividad } from "../controllers/actividadController";
+import { getActividades} from "../controllers/actividad/getActividades";
+import { getActividadById} from "../controllers/actividad/getActividadById";
+import { createActividad} from "../controllers/actividad/createActividad";
+import { updateActividad} from "../controllers/actividad/updateActividad";
+import { deleteActividad} from "../controllers/actividad/deleteActividad";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const actividadRoutes = Router();
