@@ -5,14 +5,16 @@
   margin: auto auto rem(20);
   border: none;
   padding: rem(10) rem(30);
-  font-size: rem(14);
+  font-size: rem(12);
   cursor: pointer;
   text-transform: uppercase;
   font-weight: 600;
+  border-radius: rem(10);
+  transition: all 0.3s ease;
 
   @media (min-width: $size-tablet) {
-    font-size: rem(16);
-    padding: rem(15) rem(40);
+    font-size: rem(14);
+    padding: rem(10) rem(20);
   }
 
   &--primaryColor {
