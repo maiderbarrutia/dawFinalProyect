@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Button.module.scss';
+import { Link } from 'react-router-dom';
 
 interface ButtonProps {
   text: string;
@@ -10,6 +11,7 @@ interface ButtonProps {
   buttonStyle?: 'primaryColor' | 'black' | 'white';
   hoverStyle?: 'primaryColor' | 'black' | 'white';
   ariaLabel?: string;
+  link?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -21,14 +23,25 @@ const Button: React.FC<ButtonProps> = ({
   buttonStyle = 'primaryColor',
   hoverStyle = 'black',
   ariaLabel,
+  link,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Determina la clase de variante basada en las props
+ 
   const buttonStyleClass = styles[`button--${buttonStyle}`];
   const hoverStyleClass = styles[`button--${hoverStyle}`];
   const ariaLabelValue = ariaLabel || text;
+  if (link) {
+    return (
+      <Link to={link} aria-label={ariaLabelValue} className={`${styles.button} ${isHovered ? hoverStyleClass : buttonStyleClass} ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}>
+          {text}
+      </Link>
+    );
+  }
 
+ 
   return (
     <button
       type={type}
