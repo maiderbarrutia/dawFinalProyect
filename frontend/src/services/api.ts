@@ -15,16 +15,27 @@ const postRequest = async (endpoint: string, data: object) => {
 };
 
 // Función para hacer solicitudes GET al backend
+// const getRequest = async (endpoint: string) => {
+//   const token = localStorage.getItem('token');
+//   const response = await fetch(`${API_URL}${endpoint}`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       ...(token && { 'Authorization': `Bearer ${token}` }), // Añadir el token si está disponible
+//     },
+//   });
+//   return response.json();
+// };
+
 const getRequest = async (endpoint: string) => {
-  const token = localStorage.getItem('token');
   const response = await fetch(`${API_URL}${endpoint}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` }), // Añadir el token si está disponible
     },
   });
   return response.json();
 };
+
 
 export { postRequest, getRequest };

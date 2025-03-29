@@ -52,10 +52,10 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postRequest } from '../../services/api'; // Importamos la función para hacer peticiones
-import Button from "@components/common/Button/Button"; // Importamos el componente Button
-import styles from './Login.module.scss'; // Importamos el archivo de estilos
-import { useAuth } from "../../context/AuthContext";  // Importamos el hook useAuth
+import { postRequest } from '../../services/api'; 
+import Button from "@components/common/Button/Button";
+import styles from './Login.module.scss';
+import { useAuth } from "../../context/AuthContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

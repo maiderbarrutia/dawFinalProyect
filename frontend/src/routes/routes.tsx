@@ -12,6 +12,9 @@ import Login from '../pages/login/Login';
 import Register from '../pages/register/Register';
 import Dashboard from '../pages/dashboard/Dashboard';
 
+import FeaturedActivities from '@components/sections/FeaturedActivities/FeaturedActivities';
+import ActivitiesPage from '@/pages/activitiesPage/ActivitiesPage';
+
 
 const SiteRoutes: React.FC = () => {
   return (
@@ -30,6 +33,8 @@ const SiteRoutes: React.FC = () => {
               <Route path="/" element={<Home />} />
               
               {/* Ruta para las demás páginas */}
+              <Route path="/" element={<FeaturedActivities />} />
+              <Route path="/actividades" element={<ActivitiesPage />} />
               {/* <Route path="/proyectos/:slug" element={<ProjectDetail />} />
               <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
               <Route path="/politica-de-cookies" element={<Cookies />} />
