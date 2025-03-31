@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import dataSource from "./config/database";
-import actividadRoutes from "./routes/actividadRoutes";
-import categoriaRoutes from "./routes/categoriaRoutes";
-import empresaRoutes from "./routes/empresaRoutes";
-import inscripcionRoutes from "./routes/inscripcionRoutes";
-import usuarioRoutes from "./routes/usuarioRoutes";
-import { seedCategorias } from "./seeds/seedCategorias";
+import activityRoutes from "./routes/activityRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
+import companyRoutes from "./routes/companyRoutes";
+import registrationRoutes from "./routes/registrationRoutes";
+import userDataRoutes from "./routes/userDataRoutes";
+import { seedCategories } from "./seeds/seedCategories";
 
 dotenv.config();
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
@@ -25,15 +25,15 @@ const startServer = async () => {
     console.log("Conexión a la base de datos establecida.");
 
     // Ejecutar el seed de categorías
-    await seedCategorias(dataSource);
+    await seedCategories(dataSource);
     console.log("Seed de categorías ejecutado exitosamente.");
 
     // Registrar las rutas
-    app.use("/api/usuarios", usuarioRoutes);
-    app.use("/api/actividades", actividadRoutes);
-    app.use("/api/categorias", categoriaRoutes);
-    app.use("/api/empresas", empresaRoutes);
-    app.use("/api/inscripciones", inscripcionRoutes);
+    app.use("/api/usuarios", userDataRoutes);
+    app.use("/api/actividades", activityRoutes);
+    app.use("/api/categorias", categoryRoutes);
+    app.use("/api/empresas", companyRoutes);
+    app.use("/api/inscripciones", registrationRoutes);
 
 
     // Iniciar el servidor
