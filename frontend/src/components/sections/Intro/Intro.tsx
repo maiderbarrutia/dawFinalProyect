@@ -1,68 +1,65 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Intro.module.scss';
-import { getAssetSrc } from '@/utils/srcUtils'; 
-import { useFormik } from "formik";
-import * as Yup from "yup";
-
+import { getAssetSrc } from '@/utils/srcUtils';
+import SearchFilters from '@components/common/searchFilters/SearchFilters';
+import { getRequest } from '@/services/api';
+import { Activity } from '@/interfaces/Activity';
 
 const Intro: React.FC = () => {
+  const [uniqueLocations, setUniqueLocations] = useState<string[]>([]); // Ubicaciones únicas
+  const [searchText, setSearchText] = useState<string>(''); // Texto de búsqueda
+  const [location, setLocation] = useState<string>(''); // Ubicación seleccionada
+  const navigate = useNavigate(); // Para redirigir a la página de actividades
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const activitiesData: Activity[] = await getRequest('/actividades');
+        // Extraer ubicaciones únicas, filtrando vacíos y duplicados
+        const locations = Array.from(
+          new Set(
+            activitiesData
+              .map((activity: Activity) => activity.activity_location)
+              .filter((location: string) => location.trim() !== '') // Filtramos ubicaciones vacías
+          )
+        );
+        setUniqueLocations(locations); // Guardamos las ubicaciones únicas
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      }
+    };
 
-    const formik = useFormik({
-        initialValues: {
-          activity: "",
-        },
-        validationSchema: Yup.object({
-          activity: Yup.string()
-            .required("Por favor, introduce el nombre de una actividad"),
-        }),
-        onSubmit: (values) => {
-          // Redirige al usuario a la página de resultados con el término de búsqueda en la URL
-          navigate(`/search?q=${values.activity}`);
-        },
-      });
-    
+    fetchActivities();
+  }, []);
 
+  // Función para aplicar filtros
+  const applyFilters = () => {
+    // Redirigimos a la página de actividades con los filtros aplicados en la URL
+    navigate(`/actividades?searchText=${searchText}&location=${location}`);
+  };
 
-    
+  return (
+    <section
+      id="intro"
+      className={`${styles['intro']} ${styles['home-section']}`}
+      style={{ backgroundImage: `url(${getAssetSrc('images/intro-image.jpg')})` }}
+    >
+      <div>
+        <h1>Explora, disfruta y organiza actividades</h1>
 
-    return (
-        <section id="intro" className={`${styles['intro']} ${styles['home-section']}`}
-        style={{ backgroundImage: `url(${getAssetSrc(`images/intro-image.jpg`)})` }}
-        >
-
-            <div>
-                <h1>Explora, disfruta y organiza actividades</h1>
-
-                <form onSubmit={formik.handleSubmit}>
-                    <div>
-                        <label htmlFor="activity">Buscar actividad:</label>
-                        <input
-                        id="activity"
-                        name="activity"
-                        type="text"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.activity}
-                        />
-                        {formik.touched.activity && formik.errors.activity ? (
-                        <div style={{ color: "red" }}>{formik.errors.activity}</div>
-                        ) : null}
-                    </div>
-                    <button type="submit" style={{ marginTop: "10px" }}>
-                        Buscar
-                    </button>
-                    </form>
-
-
-            </div>
-            
-        </section>
-
-        
-    );
+        <SearchFilters
+          searchText={searchText}
+          setSearchText={setSearchText}
+          location={location}
+          setLocation={setLocation}
+          uniqueLocations={uniqueLocations}
+          applyFilters={applyFilters}
+          isHomePage={true} 
+        />
+      </div>
+    </section>
+  );
 };
 
 export default Intro;

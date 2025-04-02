@@ -3,41 +3,7 @@ import styles from './FeaturedActivities.module.scss';
 import ActivityCard from '@/components/common/ActivityCard/ActivityCard';
 import { getRequest } from '@/services/api';
 import Button from "@components/common/Button/Button";
-
-
-interface Activity {
-    id_actividad: number;
-    titulo_actividad: string;
-    descripcion_actividad: string;
-    precio_actividad: string;
-    fecha_actividad: string;
-    hora_actividad: string;
-    duracion_actividad: number;
-    ubicacion_actividad: string;
-    imagenes_actividad: string[];
-    nivel_dificultad: string;
-    incluye: string;
-    no_incluye: string;
-    numero_plazas: number;
-    politica_privacidad: boolean;
-    categoria: {
-      id_categoria: number;
-      nombre_categoria: string;
-      descripcion_categoria: string;
-      imagen_categoria: string;
-    };
-    empresa: {
-      id_empresa: number;
-      nombre_empresa: string;
-      tipo_empresa: string;
-      logo_empresa: string;
-      persona_contacto: string;
-      telefono_empresa: string;
-      email_empresa: string;
-      web_empresa: string;
-    };
-  }
-  
+import { Activity } from '@/interfaces/Activity';
 
 const FeaturedActivities: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -79,9 +45,9 @@ const FeaturedActivities: React.FC = () => {
 
             <div className={styles.featuredActivities__grid}>
                 {activities.length > 0 ? (
-                activities.slice(0, 4).map((activity, index) => (
+                activities.slice(0, 8).map((activity, index) => (
                     
-                    <ActivityCard key={`${activity.id_actividad}-${index}`} {...activity} />
+                    <ActivityCard key={`${activity.activity_id}-${index}`} {...activity} />
                 ))
                 ) : (
                 <p>No hay actividades disponibles.</p>
