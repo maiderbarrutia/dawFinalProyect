@@ -5,6 +5,11 @@
     &__title {
       font-size: rem(32);
       font-weight: 700;
+      margin-bottom: rem(40);
+
+      span{
+        color: $primary-color;
+      }
     }
   
     &__grid {
@@ -22,5 +27,16 @@
           grid-template-columns: repeat(4, 1fr);
       }
   
+    }
+
+    &__searchFilter-container{
+      margin-bottom: rem(40);
+      display: flex;
+      justify-content: center;
+    }
+
+    &__notFound{
+      text-align: center;
+      font-size: rem(18);
     }
   }

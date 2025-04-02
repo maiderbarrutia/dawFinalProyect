@@ -31,7 +31,7 @@ const FeaturedActivities: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <section className={styles.featuredActivities}>
+    <section className={`${styles["featuredActivities"]} ${styles["home-section"]}`}>
         <div className={styles['section__container']}>
             <div className={styles.featuredActivities__header}>
                 <h2 className={styles.featuredActivities__title}>Lo más destacado</h2>

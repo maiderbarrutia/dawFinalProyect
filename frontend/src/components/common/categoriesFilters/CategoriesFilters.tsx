@@ -13,16 +13,16 @@ const CategoriesFilters: React.FC<CategoriesFiltersProps> = ({
   categories,
 }) => {
   return (
-    <div className={styles.categories}>
-      <div className={styles.categoriesOptions}>
+    <div className={styles["categories-filters"]}>
+      <div className={styles["categories-filters__options"]}>
         {categories.map((category) => (
           <button
             key={category.category_id}
             onClick={() => setSelectedCategory(category.category_id)}
             className={
               selectedCategory === category.category_id
-                ? styles['categoryButton--active']
-                : styles['categoryButton']
+                ? `${styles["categories-filters__button"]} ${styles["categories-filters__button--active"]}`
+                : styles["categories-filters__button"]
             }
           >
             {category.category_name}
@@ -32,8 +32,8 @@ const CategoriesFilters: React.FC<CategoriesFiltersProps> = ({
           onClick={() => setSelectedCategory(null)}
           className={
             selectedCategory === null
-              ? styles['categoryButton--active']
-              : styles['categoryButton']
+              ? `${styles["categories-filters__button"]} ${styles["categories-filters__button--active"]}`
+              : styles["categories-filters__button"]
           }
         >
           Todos

@@ -41,39 +41,39 @@ const SearchFilters: React.FC<SearchFilterProps> = ({
   };
 
   return (
-    <div className={styles.filtersContainer}>
-      <form className={styles.filtersForm}>
-        <div className={styles.inputGroup}>
-          <input
-            type="text"
-            placeholder="Search by title or description"
-            value={searchText}
-            onChange={handleSearchTextChange}
-            className={styles.input}
-          />
+    <div className={styles["search-filters"]}>
+  <form className={styles["search-filters__form"]}>
+    <div className={styles["search-filters__input-group"]}>
+      <input
+        type="text"
+        placeholder="Buscar eventos"
+        value={searchText}
+        onChange={handleSearchTextChange}
+        className={styles["search-filters__input"]}
+      />
 
-          <select
-            value={location}
-            onChange={handleLocationChange}
-            className={styles.select}
-          >
-            <option value="">Select a location</option>
-            {uniqueLocations.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          onClick={handleButtonClick}
-          className={styles.button}
-        >
-          Apply Filters
-        </button>
-      </form>
+      <select
+        value={location}
+        onChange={handleLocationChange}
+        className={styles["search-filters__select"]}
+      >
+        <option value="">Localización</option>
+        {uniqueLocations.map((loc) => (
+          <option key={loc} value={loc}>
+            {loc}
+          </option>
+        ))}
+      </select>
     </div>
+
+    <button
+      onClick={handleButtonClick}
+      className={styles["search-filters__button"]}
+    >
+      Aplicar
+    </button>
+  </form>
+</div>
   );
 };
 

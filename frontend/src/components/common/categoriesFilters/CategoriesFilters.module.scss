@@ -1,0 +1,36 @@
+@import '@assets/styles/main.scss';
+
+.categories-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: rem(20);
+    
+    &__options {
+      display: flex;
+      gap: rem(10);
+      flex-wrap: wrap;
+    }
+  
+    &__button {
+      background: $light-gray;
+      padding: rem(10) rem(15);
+      border-radius: rem(10);
+      font-size: rem(14);
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s ease;
+  
+      &:hover {
+        background: $primary-color;
+        color: $white;
+      }
+  
+      &--active {
+        background: $primary-color;
+        color: $white;
+      }
+    }
+  }
+  

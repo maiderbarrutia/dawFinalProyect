@@ -45,8 +45,8 @@ const Intro: React.FC = () => {
       className={`${styles['intro']} ${styles['home-section']}`}
       style={{ backgroundImage: `url(${getAssetSrc('images/intro-image.jpg')})` }}
     >
-      <div>
-        <h1>Explora, disfruta y organiza actividades</h1>
+      <div className={styles.intro__container}>
+        <h1 className={styles.intro__title}>Explora, disfruta y organiza actividades</h1>
 
         <SearchFilters
           searchText={searchText}
