@@ -17,12 +17,22 @@ const FeaturedCategories: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // const categoriesToShow = [1, 3, 4, 5];
+  const categoriesToShow = ['Aventura', 'Deportes', 'Cultura', 'Entretenimiento'];
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const data: Category[] = await getRequest('/categorias');
         console.log('Categorías obtenidas:', data);
-        setCategories(data);
+        // const filteredCategories = data.filter((category) =>
+        //   categoriesToShow.includes(category.category_id)
+        // );
+        const filteredCategories = data.filter((category) =>
+          categoriesToShow.includes(category.category_name) // Filtramos por el nombre de la categoría
+        );
+
+        setCategories(filteredCategories);
       } catch (error) {
         console.error('Error al cargar categorías:', error);
         setError('No se pudieron cargar las categorías.');
@@ -32,7 +42,7 @@ const FeaturedCategories: React.FC = () => {
     };
 
     fetchCategories();
-  }, []);
+  });
 
   if (loading) return <p>Cargando categorías...</p>;
   if (error) return <p>Error: {error}</p>;

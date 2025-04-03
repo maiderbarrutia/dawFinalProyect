@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './FeaturedActivities.module.scss';
 import ActivityCard from '@/components/common/ActivityCard/ActivityCard';
 import { getRequest } from '@/services/api';
-import Button from "@components/common/Button/Button";
+import SectionHeader from '@/components/common/SectionHeader/SectionHeader';
 import { Activity } from '@/interfaces/Activity';
 
 const FeaturedActivities: React.FC = () => {
@@ -33,15 +33,13 @@ const FeaturedActivities: React.FC = () => {
   return (
     <section className={`${styles["featuredActivities"]} ${styles["home-section"]}`}>
         <div className={styles['section__container']}>
-            <div className={styles.featuredActivities__header}>
-                <h2 className={styles.featuredActivities__title}>Lo más destacado</h2>
-                <Button
-                    text="Más actividades"
-                    ariaLabel="Ir a la página de actividades"
-                    link='/actividades'
-                    className={styles.featuredActivities__button}
-                />
-            </div>
+            
+
+            <SectionHeader 
+              title="Lo más destacado" 
+              buttonText="Más actividades" 
+              buttonLink="/actividades" 
+            />
 
             <div className={styles.featuredActivities__grid}>
                 {activities.length > 0 ? (

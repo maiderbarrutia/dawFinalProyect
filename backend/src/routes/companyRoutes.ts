@@ -13,8 +13,8 @@ const companyRoutes = Router();
 companyRoutes.post("/register", createCompany);
 companyRoutes.post("/login", loginCompany);
 
-companyRoutes.get("/", authMiddleware, getCompanies);
-companyRoutes.get("/:id", authMiddleware, getCompanyById);
+companyRoutes.get("/", getCompanies);
+companyRoutes.get("/:id", getCompanyById);
 companyRoutes.post("/", authMiddleware, createCompany);
 companyRoutes.put("/:id", authMiddleware, updateCompany);
 companyRoutes.delete("/:id", authMiddleware, deleteCompany);

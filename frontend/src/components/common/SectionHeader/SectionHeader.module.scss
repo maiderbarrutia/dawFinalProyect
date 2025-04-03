@@ -1,0 +1,16 @@
+@import '@assets/styles/main.scss';
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+    margin-bottom: rem(30);
+    flex-wrap: wrap;
+    gap: rem(10);
+      
+    &__title {
+        font-size: rem(32);
+        font-weight: 700;
+    }
+}
