@@ -1,0 +1,50 @@
+@import '@assets/styles/main.scss';
+
+.carousel {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: rem(20) 0;
+  }
+
+  &__container {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &__carousel {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+  }
+
+  &__item-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: rem(10);
+    box-sizing: border-box;
+  }
+
+  &__item {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  &__arrow {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 2;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

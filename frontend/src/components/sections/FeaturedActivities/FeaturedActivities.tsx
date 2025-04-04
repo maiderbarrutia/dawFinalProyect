@@ -14,7 +14,6 @@ const FeaturedActivities: React.FC = () => {
     const fetchActivities = async () => {
       try {
         const data: Activity[] = await getRequest('/actividades');
-        console.log('Actividades obtenidas:', data);
         setActivities(data);
       } catch (error) {
         console.error('Error al cargar actividades:', error);

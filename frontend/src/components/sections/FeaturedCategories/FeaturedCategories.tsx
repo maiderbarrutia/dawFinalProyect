@@ -24,7 +24,6 @@ const FeaturedCategories: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const data: Category[] = await getRequest('/categorias');
-        console.log('Categorías obtenidas:', data);
         // const filteredCategories = data.filter((category) =>
         //   categoriesToShow.includes(category.category_id)
         // );
@@ -53,15 +52,12 @@ const FeaturedCategories: React.FC = () => {
         <div className={styles['featuredCategories__grid']}>
           <div className={styles['featuredCategories__categories']}>
             {categories.slice(0, 4).map((category) => {
-              const imageSrc = category.category_image && category.category_image.trim() !== ''
-                ? getAssetSrc(`images/${category.category_image}`)
-                : getAssetSrc(`images/default-image.jpg`);
-
+              const imageSrc = getAssetSrc(`images/${category.category_image}`);
               const placeholderImage = getAssetSrc(`images/default-image.jpg`);
 
               return (
                 <Link
-                  to={`/actividades?category=${category.category_id}`} // Redirige con parámetro 'category'
+                  to={`/actividades?category=${category.category_id}`}
                   key={category.category_id}
                   className={styles['featuredCategories__card']}
                   style={{ backgroundImage: `url(${imageSrc || placeholderImage})` }}

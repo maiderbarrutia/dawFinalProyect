@@ -46,10 +46,12 @@ const ActivityCard: React.FC<ActivityProps> = ({
   activity_location,
   activity_images,
 }) => {
-  const imageSrc =
-    Array.isArray(activity_images) && activity_images.length > 0
-      ? getAssetSrc(`images/${activity_images[0]}`)
-      : null;
+  // const imageSrc =
+  //   Array.isArray(activity_images) && activity_images.length > 0
+  //     ? getAssetSrc(`images/${activity_images[0]}`)
+  //     : null;
+
+      const imageSrc = getAssetSrc(`images/${activity_images[0]}`);
 
   const placeholderImage = getAssetSrc(`images/default-image.jpg`);
 

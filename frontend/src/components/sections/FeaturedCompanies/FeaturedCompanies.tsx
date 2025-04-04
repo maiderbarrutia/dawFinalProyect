@@ -4,6 +4,7 @@ import SectionHeader from '@/components/common/SectionHeader/SectionHeader';
 import { getRequest } from '@/services/api';
 import { Company } from '@/interfaces/Company';
 import { getAssetSrc } from '@/utils/srcUtils';
+import ItemsCarousel from '@/components/common/ItemsCarousel/ItemsCarousel';
 
 const FeaturedCompanies: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -29,37 +30,27 @@ const FeaturedCompanies: React.FC = () => {
   if (loading) return <p>Cargando empresas...</p>;
   if (error) return <p>{error}</p>;
 
+  const logos = companies.map((company) => {
+    const imageSrc = getAssetSrc(`images/${company.company_logo}`);
+    const placeholderImage = getAssetSrc('images/default-image.jpg');
+    return imageSrc || placeholderImage;
+  });
+
   return (
     <section className={`${styles["featuredCompanies"]} ${styles["home-section"]}`}>
       <div className={styles['section__container']}>
-        <SectionHeader 
-          title="Empresas destacadas"
+        <SectionHeader title="Empresas destacadas" />
+        
+        {/* Aquí pasas el objeto visibleCount */}
+        <ItemsCarousel 
+          items={logos} 
+          visibleCount={{ mobile: 2, tablet: 4, desktop: 6, large: 6 }} 
         />
-
-        <div className={styles.featuredCompanies__grid}>
-          {companies.length > 0 ? (
-            companies.slice(0, 6).map((company) => {
-              // Definir la variable imageSrc fuera de map
-              const imageSrc = company.company_logo && company.company_logo.trim() !== ''
-                ? getAssetSrc(`images/${company.company_logo}`)
-                : getAssetSrc('images/default-image.jpg');
-
-                console.log(imageSrc)
-              
-              return (
-                <div key={company.company_id} className={styles.featuredCompany}>
-                  <img src={imageSrc} alt={company.company_name} className={styles.companyLogo} />
-                  <p className={styles.companyName}>{company.company_name}</p>
-                </div>
-              );
-            })
-          ) : (
-            <p>No hay empresas disponibles.</p>
-          )}
-        </div>
       </div>
     </section>
   );
 };
 
 export default FeaturedCompanies;
+
+
