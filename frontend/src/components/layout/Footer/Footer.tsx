@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
 import AisiPlanIcon from '@/assets/icons/logo-aisiplan.svg';
 import { getAssetSrc } from '@/utils/srcUtils';
+import facebookIcon from '@assets/icons/facebook-icon.png'
+import linkedinIcon from '@assets/icons/linkedin-icon.png'
+import youtubeIcon from '@assets/icons/youtube-icon.png'
+import instagramIcon from '@assets/icons/instagram-icon.png'
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -23,7 +27,7 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer className={styles.footer}>
+    <footer id='footer' className={styles.footer}>
       <div className={styles.section__container}>
         <div className={styles.footer__container}>
           <div className={styles.footer__logoSection}>
@@ -42,13 +46,16 @@ const Footer: React.FC = () => {
               <h2 className={styles.footer__sectionTitle}>Síguenos</h2>
               <div className={styles.footer__socialIcons}>
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
-                  <i className="fab fa-facebook"></i>
+                  <img className={styles["footer__socialImages"]} src={facebookIcon} alt="Icono facebook" />
                 </a>
                 <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
-                  <i className="fab fa-youtube"></i>
+                  <img className={styles["footer__socialImages"]} src={youtubeIcon} alt="Icono youtube" />
                 </a>
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
-                  <i className="fab fa-linkedin"></i>
+                  <img className={styles["footer__socialImages"]} src={linkedinIcon} alt="Icono linkedin" />
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.footer__socialLink}>
+                  <img className={styles["footer__socialImages"]} src={instagramIcon} alt="Icono instagram" />
                 </a>
               </div>
             </div>

@@ -51,7 +51,7 @@ const ItemsCarousel: React.FC<ItemsCarouselProps> = ({ items, visibleCount }) =>
     <div className={styles.carousel__wrapper}>
       {currentIndex > 0 && (
         <button className={styles.carousel__arrow} onClick={prevSlide}>
-          <img src={getAssetSrc('icons/arrow-left.png')} alt="Left arrow" />
+          <img src={getAssetSrc('icons/arrow-left.png')} alt="Anterior" />
         </button>
       )}
 
@@ -80,7 +80,7 @@ const ItemsCarousel: React.FC<ItemsCarouselProps> = ({ items, visibleCount }) =>
 
       {currentIndex < items.length - visibleItems && (
         <button className={styles.carousel__arrow} onClick={nextSlide}>
-          <img src={getAssetSrc('icons/arrow-right.png')} alt="Right arrow" />
+          <img src={getAssetSrc('icons/arrow-right.png')} alt="Siguiente" />
         </button>
       )}
     </div>

@@ -9,7 +9,9 @@ export interface Activity {
     activity_time: string;
     activity_duration: number;
     activity_location: string;
+    activity_type: string;
     activity_images: string[];
+    activity_videos: string[];
     difficulty_level: string;
     includes: string;
     excludes: string;

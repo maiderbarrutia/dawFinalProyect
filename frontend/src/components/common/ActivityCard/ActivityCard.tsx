@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './ActivityCard.module.scss';
 import { getAssetSrc } from '@/utils/srcUtils';
 
@@ -36,6 +37,7 @@ interface ActivityProps {
 }
 
 const ActivityCard: React.FC<ActivityProps> = ({
+  activity_id,
   activity_title,
   category,
   company,
@@ -46,27 +48,32 @@ const ActivityCard: React.FC<ActivityProps> = ({
   activity_location,
   activity_images,
 }) => {
-  // const imageSrc =
-  //   Array.isArray(activity_images) && activity_images.length > 0
-  //     ? getAssetSrc(`images/${activity_images[0]}`)
-  //     : null;
-
-      const imageSrc = getAssetSrc(`images/${activity_images[0]}`);
-
+  const imageSrc = getAssetSrc(`images/${activity_images[0]}`);
   const placeholderImage = getAssetSrc(`images/default-image.jpg`);
 
   return (
     <article className={styles.activityCard}>
-      <img
-        src={imageSrc || placeholderImage}
-        alt={activity_title}
-        className={styles.activityCard__image}
-      />
+      {/* Caja completa clickeable (sin afectar enlaces internos) */}
+      <Link to={`/actividad/${activity_id}`} className={styles.activityCard__link}>
+        <div className={styles.activityCard__imageWrapper}>
+          <img
+            src={imageSrc || placeholderImage}
+            alt={activity_title}
+            className={styles.activityCard__image}
+          />
+        </div>
+      </Link>
+
       <div className={styles.activityCard__content}>
         <p className={styles.activityCard__category}>
           {category?.category_name || 'Categoria no disponible'}
         </p>
-        <h3 className={styles.activityCard__title}>{activity_title}</h3>
+
+        {/* Solo el título tiene un enlace individual */}
+        <Link to={`/actividad/${activity_id}`} className={styles.activityCard__titleLink}>
+          <h3 className={styles.activityCard__title}>{activity_title}</h3>
+        </Link>
+
         <p className={styles.activityCard__provider}>
           {company?.company_name || 'Empresa no disponible'}
         </p>

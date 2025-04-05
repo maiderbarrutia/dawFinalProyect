@@ -14,6 +14,7 @@ import Dashboard from '../pages/dashboard/Dashboard';
 
 import FeaturedActivities from '@components/sections/FeaturedActivities/FeaturedActivities';
 import ActivitiesPage from '@/pages/activitiesPage/ActivitiesPage';
+import ActivityDetail from '@/components/common/ActivityDetail/ActivityDetail';
 
 
 const SiteRoutes: React.FC = () => {
@@ -35,6 +36,7 @@ const SiteRoutes: React.FC = () => {
               {/* Ruta para las demás páginas */}
               <Route path="/" element={<FeaturedActivities />} />
               <Route path="/actividades" element={<ActivitiesPage />} />
+              <Route path="/actividad/:id" element={<ActivityDetail />} />
               {/* <Route path="/proyectos/:slug" element={<ProjectDetail />} />
               <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
               <Route path="/politica-de-cookies" element={<Cookies />} />

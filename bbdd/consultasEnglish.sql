@@ -7,6 +7,14 @@ SELECT * FROM UserData;
 
 SHOW CREATE TABLE Company;
 
+UPDATE activity
+SET activity_images = '["image1.jpg", "aventura.jpg", "deportes.jpg"]'
+WHERE activity_id=1;
+
+UPDATE activity
+SET activity_description = "Escapada al parque regional de Gredos: una de las  sierras mas extensas del sistema central, característica por sus moles  graníticas. Un paraje que constituye hoy en día uno de los conjuntos  glaciares mejor conservados del sur de Europa, pudiendo observar  lagunas, glaciares, circos, gargantas, etc. Visitaremos caminando la Laguna Grande y el Circo de Gredos hasta llegar el refugio Elola. También visitaremos las Cuevas del Águila: variedad de colores y texturas realmente inusuales en otras cuevas de  la Península Ibérica debido a la compleja evolución, resultado de  reiteradas fases de creación y destrucción de las formaciones."
+WHERE activity_id=1;
+
 DESCRIBE Registration;
 DESCRIBE Activity;
 DESCRIBE Company;

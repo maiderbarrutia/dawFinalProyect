@@ -25,12 +25,17 @@ const LoginButton: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const logoFile = data[0].logo_empresa;
-        const logoUrl = getAssetSrc(`images/${logoFile}`);
-        if (logoUrl) {
-          setCompanyLogo(logoUrl);
+        if (data && data.length > 0) {
+          const logoFile = data[0].company_logo; // Nombre del archivo del logo
+          if (logoFile) {
+            const logoUrl = getAssetSrc(`images/${logoFile}`); // Asumimos que las imágenes están en una carpeta llamada 'images'
+            setCompanyLogo(logoUrl);
+          } else {
+            console.error("Logo no encontrado para esta empresa");
+            setCompanyLogo(null); // Si no hay logo, aseguramos que no haya una URL
+          }
         } else {
-          console.error("Imagen no encontrada");
+          console.error("No se encontró la empresa en los datos.");
         }
       })
       .catch((error) => {
@@ -48,7 +53,7 @@ const LoginButton: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    setCompanyLogo(null);
+    setCompanyLogo(null); // Limpiar el logo al cerrar sesión
     navigate("/login");
   };
 

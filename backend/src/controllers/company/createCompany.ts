@@ -19,7 +19,7 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
 
   if (!company_name || !company_cif || !company_email || !company_password) {
     res.status(400).json({
-      message: "Los campos nombre_empresa, cif_empresa, email_empresa y contrasena_empresa son obligatorios.",
+      message: "El nombre, cif, email y contraseña de la empresa son obligatorios.",
     });
     return;
   }

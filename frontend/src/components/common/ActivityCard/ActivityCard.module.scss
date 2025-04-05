@@ -34,6 +34,15 @@
     margin-bottom: rem(5);
   }
 
+  &__titleLink{
+    text-decoration:none;
+    color: $main-black;
+
+    &:hover{
+      color: $primary-color;
+    }
+  }
+
   &__title {
     font-size: rem(16);
     font-weight: bold;
