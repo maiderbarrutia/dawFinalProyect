@@ -1,15 +1,22 @@
 const API_URL = '/api'; // Cambia esta URL si es necesario
 
 // Función para hacer solicitudes POST al backend
-const postRequest = async <T>(endpoint: string, data: object): Promise<T> => {
+const postRequest = async <T>(endpoint: string, data: object, includeToken: boolean = true): Promise<T> => {
   const token = localStorage.getItem('token');
+  
+  // Solo se incluye el token si es necesario
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+
+  if (includeToken && token) {
+    headers['Authorization'] = `Bearer ${token}`; // Añadir el token si está disponible y es necesario
+  }
+
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` }), // Añadir el token si está disponible
-      },
+      headers: headers,
       body: JSON.stringify(data),
     });
 

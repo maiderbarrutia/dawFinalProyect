@@ -44,7 +44,7 @@ const FeaturedCompanies: React.FC = () => {
         {/* Aquí pasas el objeto visibleCount */}
         <ItemsCarousel 
           items={logos} 
-          visibleCount={{ mobile: 2, tablet: 4, desktop: 6, large: 6 }} 
+          visibleCount={{ mobile: 2, tablet: 4, desktop: 5, large: 5 }} 
         />
       </div>
     </section>

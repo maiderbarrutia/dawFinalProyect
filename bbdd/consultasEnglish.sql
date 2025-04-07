@@ -7,6 +7,8 @@ SELECT * FROM UserData;
 
 SHOW CREATE TABLE Company;
 
+SELECT company_email, company_password FROM company WHERE company_email = 'contacto2@greentech.com';
+
 UPDATE activity
 SET activity_images = '["image1.jpg", "aventura.jpg", "deportes.jpg"]'
 WHERE activity_id=1;

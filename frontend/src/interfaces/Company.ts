@@ -10,4 +10,6 @@ export interface Company {
     company_website?: string;
     company_email: string;
     company_password: string;
+    privacy_policy: boolean;
+    registration_date: string | Date;
 }

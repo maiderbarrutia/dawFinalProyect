@@ -28,9 +28,6 @@ export const loginCompany = async (req: Request, res: Response): Promise<void> =
             return;
         }
 
-        // Log de la empresa encontrada
-        console.log("Empresa encontrada:", company);
-
         // Verificar si la contraseña es correcta usando bcrypt.compare
         const validPass = await bcrypt.compare(company_password, company.company_password);
 

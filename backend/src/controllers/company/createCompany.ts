@@ -14,7 +14,8 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
     company_address,
     company_website,
     company_email,
-    company_password
+    company_password,
+    privacy_policy
   } = req.body;
 
   if (!company_name || !company_cif || !company_email || !company_password) {
@@ -53,6 +54,7 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
       company_website,
       company_email,
       company_password: hashPassword,
+      privacy_policy,
     });
 
     const newCompany = await CompanyRepo.save(company);

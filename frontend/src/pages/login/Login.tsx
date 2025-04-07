@@ -103,7 +103,7 @@ const Login: React.FC = () => {
               <p className={styles.registerText}>
                 Publica tus actividades y conecta con más clientes. ¡Crea tu cuenta!
               </p>
-              <a href="/crear-cuenta" className={styles.createAccountLink}>
+              <a href="/crear-cuenta-empresa" className={styles.createAccountLink}>
                 Crear una cuenta de empresa
               </a>
             </div>

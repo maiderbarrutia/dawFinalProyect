@@ -6,16 +6,17 @@ CREATE TABLE UserData (
     user_phone VARCHAR(20),
     user_city VARCHAR(255),
     user_password VARCHAR(255),
+    privacy_policy  BOOLEAN DEFAULT FALSE,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO UserData (first_name, last_name, user_email, user_phone, user_city, user_password)
+INSERT INTO UserData (first_name, last_name, user_email, user_phone, user_city, user_password, privacy_policy)
 VALUES
-('Laura', 'Martínez', 'laura.martinez@mail.com', '600111222', 'Madrid', 'password1'),
-('Pedro', 'Gómez', 'pedro.gomez@mail.com', '700222333', 'Barcelona', 'password2'),
-('Silvia', 'Hernández', 'silvia.hernandez@mail.com', '800333444', 'Valencia', 'password3'),
-('Diego', 'López', 'diego.lopez@mail.com', '900444555', 'Sevilla', 'password4'),
-('Lucía', 'Rodríguez', 'lucia.rodriguez@mail.com', '100555666', 'Bilbao', 'password5');
+('Laura', 'Martínez', 'laura.martinez@mail.com', '600111222', 'Madrid', 'password1', FALSE),
+('Pedro', 'Gómez', 'pedro.gomez@mail.com', '700222333', 'Barcelona', 'password2', TRUE),
+('Silvia', 'Hernández', 'silvia.hernandez@mail.com', '800333444', 'Valencia', 'password3', FALSE), 
+('Diego', 'López', 'diego.lopez@mail.com', '900444555', 'Sevilla', 'password4', FALSE),
+('Lucía', 'Rodríguez', 'lucia.rodriguez@mail.com', '100555666', 'Bilbao', 'password5', TRUE);
 
 
 

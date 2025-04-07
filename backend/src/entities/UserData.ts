@@ -23,6 +23,9 @@ export class UserData {
   @Column({ name: 'user_password', type: 'varchar', length: 255, nullable: true })
   user_password!: string;
 
+  @Column({ name: 'privacy_policy', type: 'boolean', default: false })
+  privacy_policy!: boolean;
+
   @Column({ name: 'registration_date', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   registration_date!: Date;
 }

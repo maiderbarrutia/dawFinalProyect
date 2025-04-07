@@ -15,6 +15,7 @@ import Dashboard from '../pages/dashboard/Dashboard';
 import FeaturedActivities from '@components/sections/FeaturedActivities/FeaturedActivities';
 import ActivitiesPage from '@/pages/activitiesPage/ActivitiesPage';
 import ActivityDetail from '@/components/common/ActivityDetail/ActivityDetail';
+import CompaniesRegister from '@components/forms/CompanyRegisterForm/CompanyRegisterForm'
 
 
 const SiteRoutes: React.FC = () => {
@@ -37,6 +38,7 @@ const SiteRoutes: React.FC = () => {
               <Route path="/" element={<FeaturedActivities />} />
               <Route path="/actividades" element={<ActivitiesPage />} />
               <Route path="/actividad/:id" element={<ActivityDetail />} />
+              <Route path="/crear-cuenta-empresa" element={<CompaniesRegister />} />
               {/* <Route path="/proyectos/:slug" element={<ProjectDetail />} />
               <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
               <Route path="/politica-de-cookies" element={<Cookies />} />

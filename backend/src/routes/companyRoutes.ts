@@ -15,7 +15,6 @@ companyRoutes.post("/login", loginCompany);
 
 companyRoutes.get("/", getCompanies);
 companyRoutes.get("/:id", getCompanyById);
-companyRoutes.post("/", authMiddleware, createCompany);
 companyRoutes.put("/:id", authMiddleware, updateCompany);
 companyRoutes.delete("/:id", authMiddleware, deleteCompany);
 
