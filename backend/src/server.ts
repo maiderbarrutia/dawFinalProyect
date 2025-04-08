@@ -8,6 +8,7 @@ import companyRoutes from "./routes/companyRoutes";
 import registrationRoutes from "./routes/registrationRoutes";
 import userDataRoutes from "./routes/userDataRoutes";
 import { seedCategories } from "./seeds/seedCategories";
+import path from 'path';
 
 dotenv.config();
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
@@ -35,6 +36,7 @@ const startServer = async () => {
     app.use("/api/empresas", companyRoutes);
     app.use("/api/inscripciones", registrationRoutes);
 
+    app.use('/images', express.static(path.join(__dirname, '../assets/images')));
 
     // Iniciar el servidor
     const port = process.env.PORT || 3003;

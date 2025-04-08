@@ -4,6 +4,12 @@ import Button from "@components/common/Button/Button";
 import styles from "./LoginButton.module.scss";
 import { getAssetSrc } from "@/utils/srcUtils";
 import { useAuth } from "@/context/AuthContext";  // Importamos el hook useAuth
+import jwt_decode from "jwt-decode";
+
+// Definir la interfaz para el token decodificado
+interface DecodedToken {
+  id: string; // Asegúrate de que este sea el campo correcto según el formato de tu token
+}
 
 const LoginButton: React.FC = () => {
   const { isAuthenticated, logout, token } = useAuth();  // Usamos el contexto de autenticación
@@ -18,17 +24,22 @@ const LoginButton: React.FC = () => {
   }, [isAuthenticated, token]);
 
   const fetchCompanyData = (token: string) => {
-    fetch("http://localhost:3003/api/empresas", {
+    // Decodificar el token para obtener el company_id
+    const decodedToken: DecodedToken = jwt_decode(token); // Usamos el tipo DecodedToken
+    const companyId = decodedToken.id; // Suponemos que el id de la empresa está en decodedToken.id
+
+    // Hacer la solicitud para obtener el logo usando el company_id
+    fetch(`http://localhost:3003/api/empresas/${companyId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data && data.length > 0) {
-          const logoFile = data[0].company_logo; // Nombre del archivo del logo
+        if (data) {
+          const logoFile = data.company_logo; // Nombre del archivo del logo
           if (logoFile) {
-            const logoUrl = getAssetSrc(`images/${logoFile}`); // Asumimos que las imágenes están en una carpeta llamada 'images'
+            const logoUrl = `http://localhost:3003/images/${logoFile}`; // Asumimos que las imágenes están en una carpeta llamada 'images'
             setCompanyLogo(logoUrl);
           } else {
             console.error("Logo no encontrado para esta empresa");

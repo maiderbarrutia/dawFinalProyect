@@ -7,7 +7,6 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   const {
     company_name,
     company_type,
-    company_logo,
     company_cif,
     contact_person,
     company_phone,
@@ -18,9 +17,12 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
     privacy_policy
   } = req.body;
 
+  // Retrieve the company logo from the uploaded file
+  const company_logo = req.file ? req.file.filename : undefined;  // Use undefined instead of null
+
   if (!company_name || !company_cif || !company_email || !company_password) {
     res.status(400).json({
-      message: "El nombre, cif, email y contraseña de la empresa son obligatorios.",
+      message: "El nombre, CIF, email y contraseña de la empresa son obligatorios.",
     });
     return;
   }
@@ -46,7 +48,6 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
     const company = CompanyRepo.create({
       company_name,
       company_type,
-      company_logo,
       company_cif,
       contact_person,
       company_phone,
@@ -55,11 +56,16 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
       company_email,
       company_password: hashPassword,
       privacy_policy,
+      company_logo,  // Only pass undefined or a string
     });
 
     const newCompany = await CompanyRepo.save(company);
 
-    const { company_password: _, ...companyWithoutPass } = newCompany;
+    // If save() returns an array, take the first element
+    const savedCompany = Array.isArray(newCompany) ? newCompany[0] : newCompany;
+
+    // Destructure and remove the password
+    const { company_password: _, ...companyWithoutPass } = savedCompany;
 
     res.status(201).json({
       message: "Empresa creada exitosamente",

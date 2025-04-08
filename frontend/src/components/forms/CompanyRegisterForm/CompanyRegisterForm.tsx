@@ -21,17 +21,18 @@ const CompanyRegisterForm: React.FC = () => {
   const [formData, setFormData] = useState<Omit<Company, 'company_id' | 'company_logo'>>(initialFormState);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
-  const [repeatPassword, setRepeatPassword] = useState<string>(''); // State for repeat password
+  const [repeatPassword, setRepeatPassword] = useState<string>('');
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const [registeredCompany, setRegisteredCompany] = useState<Company | null>(null); // Para mostrar el logo
 
-  // Handle input field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     if (name === 'repeat_password') {
-      setRepeatPassword(value); // Update repeatPassword state separately
+      setRepeatPassword(value);
     } else if (name === 'privacy_policy') {
       setFormData((prevData) => ({
         ...prevData,
-        privacy_policy: checked, // Update privacy policy state correctly
+        privacy_policy: checked,
       }));
     } else {
       setFormData((prevData) => ({
@@ -41,7 +42,11 @@ const CompanyRegisterForm: React.FC = () => {
     }
   };
 
-  // Validate required fields
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    setCompanyLogo(file);
+  };
+
   const validateRequiredFields = () => {
     const requiredFields: (keyof Omit<Company, 'company_id' | 'company_logo'>)[] = [
       'company_name',
@@ -57,40 +62,58 @@ const CompanyRegisterForm: React.FC = () => {
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
-    if (!validateRequiredFields()) {
-      return; // Stop submission if any required field is empty
-    }
-
+    setRegisteredCompany(null);
+  
+    if (!validateRequiredFields()) return;
+  
     if (!formData.privacy_policy) {
       setError('Debes aceptar la política de privacidad.');
       return;
     }
-
+  
     if (formData.company_password !== repeatPassword) {
       setError('Las contraseñas no coinciden.');
       return;
     }
-
-    // Manually setting registration_date to the current date
+  
     const currentDate = new Date().toISOString();
-
-    // Prepare the data to be sent in the request
-    const dataToSend = {
-      ...formData,
-      registration_date: currentDate,
-    };
-
+  
+    const dataToSend = new FormData();
+    dataToSend.append('company_name', formData.company_name);
+    dataToSend.append('company_type', formData.company_type);
+    dataToSend.append('company_cif', formData.company_cif);
+    dataToSend.append('contact_person', formData.contact_person);
+    dataToSend.append('company_phone', formData.company_phone);
+    dataToSend.append('company_address', formData.company_address);
+    dataToSend.append('company_email', formData.company_email);
+    dataToSend.append('company_password', formData.company_password);
+    dataToSend.append('privacy_policy', formData.privacy_policy ? '1' : '0');
+    dataToSend.append('registration_date', currentDate);
+  
+    if (formData.company_website) {
+      dataToSend.append('company_website', formData.company_website);
+    }
+  
+    if (companyLogo) {
+      dataToSend.append('company_logo', companyLogo);
+    }
+  
     try {
-      await postRequest('/empresas/register', dataToSend); // Send form data
+      const response = await postRequest<{ company: Company }>('/empresas/register', dataToSend, false);
+      
+      // Guardar la ID de la empresa en el localStorage
+      // localStorage.setItem('company_id', response.company.company_id.toString());
+      // console.log(response.company.company_id)
+  
       setSuccess('Empresa registrada con éxito.');
-      setFormData(initialFormState); // Clear form
-      setRepeatPassword(''); // Clear repeat password field
+      setFormData(initialFormState);
+      setRepeatPassword('');
+      setCompanyLogo(null);
+      setRegisteredCompany(response.company); // Guardamos empresa registrada para mostrar el logo
     } catch (err) {
       console.error(err);
       setError('Hubo un error al registrar la empresa.');
@@ -131,7 +154,6 @@ const CompanyRegisterForm: React.FC = () => {
         </div>
       ))}
 
-      {/* Repeat password field */}
       <div className={styles['company-form__group']}>
         <input
           className={styles['company-form__input']}
@@ -144,7 +166,6 @@ const CompanyRegisterForm: React.FC = () => {
         />
       </div>
 
-      {/* Privacy policy checkbox */}
       <div className={styles['company-form__group'] + ' ' + styles['company-form__group--checkbox']}>
         <label className={styles['company-form__checkbox-label']}>
           <input
@@ -166,12 +187,34 @@ const CompanyRegisterForm: React.FC = () => {
         </label>
       </div>
 
+      <div className={styles['company-form__group']}>
+        <input
+          className={styles['company-form__input']}
+          type="file"
+          name="company_logo"
+          accept="image/*"
+          onChange={handleLogoChange}
+        />
+      </div>
+
       {error && <p className={styles['company-form__message'] + ' ' + styles['company-form__message--error']}>{error}</p>}
       {success && <p className={styles['company-form__message'] + ' ' + styles['company-form__message--success']}>{success}</p>}
 
       <button className={styles['company-form__submit']} type="submit">
         Crear cuenta
       </button>
+
+      {/* Mostrar logo de empresa si fue registrado */}
+      {registeredCompany?.company_logo && (
+        <div className={styles['company-form__group']}>
+          <p>Logo registrado:</p>
+          <img
+            src={`http://localhost:3003/images/${registeredCompany.company_logo}`}
+            alt="Logo de la empresa"
+            style={{ width: '150px', height: 'auto', marginTop: '10px' }}
+          />
+        </div>
+      )}
     </form>
   );
 };

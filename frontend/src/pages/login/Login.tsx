@@ -4,6 +4,7 @@ import { postRequest } from '../../services/api';
 import Button from "@components/common/Button/Button";
 import styles from './Login.module.scss';
 import { useAuth } from "../../context/AuthContext";
+import jwt_decode from "jwt-decode";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-
+  
     try {
       const { token, message } = await postRequest<{ token: string; message?: string }>(
         '/empresas/login',
@@ -24,8 +25,15 @@ const Login: React.FC = () => {
           company_password: password,
         }
       );
-
+  
       if (token) {
+        // Decodificar el token para obtener el id de la empresa
+        const decodedToken = jwt_decode<{ id: number }>(token);  // Suponemos que el token tiene un campo 'id'
+        const companyId = decodedToken.id;  // Extraemos el id de la empresa
+  
+        // Almacenar el id de la empresa en localStorage junto con el token (si lo deseas)
+        localStorage.setItem('companyId', companyId.toString());
+  
         login(token);
         navigate('/dashboard');
       } else {
