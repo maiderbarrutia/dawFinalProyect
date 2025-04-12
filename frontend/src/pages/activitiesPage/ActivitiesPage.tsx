@@ -10,7 +10,7 @@ import { Activity } from '@/interfaces/Activity';
 const ActivitiesPage: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [filteredActivities, setFilteredActivities] = useState<Activity[]>([]);
-  const [categories, setCategories] = useState<Activity['category'][]>([]);
+  const [categories, setCategories] = useState<{ category_id: number; category_name: string }[]>([]);
   const [uniqueLocations, setUniqueLocations] = useState<string[]>([]);
 
   const [searchText, setSearchText] = useState<string>('');
@@ -33,7 +33,7 @@ const ActivitiesPage: React.FC = () => {
     const fetchActivitiesAndCategories = async () => {
       try {
         const activitiesData: Activity[] = await getRequest('/actividades');
-        const categoriesData: Activity['category'][] = await getRequest('/categorias');
+        const categoriesData: { category_id: number; category_name: string }[] = await getRequest('/categorias');
         
         setActivities(activitiesData);
         setCategories(categoriesData);
@@ -92,7 +92,7 @@ const ActivitiesPage: React.FC = () => {
     }
 
     if (selectedCategory !== null) {
-      filtered = filtered.filter((activity) => activity.category.category_id === selectedCategory);
+      filtered = filtered.filter((activity) => activity.category_id === selectedCategory);
     }
 
     setFilteredActivities(filtered);

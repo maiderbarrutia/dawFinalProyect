@@ -37,7 +37,7 @@ export class Activity {
   @Column({ name: 'activity_duration', type: 'int', nullable: true })
   activity_duration!: number;
 
-  @Column({ name: 'difficulty_level', type: 'enum', enum: ['fácil', 'medio', 'difícil'], nullable: true })
+  @Column({ name: 'difficulty_level', type: 'enum', enum: ['easy', 'medium', 'hard'], nullable: true })
   difficulty_level!: string;
 
   @Column({ name: 'activity_type', type: 'varchar', length: 100, nullable: true })

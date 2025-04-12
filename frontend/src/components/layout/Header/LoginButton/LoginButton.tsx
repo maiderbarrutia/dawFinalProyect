@@ -27,7 +27,7 @@ const LoginButton: React.FC = () => {
     // Decodificar el token para obtener el company_id
     const decodedToken: DecodedToken = jwt_decode(token); // Usamos el tipo DecodedToken
     const companyId = decodedToken.id; // Suponemos que el id de la empresa está en decodedToken.id
-
+  
     // Hacer la solicitud para obtener el logo usando el company_id
     fetch(`http://localhost:3003/api/empresas/${companyId}`, {
       headers: {
@@ -38,19 +38,19 @@ const LoginButton: React.FC = () => {
       .then((data) => {
         if (data) {
           const logoFile = data.company_logo; // Nombre del archivo del logo
-          if (logoFile) {
-            const logoUrl = `http://localhost:3003/images/${logoFile}`; // Asumimos que las imágenes están en una carpeta llamada 'images'
-            setCompanyLogo(logoUrl);
-          } else {
-            console.error("Logo no encontrado para esta empresa");
-            setCompanyLogo(null); // Si no hay logo, aseguramos que no haya una URL
-          }
+          const logoUrl = logoFile
+            ? `http://localhost:3003/images/${logoFile}` // Si hay logo, usar la URL generada
+            : getAssetSrc(`images/default-image.jpg`); // Ruta al logo por defecto
+  
+          setCompanyLogo(logoUrl); // Asignar la URL del logo (o la URL del logo por defecto)
         } else {
           console.error("No se encontró la empresa en los datos.");
+          setCompanyLogo("/path/to/default/logo.png"); // Si no se encuentra la empresa, también usar logo por defecto
         }
       })
       .catch((error) => {
         console.error("Error al obtener los datos de la empresa", error);
+        setCompanyLogo("/path/to/default/logo.png"); // En caso de error, usar logo por defecto
       });
   };
 

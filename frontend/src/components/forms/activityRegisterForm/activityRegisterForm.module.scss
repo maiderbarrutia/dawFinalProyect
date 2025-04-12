@@ -1,0 +1,66 @@
+@import '@assets/styles/main.scss';
+
+.activity-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
+  font-family: 'Segoe UI', sans-serif;
+
+  &__title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #222;
+  }
+
+  &__group {
+    margin-bottom: 1.2rem;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.75rem;
+    transition: border-color 0.2s ease;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+
+  &__message {
+    text-align: center;
+    font-size: 0.95rem;
+
+    &--error {
+      color: #d93025;
+    }
+
+    &--success {
+      color: #188038;
+    }
+  }
+
+  &__submit {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}

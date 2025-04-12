@@ -30,7 +30,7 @@ const FeaturedCompanies: React.FC = () => {
   if (loading) return <p>Cargando empresas...</p>;
   if (error) return <p>{error}</p>;
 
-  const logos = companies.map((company) => {
+  const logos = companies.slice(0, 8).map((company) => {
     const imageSrc = getAssetSrc(`images/${company.company_logo}`);
     const placeholderImage = getAssetSrc('images/default-image.jpg');
     return imageSrc || placeholderImage;
