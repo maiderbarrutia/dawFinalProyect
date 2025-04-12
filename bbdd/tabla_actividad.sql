@@ -17,6 +17,7 @@ CREATE TABLE Activity (
     includes TEXT,
     excludes TEXT,
     privacy_policy BOOLEAN DEFAULT FALSE,
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES Company(company_id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES Category(category_id) ON DELETE SET NULL,
     INDEX (category_id),
@@ -43,11 +44,11 @@ INSERT INTO Activity (
     privacy_policy
 )
 VALUES
-('Taller de Programación', 'Escapada al parque regional de Gredos: una de las  sierras mas extensas del sistema central, característica por sus moles  graníticas. Un paraje que constituye hoy en día uno de los conjuntos  glaciares mejor conservados del sur de Europa, pudiendo observar  lagunas, glaciares, circos, gargantas, etc. Visitaremos caminando la Laguna Grande y el Circo de Gredos hasta llegar el refugio Elola. También visitaremos las Cuevas del Águila: variedad de colores y texturas realmente inusuales en otras cuevas de  la Península Ibérica debido a la compleja evolución, resultado de  reiteradas fases de creación y destrucción de las formaciones.', 1, '2025-04-01', '10:00:00', 50.00, 20, 120, 'fácil', 'Workshop', 1, 'Madrid', '["image1.jpg", "aventura.jpg", "deportes.jpg"]', '["video1.mp4"]', 'Materiales y refrigerio', 'Transporte', TRUE),
-('Curso de Primeros Auxilios', 'Curso práctico sobre cómo actuar en emergencias', 3, '2025-04-15', '14:00:00', 100.00, 15, 240, 'medio', 'Curso', 3, 'Valencia', '["image2.jpg"]', '["video2.mp4"]', 'Certificado y material', 'Comida', TRUE),
-('Taller de Pintura', 'Explora tu creatividad con pintura acrílica', 4, '2025-05-01', '09:00:00', 40.00, 10, 180, 'fácil', 'Arte', 5, 'Bilbao', '["image3.jpg"]', '["video3.mp4"]', 'Material y guía', 'Transporte', TRUE),
-('Clínica Deportiva', 'Mejora tus habilidades en fútbol', 4, '2025-03-30', '11:00:00', 30.00, 30, 90, 'difícil', 'Deporte', 4, 'Sevilla', '["image4.jpg"]', '["video4.mp4"]', 'Entrenadores y equipo', 'Transporte', FALSE),
-('Charla de Tecnología', 'Descubre las tendencias actuales', 1, '2025-06-01', '16:00:00', 0.00, 100, 60, 'fácil', 'Charla', 1, 'Madrid', '["image5.jpg"]', '["video5.mp4"]', 'Presentación y material', 'Refrigerio', TRUE);
+('Taller de Programación', 'Escapada al parque regional de Gredos: una de las  sierras mas extensas del sistema central, característica por sus moles  graníticas. Un paraje que constituye hoy en día uno de los conjuntos  glaciares mejor conservados del sur de Europa, pudiendo observar  lagunas, glaciares, circos, gargantas, etc. Visitaremos caminando la Laguna Grande y el Circo de Gredos hasta llegar el refugio Elola. También visitaremos las Cuevas del Águila: variedad de colores y texturas realmente inusuales en otras cuevas de  la Península Ibérica debido a la compleja evolución, resultado de  reiteradas fases de creación y destrucción de las formaciones.', 1, '2025-04-01', '10:00:00', 50.00, 20, 120, 'easy', 'Workshop', 1, 'Madrid', '["image1.jpg", "aventura.jpg", "deportes.jpg"]', '["video1.mp4"]', 'Materiales y refrigerio', 'Transporte', TRUE),
+('Curso de Primeros Auxilios', 'Curso práctico sobre cómo actuar en emergencias', 3, '2025-04-15', '14:00:00', 100.00, 15, 240, 'medium', 'Curso', 3, 'Valencia', '["image2.jpg"]', '["video2.mp4"]', 'Certificado y material', 'Comida', TRUE),
+('Taller de Pintura', 'Explora tu creatividad con pintura acrílica', 4, '2025-05-01', '09:00:00', 40.00, 10, 180, 'easy', 'Arte', 5, 'Bilbao', '["image3.jpg"]', '["video3.mp4"]', 'Material y guía', 'Transporte', TRUE),
+('Clínica Deportiva', 'Mejora tus habilidades en fútbol', 4, '2025-03-30', '11:00:00', 30.00, 30, 90, 'hard', 'Deporte', 4, 'Sevilla', '["image4.jpg"]', '["video4.mp4"]', 'Entrenadores y equipo', 'Transporte', FALSE),
+('Charla de Tecnología', 'Descubre las tendencias actuales', 1, '2025-06-01', '16:00:00', 0.00, 100, 60, 'easy', 'Charla', 1, 'Madrid', '["image5.jpg"]', '["video5.mp4"]', 'Presentación y material', 'Refrigerio', TRUE);
 
 
 

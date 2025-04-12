@@ -17,4 +17,5 @@ export interface Activity {
   includes: string;
   excludes: string;
   privacy_policy: boolean;
+  registration_date: Date;
 }

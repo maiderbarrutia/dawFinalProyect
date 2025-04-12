@@ -76,6 +76,10 @@ const LoginButton: React.FC = () => {
     navigate("/mis-actividades");
   };
 
+  const goToCreateActivities = () => {
+    navigate("/crear-actividad");
+  };
+
   return (
     <div className={styles.loginButton}>
       {isAuthenticated ? (
@@ -98,6 +102,7 @@ const LoginButton: React.FC = () => {
           {isMenuOpen && (
             <div className={styles.dropdownMenu}>
               <ul>
+                <li onClick={goToCreateActivities}>Crear actividades</li>
                 <li onClick={goToProfile}>Ver perfil</li>
                 <li onClick={goToActivities}>Mis actividades</li>
                 <li onClick={handleLogout}>Cerrar sesión</li>

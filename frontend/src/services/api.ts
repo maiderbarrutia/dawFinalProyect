@@ -1,49 +1,6 @@
 const API_URL = 'http://localhost:3003/api'; // Cambia esta URL si es necesario
 
 // Función para hacer solicitudes POST al backend
-// const postRequest = async <T>(endpoint: string, data: object | FormData, includeToken: boolean = true): Promise<T> => {
-//   const token = localStorage.getItem('token');
-
-//   // Si estamos enviando FormData, no se debe incluir el encabezado 'Content-Type'
-//   const headers: HeadersInit = {};
-
-//   if (includeToken && token) {
-//     headers['Authorization'] = `Bearer ${token}`; // Añadir el token si está disponible y es necesario
-//   }
-
-//   // Creamos el body dependiendo del tipo de datos
-//   const body = data instanceof FormData ? data : JSON.stringify(data);
-
-//   // Si no estamos enviando FormData, especificamos el Content-Type como 'application/json'
-//   if (!(data instanceof FormData)) {
-//     headers['Content-Type'] = 'application/json';
-//   }
-
-//   try {
-//     const response = await fetch(`${API_URL}${endpoint}`, {
-//       method: 'POST',
-//       headers: headers,
-//       body: body, // El body se establece según el tipo de datos
-//     });
-
-//     // Verifica si la respuesta fue exitosa
-//     if (!response.ok) {
-//       const errorMessage = await response.text(); // Puedes obtener el mensaje de error
-//       // En el caso de un error 409, que es un conflicto, lo podemos manejar específicamente
-//       if (response.status === 409) {
-//         throw new Error(`Conflicto: ${errorMessage || 'El correo electrónico o CIF ya están registrados.'}`);
-//       }
-//       // Para otros códigos de error, puedes lanzar un error genérico o específico
-//       throw new Error(`Error en la solicitud POST: ${errorMessage || response.statusText}`);
-//     }
-
-//     return await response.json(); // Devolvemos los datos de la API
-//   } catch (error) {
-//     console.error('Error en la solicitud POST', error);
-//     throw error; // Propaga el error
-//   }
-// };
-
 const postRequest = async <T>(endpoint: string, data: object | FormData, includeToken: boolean = true): Promise<T> => {
   const token = localStorage.getItem('token');
   const headers: HeadersInit = {};
@@ -62,10 +19,6 @@ const postRequest = async <T>(endpoint: string, data: object | FormData, include
     body = JSON.stringify(data);  // Si no es FormData, lo convertimos a JSON
     headers['Content-Type'] = 'application/json';  // Agregamos el Content-Type solo si no es FormData
   }
-
-  console.log('Enviando datos:', body); // Verifica los datos que se envían
-  console.log('Encabezados:', headers); // Verifica los encabezados
-
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',

@@ -48,19 +48,7 @@
     }
   }
 
-  &__submit {
-    width: 100%;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 1rem;
-    padding: 0.85rem;
-    border: none;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #0056b3;
-    }
+  &__button {
+    text-align: center;
   }
 }
