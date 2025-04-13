@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Activity } from '@/interfaces/Activity';
+import { Category } from '@/interfaces/Category';
+import { Company } from '@/interfaces/Company';
 import styles from './ActivityDetail.module.scss';
 import { getRequest } from '@/services/api';
-// import { getAssetSrc } from '@/utils/srcUtils';
 import MediaSlider from '@components/common/MediaSlider/MediaSlider';
 import Button from '@components/common/Button/Button';
 import locationIcon from '@/assets/icons/location-icon.png';
@@ -12,11 +13,12 @@ import timeIcon from '@/assets/icons/time-icon.png';
 const ActivityDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [activity, setActivity] = useState<Activity | null>(null);
+  const [company, setCompany] = useState<Company | null>(null);
+  const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFixed, setIsFixed] = useState(true);
 
-  // Fetch activity data when component mounts
   useEffect(() => {
     const fetchActivity = async () => {
       if (!id) {
@@ -26,9 +28,18 @@ const ActivityDetail: React.FC = () => {
       }
 
       try {
-        const data = await getRequest<Activity>(`/actividades/${id}`);
-        setActivity(data);
+        const activityData = await getRequest<Activity>(`/actividades/${id}`);
+        setActivity(activityData);
         setError(null);
+
+        // Fetch related company and category
+        const [companyData, categoryData] = await Promise.all([
+          getRequest<Company>(`/empresas/${activityData.company_id}`),
+          getRequest<Category>(`/categorias/${activityData.category_id}`)
+        ]);
+
+        setCompany(companyData);
+        setCategory(categoryData);
       } catch (err) {
         setError((err as Error).message || 'Error al cargar la actividad');
         console.error(err);
@@ -40,31 +51,18 @@ const ActivityDetail: React.FC = () => {
     fetchActivity();
   }, [id]);
 
-  // Scroll event to manage footer behavior
   useEffect(() => {
     const handleScroll = () => {
       const footer = document.getElementById('footer');
-
-      // Verificar si el footer existe antes de intentar acceder a sus propiedades
       if (footer) {
         const footerPosition = footer.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
-
-        // Si el footer está cerca de la parte inferior de la pantalla, quita la posición fija
-        if (footerPosition <= windowHeight) {
-          setIsFixed(false);
-        } else {
-          setIsFixed(true);
-        }
+        setIsFixed(footerPosition > windowHeight);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    // Cleanup event listener on unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (loading) return <div className={styles.activity__loading}>Cargando...</div>;
@@ -75,7 +73,7 @@ const ActivityDetail: React.FC = () => {
     <section className={styles.activity}>
       <div className={styles['section__container']}>
         <h1 className={styles.activity__title}>{activity.activity_title}</h1>
-        <p className={styles.activity__company}>{activity.company?.company_name}</p>
+        <p className={styles.activity__company}>{company?.company_name}</p>
 
         <div className={styles.activity__content}>
           <MediaSlider
@@ -106,7 +104,7 @@ const ActivityDetail: React.FC = () => {
         </div>
 
         <div className={styles.activity__details}>
-          <span className={styles.activity__category}>{activity.category?.category_name}</span>
+          <span className={styles.activity__category}>{category?.category_name}</span>
           <ul className={styles.activity__stats}>
             <li><span>Plazas:</span> {activity.available_slots}</li>
             <li><span>Duración:</span> {activity.activity_duration}h</li>
@@ -118,15 +116,17 @@ const ActivityDetail: React.FC = () => {
           <p className={styles["activity__excludes"]}><span>No incluye:</span> {activity.excludes}</p>
         </div>
 
-        <div className={`${styles.activity__footer} ${isFixed ? styles.fixed : ''}`}
-        >
+        <div className={`${styles.activity__footer} ${isFixed ? styles.fixed : ''}`}>
           <p className={styles.activity__price}>{activity.activity_price}<span>€</span></p>
+          
           <Button
             text="Inscribirme"
             ariaLabel="Ir a la página de Inscripción"
-            link="/"
+            link={`/inscripcion/${activity.activity_id}`}
             className={styles.activity__button}
+
           />
+          
         </div>
       </div>
     </section>

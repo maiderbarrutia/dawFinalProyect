@@ -1,0 +1,75 @@
+@import '@assets/styles/main.scss';
+
+.activity-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
+  font-family: 'Segoe UI', sans-serif;
+
+  &__title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #222;
+  }
+
+  &__group {
+    margin-bottom: 1.2rem;
+
+    &--checkbox {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.75rem;
+    transition: border-color 0.2s ease;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+
+  &__checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    cursor: pointer;
+    user-select: none;
+    gap: 0.5rem;
+  }
+
+  &__checkbox {
+    transform: scale(1.2);
+    margin-right: 0.5rem;
+  }
+
+  &__message {
+    text-align: center;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+
+    &--error {
+      color: #d93025;
+    }
+
+    &--success {
+      color: #188038;
+    }
+  }
+
+  &__button {
+    text-align: center;
+  }
+
+}

@@ -18,6 +18,7 @@ import ActivitiesPage from '@/pages/activitiesPage/ActivitiesPage';
 import ActivityDetail from '@/components/common/ActivityDetail/ActivityDetail';
 import CompaniesRegister from '@components/forms/CompanyRegisterForm/CompanyRegisterForm'
 import ActivityRegister from '@/components/forms/activityRegisterForm/activityRegisterForm';
+import RegistrationForm from '@/components/forms/RegistrationForm/RegistrationForm'
 
 
 const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -59,7 +60,8 @@ const SiteRoutes: React.FC = () => {
                   <ActivityRegister />
                 </ProtectedRoute>
               }
-            />
+              />
+              <Route path="/inscripcion/:activityId" element={<RegistrationForm />} />
             </Routes>
           </Layout>
         {/* <CookiesBanner /> */}
