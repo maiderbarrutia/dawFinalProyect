@@ -32,14 +32,14 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     // Buscar la empresa por ID
     const company = await dataSource.getRepository(Company).findOne({ where: { company_id } });
     if (!company) {
-      res.status(404).json({ message: "Empresa no encontrada." });
+      res.status(409).send("Empresa no encontrada.");
       return;
     }
 
     // Buscar la categoría por ID
     const category = await dataSource.getRepository(Category).findOne({ where: { category_id } });
     if (!category) {
-      res.status(404).json({ message: "Categoría no encontrada." });
+      res.status(409).send("Categoría no encontrada.");
       return;
     }
 

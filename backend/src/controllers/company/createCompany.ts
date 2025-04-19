@@ -21,9 +21,7 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   const company_logo = req.file ? req.file.filename : undefined;  // Use undefined instead of null
 
   if (!company_name || !company_cif || !company_email || !company_password) {
-    res.status(400).json({
-      message: "El nombre, CIF, email y contraseña de la empresa son obligatorios.",
-    });
+    res.status(400).send("El nombre, CIF, email y contraseña de la empresa son obligatorios.");
     return;
   }
 
@@ -32,13 +30,13 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
 
     const emailExists = await CompanyRepo.findOne({ where: { company_email } });
     if (emailExists) {
-      res.status(409).json({ message: "El correo electrónico ya está en uso." });
+      res.status(409).send("El correo electrónico ya está en uso.");
       return;
     }
 
     const CIFexist = await CompanyRepo.findOne({ where: { company_cif } });
     if (CIFexist) {
-      res.status(409).json({ message: "El CIF ya está en uso." });
+      res.status(409).send("El CIF ya está en uso.");
       return;
     }
 
