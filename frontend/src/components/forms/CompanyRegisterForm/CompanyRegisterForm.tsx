@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { postRequest } from '@/services/api';
 import styles from './CompanyRegisterForm.module.scss';
 import { Company } from '@/interfaces/Company';
+import { useNavigate } from 'react-router-dom';
+import PopupMessage from '@/components/common/Popup/PopupMessage';
 
 const initialFormState: Omit<Company, 'company_id' | 'company_logo'> = {
   company_name: '',
@@ -22,8 +24,8 @@ const CompanyRegisterForm: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [repeatPassword, setRepeatPassword] = useState<string>('');
-  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
-  const [registeredCompany, setRegisteredCompany] = useState<Company | null>(null); // Para mostrar el logo
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null); // Solo para enviar al backend, sin almacenarlo en el estado
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -44,7 +46,7 @@ const CompanyRegisterForm: React.FC = () => {
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    setCompanyLogo(file);
+    setCompanyLogo(file); // Guardamos el archivo pero no lo mostramos
   };
 
   const validateRequiredFields = () => {
@@ -66,7 +68,6 @@ const CompanyRegisterForm: React.FC = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    setRegisteredCompany(null);
   
     if (!validateRequiredFields()) return;
   
@@ -99,21 +100,21 @@ const CompanyRegisterForm: React.FC = () => {
     }
   
     if (companyLogo) {
-      dataToSend.append('company_logo', companyLogo);
+      dataToSend.append('company_logo', companyLogo); // Enviamos el logo al backend
     }
   
     try {
-      const response = await postRequest<{ company: Company }>('/empresas/register', dataToSend, false);
-      
-      // Guardar la ID de la empresa en el localStorage
-      // localStorage.setItem('company_id', response.company.company_id.toString());
-      // console.log(response.company.company_id)
-  
+      await postRequest<{ company: Company }>('/empresas/register', dataToSend, false);
+
       setSuccess('Empresa registrada con éxito.');
       setFormData(initialFormState);
       setRepeatPassword('');
-      setCompanyLogo(null);
-      setRegisteredCompany(response.company); // Guardamos empresa registrada para mostrar el logo
+      setCompanyLogo(null); // Limpiamos el estado del logo
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+      
     } catch (err) {
       console.error(err);
       setError('Hubo un error al registrar la empresa.');
@@ -166,6 +167,16 @@ const CompanyRegisterForm: React.FC = () => {
         />
       </div>
 
+      <div className={styles['company-form__group']}>
+        <input
+          className={styles['company-form__input']}
+          type="file"
+          name="company_logo"
+          accept="image/*"
+          onChange={handleLogoChange}
+        />
+      </div>
+
       <div className={styles['company-form__group'] + ' ' + styles['company-form__group--checkbox']}>
         <label className={styles['company-form__checkbox-label']}>
           <input
@@ -187,34 +198,26 @@ const CompanyRegisterForm: React.FC = () => {
         </label>
       </div>
 
-      <div className={styles['company-form__group']}>
-        <input
-          className={styles['company-form__input']}
-          type="file"
-          name="company_logo"
-          accept="image/*"
-          onChange={handleLogoChange}
-        />
-      </div>
+      
 
-      {error && <p className={styles['company-form__message'] + ' ' + styles['company-form__message--error']}>{error}</p>}
-      {success && <p className={styles['company-form__message'] + ' ' + styles['company-form__message--success']}>{success}</p>}
+      {error && (
+        <PopupMessage
+          type="error"
+          message={error}
+          onClose={() => setError('')}
+        />
+      )}
+      {success && (
+        <PopupMessage
+          type="success"
+          message={success}
+          onClose={() => setSuccess('')}
+        />
+      )}
 
       <button className={styles['company-form__submit']} type="submit">
         Crear cuenta
       </button>
-
-      {/* Mostrar logo de empresa si fue registrado */}
-      {registeredCompany?.company_logo && (
-        <div className={styles['company-form__group']}>
-          <p>Logo registrado:</p>
-          <img
-            src={`http://localhost:3003/images/${registeredCompany.company_logo}`}
-            alt="Logo de la empresa"
-            style={{ width: '150px', height: 'auto', marginTop: '10px' }}
-          />
-        </div>
-      )}
     </form>
   );
 };

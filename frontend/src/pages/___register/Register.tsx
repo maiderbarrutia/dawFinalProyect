@@ -22,7 +22,8 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await postRequest('/empresas', formData);
+      const data = await postRequest<{ message: string }>('/empresas', formData);
+
       if (data.message === 'Empresa creada') {
         navigate('/login'); // Redirigir a la página de login
       } else {

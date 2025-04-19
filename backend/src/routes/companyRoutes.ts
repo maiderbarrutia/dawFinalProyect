@@ -6,7 +6,7 @@ import { updateCompany } from "../controllers/company/updateCompany";
 import { deleteCompany } from "../controllers/company/deleteCompany";
 import { loginCompany } from "../controllers/company/loginCompany";
 import { authMiddleware } from "../middlewares/authMiddleware"; 
-import { upload } from '../middlewares/multer';
+import { upload } from '../config/multer';
 
 
 const companyRoutes = Router();

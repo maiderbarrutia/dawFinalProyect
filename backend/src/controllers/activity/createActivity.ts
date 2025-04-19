@@ -21,8 +21,8 @@
 
 import { Request, Response } from "express";
 import { Activity } from "../../entities/Activity";
-import { Company } from "../../entities/Company";  // Importa la entidad Company
-import { Category } from "../../entities/Category";  // Importa la entidad Category
+import { Company } from "../../entities/Company";
+import { Category } from "../../entities/Category";
 import dataSource from "../../config/database";
 
 export const createActivity = async (req: Request, res: Response): Promise<void> => {
@@ -46,8 +46,8 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     // Crear la actividad y asignar la relación
     const activity = dataSource.getRepository(Activity).create({
       ...activityData,
-      company,    // Asignamos la entidad Company completa
-      category    // Asignamos la entidad Category completa
+      company,
+      category
     });
 
     // Guardar la actividad en la base de datos

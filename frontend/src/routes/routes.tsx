@@ -10,7 +10,7 @@ import Home from '@/pages/home/Home';
 import Footer from '@components/layout/Footer/Footer';
 
 import Login from '../pages/login/Login';
-import Register from '../pages/register/Register';
+// import Register from '../pages/___register/Register';
 import Dashboard from '../pages/dashboard/Dashboard';
 
 import FeaturedActivities from '@components/sections/FeaturedActivities/FeaturedActivities';
@@ -38,7 +38,7 @@ const SiteRoutes: React.FC = () => {
             <Routes>
 
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              {/* <Route path="/register" element={<Register />} /> */}
               <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <Dashboard />

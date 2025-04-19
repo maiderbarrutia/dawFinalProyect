@@ -9,11 +9,11 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const dataSource = new DataSource({
   type: "mysql",
-  host: process.env.DB_HOST || "localhost",
-  port: Number(process.env.DB_PORT) || 3306,
-  username: process.env.DB_USERNAME || "aisiPlan_user",
-  password: process.env.DB_PASSWORD || "Zp8!rA7k@Xv2Lm9",
-  database: process.env.DB_DATABASE || "aisiplan",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   entities: isProduction
     ? [__dirname + "/../entities/*.js"]  // Usar .js para producción
     : [__dirname + "/../entities/*.ts"], // Usar .ts para desarrollo
