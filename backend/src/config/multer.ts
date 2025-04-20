@@ -64,11 +64,11 @@ const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', '
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, '../../assets/images')); // ⚠️ ruta intacta
+    cb(null, path.resolve(__dirname, '../../assets/images'));
   },
   filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}_${file.originalname}`;
-    cb(null, uniqueName); // ⚠️ igual que antes
+    cb(null, uniqueName); 
   }
 });
 
@@ -93,3 +93,5 @@ export const upload = multer({
     fileSize: 10 * 1024 * 1024, // 10MB máx
   }
 });
+
+

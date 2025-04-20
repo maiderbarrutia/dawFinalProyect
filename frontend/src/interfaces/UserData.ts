@@ -3,7 +3,7 @@ export interface UserData {
     first_name: string;
     last_name: string;
     user_email: string;
-    user_phone: number;
+    user_phone: string;
     user_city: string;
     user_password: string;
     privacy_policy: boolean;

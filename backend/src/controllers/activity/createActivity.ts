@@ -19,15 +19,18 @@
 //     }
 //   };
 
-import { Request, Response } from "express";
-import { Activity } from "../../entities/Activity";
-import { Company } from "../../entities/Company";
-import { Category } from "../../entities/Category";
-import dataSource from "../../config/database";
+import { Request, Response } from 'express';
+import { Activity } from '../../entities/Activity';
+import { Company } from '../../entities/Company';
+import { Category } from '../../entities/Category';
+import dataSource from '../../config/database';
 
 export const createActivity = async (req: Request, res: Response): Promise<void> => {
   const { company_id, category_id, ...activityData } = req.body;
   
+  // Recibe las imágenes subidas por multer
+  const activityImages = req.files as Express.Multer.File[];
+
   try {
     // Buscar la empresa por ID
     const company = await dataSource.getRepository(Company).findOne({ where: { company_id } });
@@ -47,7 +50,8 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     const activity = dataSource.getRepository(Activity).create({
       ...activityData,
       company,
-      category
+      category,
+      activity_images: activityImages.map((file) => `${file.filename}`),
     });
 
     // Guardar la actividad en la base de datos
@@ -60,3 +64,4 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ message: "Error al crear actividad", error });
   }
 };
+

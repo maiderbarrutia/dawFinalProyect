@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAssetSrc } from '@/utils/srcUtils';
+import { getAssetSrc, getUploadedImageSrc } from '@/utils/srcUtils';
 import styles from './MediaSlider.module.scss';
 
 interface MediaSliderProps {
@@ -10,8 +10,8 @@ interface MediaSliderProps {
 const MediaSlider: React.FC<MediaSliderProps> = ({ images, videos }) => {
   // Unificar las imágenes y videos en un solo array
   const media = [
-    ...images.map((image, index) => ({ type: 'image', src: getAssetSrc(`images/${image}`), alt: `Imagen ${index + 1}` })),
-    ...videos.map((video, index) => ({ type: 'video', src: getAssetSrc(`videos/${video}`), alt: `Video ${index + 1}` }))
+    ...images.map((image, index) => ({ type: 'image', src: getUploadedImageSrc(`images/${image}`), alt: `Imagen ${index + 1}` })),
+    ...videos.map((video, index) => ({ type: 'video', src: getUploadedImageSrc(`videos/${video}`), alt: `Video ${index + 1}` }))
   ];
 
   // Estado para manejar el índice del medio actual

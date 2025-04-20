@@ -3,10 +3,10 @@ import { UserData } from "../../entities/UserData";
 import dataSource from "../../config/database";
 
 export const createUserData = async (req: Request, res: Response): Promise<void> => {
-  const { first_name, last_name, user_email, user_phone, user_password, privacy_policy } = req.body;
+  const { first_name, last_name, user_email, user_phone, user_city, privacy_policy } = req.body;
 
   // Validación básica de los datos
-  if (!first_name || !last_name || !user_email || !user_phone || !user_password || privacy_policy === undefined) {
+  if (!first_name || !last_name || !user_email || !user_phone || !user_city || privacy_policy === undefined) {
     res.status(400).json({ message: "Faltan campos obligatorios." });
     return; // Terminamos aquí si faltan datos
   }
@@ -18,11 +18,6 @@ export const createUserData = async (req: Request, res: Response): Promise<void>
     return;
   }
 
-  // Validación del teléfono
-  if (isNaN(user_phone)) {
-    res.status(400).json({ message: "El teléfono debe ser un número válido." });
-    return;
-  }
 
   try {
     // Crear la instancia del usuario sin incluir el 'user_id' (lo asigna la base de datos)
@@ -30,8 +25,8 @@ export const createUserData = async (req: Request, res: Response): Promise<void>
       first_name,
       last_name,
       user_email,
-      user_phone,
-      user_password,
+      user_phone, 
+      user_city,
       privacy_policy,
     });
 
@@ -45,15 +40,17 @@ export const createUserData = async (req: Request, res: Response): Promise<void>
       userData: savedUser,
     });
   } catch (error: unknown) {
+    // Mejor manejo de errores con detalles claros
     if (error instanceof Error) {
       console.error("Error al crear usuario:", error.message);
       res.status(500).json({ message: "Error al crear usuario", error: error.message });
     } else {
       console.error("Error desconocido:", error);
-      res.status(500).json({ message: "Error desconocido", error });
+      res.status(500).json({ message: "Error desconocido al crear usuario", error });
     }
   }
 };
+
 
 
 

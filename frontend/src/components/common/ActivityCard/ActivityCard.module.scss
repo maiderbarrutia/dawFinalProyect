@@ -2,7 +2,7 @@
 
 
 .activityCard {
-  // width: 300px;
+  width: 100%;
   background: $white;
   border-radius: rem(10);
   overflow: hidden;
@@ -18,7 +18,7 @@
 
   &__image {
     width: 100%;
-    // height: rem(180);
+    height: rem(200);
     object-fit: cover;
   }
 
@@ -44,7 +44,7 @@
   }
 
   &__title {
-    font-size: rem(16);
+    font-size: rem(20);
     font-weight: bold;
   }
 
@@ -52,6 +52,7 @@
     font-size: rem(12);
     color: $secondary-gray;
     font-weight: 500;
+    margin-bottom: rem(5);
   }
 
   &__price {
