@@ -5,10 +5,10 @@ import dataSource from "../../config/database";
 export const createUserData = async (req: Request, res: Response): Promise<void> => {
   const { first_name, last_name, user_email, user_phone, user_city, privacy_policy } = req.body;
 
-  // Validación básica de los datos
+  // Validar de campos obligatorios
   if (!first_name || !last_name || !user_email || !user_phone || !user_city || privacy_policy === undefined) {
     res.status(400).json({ message: "Faltan campos obligatorios." });
-    return; // Terminamos aquí si faltan datos
+    return;
   }
 
   // Validación de formato de correo electrónico
@@ -18,29 +18,41 @@ export const createUserData = async (req: Request, res: Response): Promise<void>
     return;
   }
 
-
   try {
-    // Crear la instancia del usuario sin incluir el 'user_id' (lo asigna la base de datos)
-    const userData = dataSource.getRepository(UserData).create({
+    const userRepo = dataSource.getRepository(UserData);
+
+    // Verificar si ya existe un usuario con ese email
+    const existingUser = await userRepo.findOneBy({ user_email });
+
+    if (existingUser) {
+      // Si ya existe, lo devolvemos sin crear uno nuevo
+      res.status(200).json({
+        message: "Usuario ya registrado",
+        user_id: existingUser.user_id,
+        userData: existingUser,
+      });
+      return;
+    }
+
+    // Si no existe, lo creamos
+    const newUser = userRepo.create({
       first_name,
       last_name,
       user_email,
-      user_phone, 
+      user_phone,
       user_city,
       privacy_policy,
     });
 
-    // Guardar el usuario en la base de datos
-    const savedUser = await dataSource.getRepository(UserData).save(userData);
+    const savedUser = await userRepo.save(newUser);
 
-    // Devolver el usuario creado y su ID generado automáticamente por la base de datos
     res.status(201).json({
       message: "Usuario creado exitosamente",
       user_id: savedUser.user_id,
       userData: savedUser,
     });
-  } catch (error: unknown) {
-    // Mejor manejo de errores con detalles claros
+    
+  } catch (error) {
     if (error instanceof Error) {
       console.error("Error al crear usuario:", error.message);
       res.status(500).json({ message: "Error al crear usuario", error: error.message });
@@ -50,27 +62,3 @@ export const createUserData = async (req: Request, res: Response): Promise<void>
     }
   }
 };
-
-
-
-
-
-// import { Request, Response } from "express";
-// import { UserData } from "../../entities/UserData";
-// import dataSource from "../../config/database";
-
-// export const createUserData = async (req: Request, res: Response): Promise<void> => {
-//     const { ...usersData } =
-//       req.body;
-  
-//     try {
-//       const userData = dataSource.getRepository(UserData).create({
-//         ...usersData
-//       });
-//       await dataSource.getRepository(UserData).save(userData);
-//       res.status(201).json({ message: "Usuario creado exitosamente", userData });
-//     } catch (error) {
-//       console.error("Error al crear usuario:", error);
-//       res.status(500).json({ message: "Error al crear usuario", error });
-//     }
-//   };

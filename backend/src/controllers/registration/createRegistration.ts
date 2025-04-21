@@ -7,7 +7,7 @@ import { Activity } from "../../entities/Activity";
 export const createRegistration = async (req: Request, res: Response): Promise<void> => {
   const { user_id, activity_id, registration_date } = req.body;
 
-  // Verificar que los parámetros requeridos estén presentes
+  // Validar de campos obligatorios
   if (!user_id || !activity_id || !registration_date) {
     res.status(400).json({ message: "Faltan parámetros requeridos" });
     return;
@@ -28,6 +28,17 @@ export const createRegistration = async (req: Request, res: Response): Promise<v
       return;
     }
 
+    // Verificar si el usuario ya está inscrito en esta actividad
+    const existingRegistration = await dataSource.getRepository(Registration).findOneBy({
+      user_id,
+      activity_id,
+    });
+    
+    if (existingRegistration) {
+      res.status(400).json({ message: "Ya estás inscrito en esta actividad" });
+      return;
+    }
+
     // Crear la nueva inscripción sin incluir el 'registration_id' (lo asigna la base de datos)
     const registration = dataSource.getRepository(Registration).create({
       user_id,
@@ -44,7 +55,8 @@ export const createRegistration = async (req: Request, res: Response): Promise<v
       registration_id: savedRegistration.registration_id,
       registration: savedRegistration,
     });
-  } catch (error: unknown) {
+    
+  } catch (error) {
     if (error instanceof Error) {
       console.error("Error al crear la inscripción:", error.message);
       res.status(500).json({ message: "Error al crear la inscripción", error: error.message });
@@ -54,26 +66,3 @@ export const createRegistration = async (req: Request, res: Response): Promise<v
     }
   }
 };
-
-
-
-
-// import { Request, Response } from "express";
-// import { Registration } from "../../entities/Registration";
-// import dataSource from "../../config/database";
-
-// export const createRegistration = async (req: Request, res: Response): Promise<void> => {
-//     const { user_id, activity_id } = req.body;
-  
-//     try {
-//       const registration = dataSource.getRepository(Registration).create({
-//         userData: { user_id: user_id }, 
-//         activity: { activity_id: activity_id },
-//       });
-//       await dataSource.getRepository(Registration).save(registration);
-//       res.status(201).json({ message: "Inscripción creada exitosamente", registration });
-//     } catch (error) {
-//       console.error("Error al crear inscripción:", error);
-//       res.status(500).json({ message: "Error al crear inscripción", error });
-//     }
-//   };

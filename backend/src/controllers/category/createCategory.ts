@@ -3,9 +3,9 @@ import { Category } from "../../entities/Category";
 import dataSource from "../../config/database";
 
 export const createCategory = async (req: Request, res: Response): Promise<void> => {
-  console.log("Solicitud recibida:", req.body);
   const { category_name, ...categoryData } = req.body;
 
+  // Verificar si el nombre de la categoría existe
   if (!category_name) {
     res.status(400).json({
       message: "El campo nombre_categoria es obligatorio.",
@@ -14,30 +14,27 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
   }
 
   try {
+    // Crear la nueva categoría
     const category = dataSource.getRepository(Category).create({
       ...categoryData
     });
 
+    // Guardar la nueva categoría en la base de datos
     const newCategory = await dataSource.getRepository(Category).save(category);
 
+    // Devolver la categoría creada
     res.status(201).json({
       message: "Categoría creada exitosamente",
       category: newCategory,
     });
-  } catch (error: any) {
-    if (error.code === "ER_DUP_ENTRY") {
-      res.status(409).json({
-        message: "El nombre de la categoría ya está en uso.",
-      });
-      return;
+
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error al crear categoría:", error.message);
+      res.status(500).json({ message: "Error al crear la categoría.", error: error.message });
+    } else {
+      console.error("Error desconocido al crear la categoría", error);
+      res.status(500).json({ message: "Error desconocido al crear la categoría" });
     }
-
-    // Registro del error en la consola para depuración
-    console.error("Error al crear categoría:", error);
-
-    res.status(500).json({
-      message: "Error al crear la categoría.",
-      error: error.message || error,
-    });
   }
 };

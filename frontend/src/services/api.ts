@@ -1,46 +1,86 @@
-const API_URL = 'http://localhost:3003/api'; // Cambia esta URL si es necesario
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
-// Función para hacer solicitudes POST al backend
+
 const postRequest = async <T>(endpoint: string, data: object | FormData, includeToken: boolean = true): Promise<T> => {
   const token = localStorage.getItem('token');
   const headers: HeadersInit = {};
 
-  // Verifica si el token está presente y se debe incluir en los encabezados
   if (includeToken && token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // Si estamos enviando FormData, no necesitamos establecer 'Content-Type', ya que el navegador lo manejará
   let body: FormData | string;
 
   if (data instanceof FormData) {
-    body = data;  // Si es FormData, simplemente lo asignamos
+    body = data;
   } else {
-    body = JSON.stringify(data);  // Si no es FormData, lo convertimos a JSON
-    headers['Content-Type'] = 'application/json';  // Agregamos el Content-Type solo si no es FormData
+    body = JSON.stringify(data);
+    headers['Content-Type'] = 'application/json';
   }
+
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
-      headers: headers,
-      body: body,
+      headers,
+      body,
     });
 
-    // Verifica si la respuesta fue exitosa
+    const responseData = await response.json();
+
     if (!response.ok) {
-      const errorMessage = await response.text();
-      console.error(`Error en la solicitud POST: ${errorMessage || response.statusText}`);
-      throw new Error(`Error en la solicitud POST: ${errorMessage || response.statusText}`);
+      const errorMessage: string = responseData.message || response.statusText || 'Error en la solicitud';
+      throw new Error(errorMessage);
     }
 
-    // Procesa y retorna la respuesta JSON
-    const responseData: T = await response.json();
-    return responseData;
+    return responseData as T;
   } catch (error) {
     console.error('Error en la solicitud POST:', error);
-    throw error;
+    throw error instanceof Error ? error : new Error('Error desconocido en la solicitud');
   }
 };
+
+
+// // Función para hacer solicitudes POST al backend
+// const postRequest = async <T>(endpoint: string, data: object | FormData, includeToken: boolean = true): Promise<T> => {
+//   const token = localStorage.getItem('token');
+//   const headers: HeadersInit = {};
+
+//   // Verifica si el token está presente y se debe incluir en los encabezados
+//   if (includeToken && token) {
+//     headers['Authorization'] = `Bearer ${token}`;
+//   }
+
+//   // Si estamos enviando FormData, no necesitamos establecer 'Content-Type', ya que el navegador lo manejará
+//   let body: FormData | string;
+
+//   if (data instanceof FormData) {
+//     body = data;  // Si es FormData, simplemente lo asignamos
+//   } else {
+//     body = JSON.stringify(data);  // Si no es FormData, lo convertimos a JSON
+//     headers['Content-Type'] = 'application/json';  // Agregamos el Content-Type solo si no es FormData
+//   }
+//   try {
+//     const response = await fetch(`${API_URL}${endpoint}`, {
+//       method: 'POST',
+//       headers: headers,
+//       body: body,
+//     });
+
+//     // Verifica si la respuesta fue exitosa
+//     if (!response.ok) {
+//       const errorMessage = await response.text();
+//       console.error(`Error en la solicitud POST: ${errorMessage || response.statusText}`);
+//       throw new Error(`Error en la solicitud POST: ${errorMessage || response.statusText}`);
+//     }
+
+//     // Procesa y retorna la respuesta JSON
+//     const responseData: T = await response.json();
+//     return responseData;
+//   } catch (error) {
+//     console.error('Error en la solicitud POST:', error);
+//     throw error;
+//   }
+// };
 
 
 

@@ -111,7 +111,6 @@ const RegistrationForm: React.FC = () => {
         <Form className={styles['registration-form']}>
           <h2 className={styles['registration-form__title']}>Formulario de inscripción</h2>
 
-          {/* Mapea los campos dinámicamente */}
           {formFields.map((field, index) => {
             if (field.type === "checkbox") {
               return (

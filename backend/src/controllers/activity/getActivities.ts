@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Activity } from "../../entities/Activity";
 import dataSource from "../../config/database";
 
-// Obtener todas las actividades
+
 export const getActivities = async (req: Request, res: Response): Promise<void> => {
   try {
     const actividades = await dataSource.getRepository(Activity).find({

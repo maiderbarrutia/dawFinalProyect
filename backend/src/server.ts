@@ -42,7 +42,12 @@ const startServer = async () => {
     const port = process.env.PORT || 3003;
     app.listen(port, () => console.log(`Servidor corriendo en el puerto ${port}`));
   } catch (error) {
-    console.error("Error al iniciar el servidor:", error);
+    if (error instanceof Error) {
+      console.error("Error al iniciar el servidor:", error.message);
+    } else {
+      console.error("Error desconocido al iniciar el servidor:", error);
+    }
+    // process.exit(1);
   }
 };
 
