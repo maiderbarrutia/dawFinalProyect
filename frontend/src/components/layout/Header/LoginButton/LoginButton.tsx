@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@components/common/Button/Button";
 import styles from "./LoginButton.module.scss";
-import { getAssetSrc } from "@/utils/srcUtils";
+import { getAssetSrc, getUploadedImageSrc } from "@/utils/srcUtils";
 import { useAuth } from "@/context/AuthContext";  // Importamos el hook useAuth
 import jwt_decode from "jwt-decode";
 
-// Definir la interfaz para el token decodificado
+// Definir la interfaz para el token decodificado con el id de la empresa
 interface DecodedToken {
-  id: string; // Asegúrate de que este sea el campo correcto según el formato de tu token
+  id: string; 
 }
 
 const LoginButton: React.FC = () => {
@@ -17,18 +17,18 @@ const LoginButton: React.FC = () => {
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // Al autenticarse, obtenemos los datos de la empresa (en este caso el logo)
   useEffect(() => {
     if (isAuthenticated && token) {
-      fetchCompanyData(token); // Solo obtenemos los datos si estamos autenticados
+      fetchCompanyData(token);
     }
   }, [isAuthenticated, token]);
 
+  // Obtener los datos de la empresa desde el backend usando el ID del token
   const fetchCompanyData = (token: string) => {
-    // Decodificar el token para obtener el company_id
-    const decodedToken: DecodedToken = jwt_decode(token); // Usamos el tipo DecodedToken
-    const companyId = decodedToken.id; // Suponemos que el id de la empresa está en decodedToken.id
+    const decodedToken: DecodedToken = jwt_decode(token);
+    const companyId = decodedToken.id;
   
-    // Hacer la solicitud para obtener el logo usando el company_id
     fetch(`http://localhost:3003/api/empresas/${companyId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -37,23 +37,25 @@ const LoginButton: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          const logoFile = data.company_logo; // Nombre del archivo del logo
+          const logoFile = data.company_logo;
+          console.log(data)
           const logoUrl = logoFile
-            ? `http://localhost:3003/images/${logoFile}` // Si hay logo, usar la URL generada
-            : getAssetSrc(`images/default-image.jpg`); // Ruta al logo por defecto
+            ? getUploadedImageSrc(`images/${logoFile}`)
+            : getAssetSrc(`images/default-image.jpg`);
   
-          setCompanyLogo(logoUrl); // Asignar la URL del logo (o la URL del logo por defecto)
+          setCompanyLogo(logoUrl);
         } else {
           console.error("No se encontró la empresa en los datos.");
-          setCompanyLogo("/path/to/default/logo.png"); // Si no se encuentra la empresa, también usar logo por defecto
+          setCompanyLogo(getAssetSrc("images/default-image.jpg")); // Si no se encuentra la empresa, también usar logo por defecto
         }
       })
       .catch((error) => {
         console.error("Error al obtener los datos de la empresa", error);
-        setCompanyLogo("/path/to/default/logo.png"); // En caso de error, usar logo por defecto
+        setCompanyLogo(getAssetSrc("images/default-image.jpg")); // En caso de error, usar logo por defecto
       });
   };
 
+  // Al hacer clic en el botón (logo o texto)
   const handleClick = () => {
     if (isAuthenticated) {
       setIsMenuOpen(!isMenuOpen);
@@ -62,23 +64,17 @@ const LoginButton: React.FC = () => {
     }
   };
 
+  // Cerrar sesión
   const handleLogout = () => {
     logout();
     setCompanyLogo(null); // Limpiar el logo al cerrar sesión
     navigate("/login");
   };
 
-  const goToProfile = () => {
-    navigate("/perfil");
-  };
-
-  const goToActivities = () => {
-    navigate("/mis-actividades");
-  };
-
-  const goToCreateActivities = () => {
-    navigate("/crear-actividad");
-  };
+  // Navegaciones del menú desplegable
+  const goToProfile = () => {navigate("/perfil");};
+  const goToActivities = () => {navigate("/mis-actividades");};
+  const goToCreateActivities = () => {navigate("/crear-actividad");};
 
   return (
     <div className={styles.loginButton}>
@@ -111,11 +107,14 @@ const LoginButton: React.FC = () => {
           )}
         </div>
       ) : (
+        <div className={styles.loginButton_submit}>
         <Button
-          text="Registro / Iniciar sesión"
+          text="Login"
           handleClick={handleClick}
           ariaLabel="Ir a la página de registro o inicio de sesión"
+          
         />
+        </div>
       )}
     </div>
   );

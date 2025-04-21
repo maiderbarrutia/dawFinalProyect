@@ -32,6 +32,7 @@ const FormField: React.FC<FieldProps> = ({ name, type, placeholder, label, requi
   </div>
 );
 
+
 // Validación de Yup
 const validationSchema = Yup.object({
   company_name: Yup.string().required('El nombre de la empresa es obligatorio.'),
@@ -117,8 +118,8 @@ const CompanyRegisterForm: React.FC = () => {
   
     try {
       await postRequest<{ company: Company }>('/empresas/register', dataToSend, false);
-      console.clear();
-
+      // console.clear();
+  
       setSuccess('Empresa registrada con éxito.');
       resetForm();
       setCompanyLogo(null);
@@ -135,6 +136,7 @@ const CompanyRegisterForm: React.FC = () => {
       }
     }
   };
+  
 
   return (
     <Formik
@@ -142,7 +144,7 @@ const CompanyRegisterForm: React.FC = () => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ setFieldValue, isSubmitting }) => (
+      {({ isSubmitting }) => (
         <Form className={styles['company-form']}>
           <h2 className={styles['company-form__title']}>Crear cuenta de empresa</h2>
 
@@ -182,7 +184,10 @@ const CompanyRegisterForm: React.FC = () => {
                     type={field.type}
                     name={field.name}
                     accept="image/*"
-                    onChange={(e) => setFieldValue('company_logo', e.target.files ? e.target.files[0] : null)}
+                    onChange={(e) => {
+                      const file = e.target.files ? e.target.files[0] : null;
+                      setCompanyLogo(file);
+                    }}
                   />
                 </div>
               );

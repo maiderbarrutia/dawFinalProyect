@@ -2,10 +2,13 @@
 
 .socialLinks{
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: rem(10);
     z-index: 11;
     
     &__img{
+        height: rem(25);
         &:hover{
             opacity: 0.7;
         }

@@ -4,7 +4,7 @@ import HeaderLogo from './HeaderLogo/HeaderLogo';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
 import SocialLinks from './SocialLinks/SocialLinks';
 import styles from './Header.module.scss';
-import menuIcon from '@/assets/icons/logo-aisiplan.svg';
+import menuIcon from '@/assets/icons/menu-icon.svg';
 import LoginButton from './LoginButton/LoginButton';
 
 
@@ -158,7 +158,9 @@ const Header: React.FC = () => {
                     </nav>
                     <LoginButton/>
                     
-                    <SocialLinks />
+                    {!isMobile && (
+                        <SocialLinks />
+                    )}
                     
                 </div>
             </div>

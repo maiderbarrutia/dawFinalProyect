@@ -6,7 +6,15 @@
     justify-content: center;
     gap: rem(20);
     align-items: center;
+    border-top: 1px solid $main-gray;
+    padding-top: rem(20);
 
+    @media (min-width: $size-tablet) {
+        flex-direction: row;
+        gap: rem(10);
+        border-top: none;
+        padding-top: 0;
+    }
 
     &-link{
         text-decoration: none;
@@ -19,12 +27,5 @@
         &:hover, &--selected{
             color: $primary-color;
         }
-    }
-}
-
-@media screen and (min-width: $size-tablet) {
-    .header__mainMenu {
-        flex-direction: row;
-        gap: rem(10);
     }
 }
