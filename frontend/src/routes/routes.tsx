@@ -39,7 +39,7 @@ const SiteRoutes: React.FC = () => {
 
               <Route path="/login" element={<Login />} />
               {/* <Route path="/register" element={<Register />} /> */}
-              <Route path="/dashboard" element={
+              <Route path="/perfil" element={
                   <ProtectedRoute>
                     <Dashboard />
                   </ProtectedRoute>

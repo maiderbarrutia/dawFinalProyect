@@ -24,82 +24,14 @@ CREATE TABLE Activity (
     INDEX (activity_date)
 );
 
-INSERT INTO Activity (
-    activity_title,
-    activity_description,
-    company_id,
-    activity_date,
-    activity_time,
-    activity_price,
-    available_slots,
-    activity_duration,
-    difficulty_level,
-    activity_type,
-    category_id,
-    activity_location,
-    activity_images,
-    activity_videos,
-    includes,
-    excludes,
-    privacy_policy
-)
+-- Inserción de Actividades
+INSERT INTO Activity (activity_title, activity_description, company_id, activity_date, activity_time, activity_price, available_slots, activity_duration, difficulty_level, activity_type, category_id, activity_location, activity_images, activity_videos, includes, excludes, privacy_policy)
 VALUES
-('Taller de Programación', 'Escapada al parque regional de Gredos: una de las  sierras mas extensas del sistema central, característica por sus moles  graníticas. Un paraje que constituye hoy en día uno de los conjuntos  glaciares mejor conservados del sur de Europa, pudiendo observar  lagunas, glaciares, circos, gargantas, etc. Visitaremos caminando la Laguna Grande y el Circo de Gredos hasta llegar el refugio Elola. También visitaremos las Cuevas del Águila: variedad de colores y texturas realmente inusuales en otras cuevas de  la Península Ibérica debido a la compleja evolución, resultado de  reiteradas fases de creación y destrucción de las formaciones.', 1, '2025-04-01', '10:00:00', 50.00, 20, 120, 'easy', 'Workshop', 1, 'Madrid', '["image1.jpg", "aventura.jpg", "deportes.jpg"]', '["video1.mp4"]', 'Materiales y refrigerio', 'Transporte', TRUE),
-('Curso de Primeros Auxilios', 'Curso práctico sobre cómo actuar en emergencias', 3, '2025-04-15', '14:00:00', 100.00, 15, 240, 'medium', 'Curso', 3, 'Valencia', '["image2.jpg"]', '["video2.mp4"]', 'Certificado y material', 'Comida', TRUE),
-('Taller de Pintura', 'Explora tu creatividad con pintura acrílica', 4, '2025-05-01', '09:00:00', 40.00, 10, 180, 'easy', 'Arte', 5, 'Bilbao', '["image3.jpg"]', '["video3.mp4"]', 'Material y guía', 'Transporte', TRUE),
-('Clínica Deportiva', 'Mejora tus habilidades en fútbol', 4, '2025-03-30', '11:00:00', 30.00, 30, 90, 'hard', 'Deporte', 4, 'Sevilla', '["image4.jpg"]', '["video4.mp4"]', 'Entrenadores y equipo', 'Transporte', FALSE),
-('Charla de Tecnología', 'Descubre las tendencias actuales', 1, '2025-06-01', '16:00:00', 0.00, 100, 60, 'easy', 'Charla', 1, 'Madrid', '["image5.jpg"]', '["video5.mp4"]', 'Presentación y material', 'Refrigerio', TRUE);
-
-
-
-CREATE TABLE Actividad (
-    id_actividad INT AUTO_INCREMENT PRIMARY KEY,
-    titulo_actividad VARCHAR(255) NOT NULL,
-    descripcion_actividad TEXT,
-    empresa_id INT NOT NULL,
-    fecha_actividad DATE,
-    hora_actividad TIME,
-    precio_actividad DECIMAL(10, 2),
-    numero_plazas INT,
-    duracion_actividad INT,
-    nivel_dificultad ENUM('easy', 'medium', 'hard'),
-    tipo_actividad VARCHAR(100),
-    categoria_id INT,
-    ubicacion_actividad TEXT,
-    imagenes_actividad JSON,
-    videos_actividad JSON,
-    incluye TEXT,
-    no_incluye TEXT,
-    politica_privacidad BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (empresa_id) REFERENCES Empresa(id_empresa) ON DELETE CASCADE,
-    FOREIGN KEY (categoria_id) REFERENCES Categoria(id_categoria) ON DELETE SET NULL,
-    INDEX (categoria_id),
-    INDEX (fecha_actividad)
-);
-
-INSERT INTO Actividad (
-    titulo_actividad,
-    descripcion_actividad,
-    empresa_id,
-    fecha_actividad,
-    hora_actividad,
-    precio_actividad,
-    numero_plazas,
-    duracion_actividad,
-    nivel_dificultad,
-    tipo_actividad,
-    categoria_id,
-    ubicacion_actividad,
-    imagenes_actividad,
-    videos_actividad,
-    incluye,
-    no_incluye,
-    politica_privacidad
-)
-VALUES
-('Taller de Programación', 'Aprende a programar desde cero', 1, '2025-04-01', '10:00:00', 50.00, 20, 120, 'fácil', 'Workshop', 1, 'Madrid', '[\"image1.jpg\"]', '[\"video1.mp4\"]', 'Materiales y refrigerio', 'Transporte', TRUE),
-('Curso de Primeros Auxilios', 'Curso práctico sobre cómo actuar en emergencias', 3, '2025-04-15', '14:00:00', 100.00, 15, 240, 'medio', 'Curso', 3, 'Valencia', '[\"image2.jpg\"]', '[\"video2.mp4\"]', 'Certificado y material', 'Comida', TRUE),
-('Taller de Pintura', 'Explora tu creatividad con pintura acrílica', 4, '2025-05-01', '09:00:00', 40.00, 10, 180, 'fácil', 'Arte', 5, 'Bilbao', '[\"image3.jpg\"]', '[\"video3.mp4\"]', 'Material y guía', 'Transporte', TRUE),
-('Clínica Deportiva', 'Mejora tus habilidades en fútbol', 4, '2025-03-30', '11:00:00', 30.00, 30, 90, 'difícil', 'Deporte', 4, 'Sevilla', '[\"image4.jpg\"]', '[\"video4.mp4\"]', 'Entrenadores y equipo', 'Transporte', FALSE),
-('Charla de Tecnología', 'Descubre las tendencias actuales', 1, '2025-06-01', '16:00:00', 0.00, 100, 60, 'fácil', 'Charla', 1, 'Madrid', '[\"image5.jpg\"]', '[\"video5.mp4\"]', 'Presentación y material', 'Refrigerio', TRUE);
-
+('Zumba en grupo', 'Clase de Zumba para todas las edades y niveles de habilidad.', 1, '2025-05-01', '10:00:00', 15.00, 20, 60, 'medium', 'Deportes', 1, 'Calle Salud 10, Madrid', '["zumba1.jpg", "zumba2.jpg"]', '[]', 'Clase dirigida por un instructor profesional.', 'No se permite la grabación de videos durante la clase.', TRUE),
+('Yoga para principiantes', 'Sesión de yoga para aliviar el estrés y mejorar la flexibilidad.', 2, '2025-05-02', '09:00:00', 10.00, 15, 90, 'easy', 'Bienestar y relajación', 2, 'Camino Sierra 23, Segovia', '["yoga1.jpg", "yoga2.jpg"]', '[]', 'Instrucción personal en poses básicas.', 'No se permite grabar durante la sesión.', TRUE),
+('Maratón 10k', 'Competición de 10 kilómetros para corredores de todos los niveles.', 3, '2025-06-01', '07:00:00', 25.50, 100, 120, 'hard', 'Deportes', 1, 'Calle Tranquila 15, Valencia', '["maraton.jpg"]', '[]', 'Kit de carrera incluido.', 'Sin devolución de inscripciones.', TRUE),
+('Escalada en roca', 'Aventura de escalada para todos los niveles de experiencia.', 4, '2025-07-10', '08:30:00', 40.00, 12, 180, 'hard', 'Aventura', 4, 'Avenida Historia 77, Sevilla', '["escalada1.jpg", "escalada2.jpg"]', '[]', 'Equipo de escalada proporcionado.', 'No se permite el uso de cámaras personales.', TRUE),
+('Tour cultural por Madrid', 'Recorrido guiado por los principales puntos históricos de Madrid.', 5, '2025-05-15', '10:00:00', 20.00, 30, 120, 'medium', 'Cultura', 3, 'Plaza Mayor, Madrid', '["madrid-tour1.jpg", "madrid-tour2.jpg"]', '[]', 'Guía turístico experto incluido.', 'El tour no incluye entradas a museos.', TRUE),
+('Excursión en kayak', 'Aventura en kayak por los ríos de la región.', 6, '2025-08-05', '09:00:00', 35.00, 15, 120, 'medium', 'Aventura', 4, 'Río Ebro, Zaragoza', '["kayak1.jpg"]', '[]', 'Equipo de kayak proporcionado.', 'No se permiten grupos mayores de 5 personas.', TRUE),
+('Cine al aire libre', 'Disfruta de una película bajo las estrellas en nuestra proyección al aire libre.', 7, '2025-06-10', '21:00:00', 8.00, 50, 120, 'easy', 'Entretenimiento', 5, 'Parque Central, Barcelona', '["cine1.jpg", "cine2.jpg"]', '[]', 'Palomitas y refresco incluidos.', 'No se permite grabar la película.', TRUE),
+('Bailes latinos', 'Aprende a bailar salsa, bachata y merengue en esta clase divertida y enérgica.', 8, '2025-09-01', '18:00:00', 12.00, 25, 60, 'medium', 'Entretenimiento', 5, 'Calle Alegría 4, Valencia', '["bailes1.jpg"]', '[]', 'Clase dirigida por un instructor experimentado.', 'No se permite el uso de teléfonos durante la clase.', TRUE);

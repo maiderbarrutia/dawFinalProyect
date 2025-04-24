@@ -73,7 +73,6 @@ const LoginButton: React.FC = () => {
 
   // Navegaciones del menú desplegable
   const goToProfile = () => {navigate("/perfil");};
-  const goToActivities = () => {navigate("/mis-actividades");};
   const goToCreateActivities = () => {navigate("/crear-actividad");};
 
   return (
@@ -98,9 +97,8 @@ const LoginButton: React.FC = () => {
           {isMenuOpen && (
             <div className={styles.dropdownMenu}>
               <ul>
+                <li onClick={goToProfile}>Mi cuenta</li>
                 <li onClick={goToCreateActivities}>Crear actividades</li>
-                <li onClick={goToProfile}>Ver perfil</li>
-                <li onClick={goToActivities}>Mis actividades</li>
                 <li onClick={handleLogout}>Cerrar sesión</li>
               </ul>
             </div>
@@ -108,12 +106,11 @@ const LoginButton: React.FC = () => {
         </div>
       ) : (
         <div className={styles.loginButton_submit}>
-        <Button
-          text="Login"
-          handleClick={handleClick}
-          ariaLabel="Ir a la página de registro o inicio de sesión"
-          
-        />
+          <Button
+            text="Login"
+            handleClick={handleClick}
+            ariaLabel="Ir a la página de registro o inicio de sesión"
+          />
         </div>
       )}
     </div>

@@ -16,40 +16,11 @@ CREATE TABLE Company (
 
 INSERT INTO Company (company_name, company_type, company_logo, company_cif, contact_person, company_phone, company_address, company_website, company_email, company_password, privacy_policy)
 VALUES
-('GreenTech Solutions', 'Energías Renovables', 'logo-batt-base.png', 'CIF101', 'Laura Martínez', '111222333', 'Calle Verde 45, Madrid, España', 'http://greentech-solutions.com', 'contacto@greentech.com', 'passwordGT', FALSE),
-('Foodie Factory', 'Gastronomía', 'logo-healthy-life.png', 'CIF102', 'Carlos Rodríguez', '222333444', 'Avenida Sabor 78, Valencia, España', 'http://foodiefactory.com', 'contacto@foodie.com', 'passwordFF', FALSE),
-('EducaMasters', 'Educación Online', 'logo-running.png', 'CIF103', 'María Fernández', '333444555', 'Plaza del Saber 12, Barcelona, España', 'http://educamasters.com', 'contacto@educamasters.com', 'passwordEM', FALSE),
-('FitLife Gym', 'Fitness', 'logo-storm.png', 'CIF104', 'Juan García', '444555666', 'Polígono Deportivo 9, Sevilla, España', 'http://fitlifegym.com', 'contacto@fitlife.com', 'passwordFL', FALSE),
-('CodeCraft', 'Tecnología y Software', 'logo-strike.png', 'CIF105', 'Ana López', '555666777', 'Calle Innovación 23, Bilbao, España', 'http://codecraft.com', 'contacto@codecraft.com', 'passwordCC', FALSE);
-
-INSERT INTO Company (company_name, company_type, company_logo, company_cif, contact_person, company_phone, company_address, company_website, company_email, company_password, privacy_policy)
-VALUES
-('The Culture Hub', 'Art & Culture', 'logo-the-culture.png', 'CIF106', 'Claudia Méndez', '666777888', 'Calle Arte 10, Madrid, Spain', 'http://theculturehub.com', 'contact@theculturehub.com', 'passwordTC', FALSE),
-('VeloMax', 'Sustainable Mobility', 'logo-velo-max.png', 'CIF107', 'Héctor Ruiz', '777888999', 'Avenida Ciclista 42, Valencia, Spain', 'http://velomax.com', 'contact@velomax.com', 'passwordVM', FALSE),
-('Wellness One', 'Health & Wellness', 'logo-wellness.png', 'CIF108', 'Nuria Blanco', '888999000', 'Calle Salud 25, Sevilla, Spain', 'http://wellnessone.com', 'contact@wellnessone.com', 'passwordWO', FALSE),
-('BattBase', 'Energy Technology', 'logo-batt-base1.png', 'CIF109', 'Andrés León', '999000111', 'Energy Industrial Park, Building 12, Bilbao, Spain', 'http://battbase.com', 'contact@battbase.com', 'passwordBB', FALSE),
-('Running Pro', 'Sports & Training', 'logo-running.png', 'CIF110', 'Patricia Gil', '000111222', 'Sports Avenue 88, Barcelona, Spain', 'http://runningpro.com', 'contact@runningpro.com', 'passwordRP', FALSE);
-
-CREATE TABLE Empresa (
-    id_empresa INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_empresa VARCHAR(255) NOT NULL,
-    tipo_empresa VARCHAR(100),
-    logo_empresa VARCHAR(255),
-    cif_empresa VARCHAR(20) UNIQUE,
-    persona_contacto VARCHAR(255),
-    telefono_empresa VARCHAR(20),
-    direccion_empresa TEXT,
-    web_empresa VARCHAR(255),
-    email_empresa VARCHAR(255) UNIQUE,
-    contrasena_empresa VARCHAR(255) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO Empresa (nombre_empresa, tipo_empresa, logo_empresa, cif_empresa, persona_contacto, telefono_empresa, direccion_empresa, web_empresa, email_empresa, contrasena_empresa)
-VALUES
-('GreenTech Solutions', 'Energías Renovables', 'logo_greentech.png', 'CIF101', 'Laura Martínez', '111222333', 'Calle Verde 45, Madrid, España', 'http://greentech-solutions.com', 'contacto@greentech.com', 'passwordGT'),
-('Foodie Factory', 'Gastronomía', 'logo_foodie.png', 'CIF102', 'Carlos Rodríguez', '222333444', 'Avenida Sabor 78, Valencia, España', 'http://foodiefactory.com', 'contacto@foodie.com', 'passwordFF'),
-('EducaMasters', 'Educación Online', 'logo_educa.png', 'CIF103', 'María Fernández', '333444555', 'Plaza del Saber 12, Barcelona, España', 'http://educamasters.com', 'contacto@educamasters.com', 'passwordEM'),
-('FitLife Gym', 'Fitness', 'logo_fitlife.png', 'CIF104', 'Juan García', '444555666', 'Polígono Deportivo 9, Sevilla, España', 'http://fitlifegym.com', 'contacto@fitlife.com', 'passwordFL'),
-('CodeCraft', 'Tecnología y Software', 'logo_codecraft.png', 'CIF105', 'Ana López', '555666777', 'Calle Innovación 23, Bilbao, España', 'http://codecraft.com', 'contacto@codecraft.com', 'passwordCC');
-
+('Batt Base', 'Gimnasio', 'batt-base.png', 'B12345678', 'Laura Sánchez', '912345678', 'Calle Salud 10, Madrid', 'https://battbase.es', 'info@battbase.es', 'hashedpass1', TRUE),
+('Healthy Life', 'Centro de Bienestar', 'healthy-life.png', 'B23456789', 'Carlos Romero', '913456789', 'Camino Sierra 23, Segovia', 'https://healthylife.com', 'contacto@healthylife.com', 'hashedpass2', TRUE),
+('Running Club', 'Club Deportivo', 'running.png', 'B34567890', 'Marta Gil', '914567890', 'Calle Tranquila 15, Valencia', 'https://runningclub.es', 'info@runningclub.es', 'hashedpass3', TRUE),
+('Storm Adventures', 'Turismo Aventura', 'storm.png', 'B45678901', 'David Moreno', '915678901', 'Avenida Historia 77, Sevilla', 'https://stormadventures.com', 'eventos@stormadventures.com', 'hashedpass4', TRUE),
+('Strike Sports', 'Club Deportivo', 'strike.png', 'B56789012', 'Sara Rivas', '916789012', 'Calle Diversión 45, Barcelona', 'https://strikesports.net', 'hello@strikesports.net', 'hashedpass5', TRUE),
+('The Culture', 'Organización Cultural', 'the-culture.png', 'B67890123', 'Luis Pérez', '917890123', 'Plaza Arte 5, Madrid', 'https://theculture.org', 'contacto@theculture.org', 'hashedpass6', TRUE),
+('Velo Max', 'Turismo Activo', 'velo-max.png', 'B78901234', 'Ana Gómez', '918901234', 'Avenida Viento 19, Barcelona', 'https://velomax.com', 'info@velomax.com', 'hashedpass7', TRUE),
+('Wellness Center', 'Bienestar y Relax', 'wellness.png', 'B89012345', 'José Martínez', '919012345', 'Calle Serenidad 33, Valencia', 'https://wellnesscenter.es', 'contacto@wellnesscenter.es', 'hashedpass8', TRUE);

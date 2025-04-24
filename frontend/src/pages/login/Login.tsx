@@ -35,7 +35,7 @@ const Login: React.FC = () => {
         localStorage.setItem('companyId', companyId.toString());
   
         login(token);
-        navigate('/dashboard');
+        navigate('/perfil');
       } else {
         setError(message ?? 'No se pudo iniciar sesión.');
       }

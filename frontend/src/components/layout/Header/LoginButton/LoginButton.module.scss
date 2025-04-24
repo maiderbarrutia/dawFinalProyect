@@ -1,6 +1,35 @@
 @import '@assets/styles/main.scss';
 
 .logo{
-    height: 20px;
+    height: rem(50);
+    border-radius: 100%;
+    width: rem(50);
+    object-fit: cover;
+}
+
+.logoAndArrow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.loginButton{
+    position: relative;
+}
+
+.dropdownMenu{
+    position: absolute;
+    background: white;
+    top: rem(60);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    padding: rem(10);
+    right: 0;
+    width: rem(200);
+
+    li{
+        cursor: pointer;
+        margin-bottom: rem(10);
+    }
 }
 

@@ -10,31 +10,16 @@ CREATE TABLE UserData (
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Inserción de Usuarios
 INSERT INTO UserData (first_name, last_name, user_email, user_phone, user_city, user_password, privacy_policy)
 VALUES
-('Laura', 'Martínez', 'laura.martinez@mail.com', '600111222', 'Madrid', 'password1', FALSE),
-('Pedro', 'Gómez', 'pedro.gomez@mail.com', '700222333', 'Barcelona', 'password2', TRUE),
-('Silvia', 'Hernández', 'silvia.hernandez@mail.com', '800333444', 'Valencia', 'password3', FALSE), 
-('Diego', 'López', 'diego.lopez@mail.com', '900444555', 'Sevilla', 'password4', FALSE),
-('Lucía', 'Rodríguez', 'lucia.rodriguez@mail.com', '100555666', 'Bilbao', 'password5', TRUE);
-
-
-
-CREATE TABLE Usuario (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_usuario VARCHAR(100) NOT NULL,
-    apellidos_usuario VARCHAR(100),
-    email_usuario VARCHAR(255) UNIQUE NOT NULL,
-    telefono_usuario VARCHAR(20),
-    ciudad_usuario VARCHAR(255),
-    contrasena_usuario VARCHAR(255), -- Para futuros accesos registrados
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO Usuario (nombre_usuario, apellidos_usuario, email_usuario, telefono_usuario, ciudad_usuario, contrasena_usuario)
-VALUES
-('Laura', 'Martínez', 'laura.martinez@mail.com', '600111222', 'Madrid', 'password1'),
-('Pedro', 'Gómez', 'pedro.gomez@mail.com', '700222333', 'Barcelona', 'password2'),
-('Silvia', 'Hernández', 'silvia.hernandez@mail.com', '800333444', 'Valencia', 'password3'),
-('Diego', 'López', 'diego.lopez@mail.com', '900444555', 'Sevilla', 'password4'),
-('Lucía', 'Rodríguez', 'lucia.rodriguez@mail.com', '100555666', 'Bilbao', 'password5');
+('Ana', 'Gómez', 'ana.gomez@mail.com', '612345678', 'Madrid', 'hashedpass1', TRUE),
+('Luis', 'Martínez', 'luis.martinez@mail.com', '613456789', 'Barcelona', 'hashedpass2', TRUE),
+('Pedro', 'Sánchez', 'pedro.sanchez@mail.com', '614567890', 'Sevilla', 'hashedpass3', TRUE),
+('Marta', 'López', 'marta.lopez@mail.com', '615678901', 'Valencia', 'hashedpass4', TRUE),
+('Carlos', 'Pérez', 'carlos.perez@mail.com', '616789012', 'Zaragoza', 'hashedpass5', TRUE),
+('Laura', 'García', 'laura.garcia@mail.com', '617890123', 'Madrid', 'hashedpass6', TRUE),
+('José', 'Fernández', 'jose.fernandez@mail.com', '618901234', 'Bilbao', 'hashedpass7', TRUE),
+('Sofía', 'Rodríguez', 'sofia.rodriguez@mail.com', '619012345', 'Malaga', 'hashedpass8', TRUE),
+('Raúl', 'Díaz', 'raul.diaz@mail.com', '620123456', 'Murcia', 'hashedpass9', TRUE),
+('Paula', 'Vázquez', 'paula.vazquez@mail.com', '621234567', 'Granada', 'hashedpass10', TRUE);

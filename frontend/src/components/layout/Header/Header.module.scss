@@ -32,6 +32,10 @@
         margin: 0;
         cursor: pointer;
         z-index: 11;
+
+        @media (min-width: $size-tablet) {
+            display: none; 
+        }
     }
 
     &__nav {
@@ -41,6 +45,16 @@
         transition: opacity 0.3s ease;
         padding: rem(15);
         gap: rem(20);
+
+        @media (min-width: $size-tablet) {
+            display: flex;
+            opacity: 1;
+            flex-direction: row; 
+            height: auto; 
+            gap: rem(20);
+            align-items: center;
+            padding: 0;
+        }
     }
 
     &__nav--active {
@@ -75,21 +89,5 @@
     }
 }
 
-@media screen and (min-width: $size-tablet) {
-    .header {
-        &__button {
-            display: none;
-        }
 
-        &__nav {
-            display: flex;
-            opacity: 1;
-            flex-direction: row; 
-            height: auto; 
-            gap: rem(20);
-            align-items: center;
-            padding: 0;
-        }
-    }
-}
 
