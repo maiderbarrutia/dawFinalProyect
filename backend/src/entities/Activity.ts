@@ -54,10 +54,10 @@ export class Activity {
   activity_location!: string;
 
   @Column({ name: 'activity_images', type: 'json', nullable: true })
-  activity_images!: string;
+  activity_images!: string[];
 
   @Column({ name: 'activity_videos', type: 'json', nullable: true })
-  activity_videos!: string;
+  activity_videos!: string[];
 
   @Column({ name: 'includes', type: 'text', nullable: true })
   includes!: string;

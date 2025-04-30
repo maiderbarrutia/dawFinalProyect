@@ -37,17 +37,23 @@ export const seedCategories = async (dataSource: DataSource) => {
     // Verificar y sincronizar categorías iniciales
     for (const category of INITIAL_CATEGORIES) {
       const categoryExists = await categoryRepo.findOneBy({ category_name: category.category_name });
-      if (!categoryExists) {
-        console.log(`Insertando categoría: ${category.category_name}`);
+  
+      if (categoryExists) {
+        // Si la categoría ya existe, actualizarla si es necesario
+        const updatedCategory = categoryRepo.merge(categoryExists, category);
+        await categoryRepo.save(updatedCategory);
+        console.log(`Categoría actualizada: ${category.category_name}`);
+      } else {
+        // Si la categoría no existe, crearla e insertarla
         const newCategory = categoryRepo.create(category);
         await categoryRepo.save(newCategory);
-      } else {
-        console.log(`La categoría "${category.category_name}" ya existe.`);
+        console.log(`Categoría insertada: ${category.category_name}`);
       }
     }
-
+  
     console.log("¡Sincronización de categorías completada!");
   } catch (error) {
     console.error("Error durante el seed de categorías:", error);
   }
+  
 };

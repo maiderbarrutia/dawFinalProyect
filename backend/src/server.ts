@@ -8,6 +8,8 @@ import companyRoutes from "./routes/companyRoutes";
 import registrationRoutes from "./routes/registrationRoutes";
 import userDataRoutes from "./routes/userDataRoutes";
 import { seedCategories } from "./seeds/seedCategories";
+import { seedCompanies } from "./seeds/seedCompanies";
+import { seedActivities } from "./seeds/seedActivities";
 import path from 'path';
 
 dotenv.config();
@@ -28,6 +30,14 @@ const startServer = async () => {
     // Ejecutar el seed de categorías
     await seedCategories(dataSource);
     console.log("Seed de categorías ejecutado exitosamente.");
+
+    // Ejecutar el seed de empresas
+    await seedCompanies(dataSource);
+    console.log("Seed de empresas ejecutado exitosamente.");
+
+    // Ejecutar el seed de actividades
+    await seedActivities(dataSource);
+    console.log("Seed de actividades ejecutado exitosamente.");
 
     // Registrar las rutas
     app.use("/api/usuarios", userDataRoutes);

@@ -3,7 +3,7 @@ import styles from './FeaturedCompanies.module.scss';
 import SectionHeader from '@/components/common/SectionHeader/SectionHeader';
 import { getRequest } from '@/services/api';
 import { Company } from '@/interfaces/Company';
-import { getAssetSrc } from '@/utils/srcUtils';
+import { getAssetSrc, getUploadedImageSrc } from '@/utils/srcUtils';
 import ItemsCarousel from '@/components/common/ItemsCarousel/ItemsCarousel';
 
 const FeaturedCompanies: React.FC = () => {
@@ -31,7 +31,7 @@ const FeaturedCompanies: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   const logos = companies.slice(0, 8).map((company) => {
-    const imageSrc = getAssetSrc(`images/${company.company_logo}`);
+    const imageSrc = getUploadedImageSrc(`images/${company.company_logo}`);
     const placeholderImage = getAssetSrc('images/default-image.jpg');
     return imageSrc || placeholderImage;
   });

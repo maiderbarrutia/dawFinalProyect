@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Importa Link
 import styles from './FeaturedCategories.module.scss';
 import { getRequest } from '@/services/api';
-import { getAssetSrc } from '@/utils/srcUtils';
+import { getAssetSrc, getUploadedImageSrc } from '@/utils/srcUtils';
 import Button from "@components/common/Button/Button";
 
 interface Category {
@@ -52,7 +52,7 @@ const FeaturedCategories: React.FC = () => {
         <div className={styles['featuredCategories__grid']}>
           <div className={styles['featuredCategories__categories']}>
             {categories.slice(0, 4).map((category) => {
-              const imageSrc = getAssetSrc(`images/${category.category_image}`);
+              const imageSrc = getUploadedImageSrc(`images/${category.category_image}`);
               const placeholderImage = getAssetSrc(`images/default-image.jpg`);
 
               return (
