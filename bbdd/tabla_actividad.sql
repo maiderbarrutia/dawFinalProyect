@@ -12,6 +12,7 @@ CREATE TABLE Activity (
     activity_type VARCHAR(100),
     category_id INT,
     activity_location TEXT,
+    activity_adress TEXT,
     activity_images JSON,
     activity_videos JSON,
     includes TEXT,

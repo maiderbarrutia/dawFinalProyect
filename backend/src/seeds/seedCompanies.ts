@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { Company } from "../entities/Company";
+import bcrypt from "bcrypt";
 
 export const seedCompanies = async (dataSource: DataSource) => {
   const companyRepo = dataSource.getRepository(Company);
@@ -112,23 +113,23 @@ export const seedCompanies = async (dataSource: DataSource) => {
   ];
 
   try {
-    // Verificar y sincronizar empresas iniciales
+    
     for (const company of INITIAL_COMPANIES) {
       const companyExists = await companyRepo.findOneBy({ company_email: company.company_email });
+
+      const hashedPassword = await bcrypt.hash(company.company_password, 10);
+      company.company_password = hashedPassword;
   
-      if (companyExists) {
-        // Si la empresa ya existe, actualizarla si es necesario
-        const updatedCompany = companyRepo.merge(companyExists, company);
-        await companyRepo.save(updatedCompany);
-        console.log(`Empresa actualizada: ${company.company_name}`);
-      } else {
-        // Si la empresa no existe, crearla e insertarla
+      if (!companyExists) {
+        console.log(`Insertando empresa: ${company.company_name}`);
         const newCompany = companyRepo.create(company);
         await companyRepo.save(newCompany);
-        console.log(`Empresa insertada: ${company.company_name}`);
+      } else {
+        
+        console.log(`La empresa "${company.company_name}" ya existe.`);
       }
     }
-  
+
     console.log("¡Seed de empresas completado!");
   } catch (error) {
     console.error("Error durante el seed de empresas:", error);

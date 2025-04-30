@@ -76,6 +76,7 @@ const ItemsCarousel: React.FC<ItemsCarouselProps> = ({ items, visibleCount }) =>
             </div>
           ))}
         </div>
+        
       </div>
 
       {currentIndex < items.length - visibleItems && (

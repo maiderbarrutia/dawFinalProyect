@@ -73,7 +73,9 @@ const ActivityDetail: React.FC = () => {
     <section className={styles.activity}>
       <div className={styles['section__container']}>
         <h1 className={styles.activity__title}>{activity.activity_title}</h1>
-        <p className={styles.activity__company}>{company?.company_name}</p>
+        {company?.company_name && (
+          <p className={styles.activity__company}>{company?.company_name}</p>
+        )}
 
         <div className={styles.activity__content}>
           <MediaSlider
@@ -83,53 +85,94 @@ const ActivityDetail: React.FC = () => {
 
           <div className={styles.activity__info}>
             <h2 className={styles.activity__infoTitle}>Info</h2>
-            <div className={styles.activity__date}>
-              <img src={timeIcon} alt="Icono fecha y hora" />
-              <p>{activity.activity_date} - {activity.activity_time}h</p>
-            </div>
-            <div className={styles.activity__location}>
-              <img src={locationIcon} alt="Icono localización" />
-              <p>{activity.activity_location}</p>
-            </div>
-            <div className={styles.activity__map}>
-              {activity.activity_location && (
+
+            {activity.activity_date && activity.activity_time && (
+              <div className={styles.activity__date}>
+                <img src={timeIcon} alt="Icono fecha y hora" />
+                <p>{activity.activity_date} - {activity.activity_time}h</p>
+              </div>
+            )}
+
+            {activity.activity_location && (
+              <div className={styles.activity__location}>
+                <img src={locationIcon} alt="Icono localización" />
+                <p>
+                  {activity.activity_adress ? `${activity.activity_adress} (${activity.activity_location})` : activity.activity_location}
+                </p>
+              </div>
+            )}
+
+            {activity.activity_location && ( // Solo mostramos el mapa si hay localización
+              <div className={styles.activity__map}>
                 <iframe
                   title="Mapa"
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(activity.activity_location)}&output=embed`}
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(
+                    activity.activity_adress 
+                      ? `${activity.activity_adress}, ${activity.activity_location}` 
+                      : activity.activity_location
+                  )}&output=embed`}
                   className={styles.activity__mapIframe}
                 ></iframe>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
         <div className={styles.activity__details}>
-          <span className={styles.activity__category}>{category?.category_name}</span>
+          {category?.category_name && (
+            <span className={styles.activity__category}>{category.category_name}</span>
+          )}
+
           <ul className={styles.activity__stats}>
-            <li><span>Plazas:</span> {activity.available_slots}</li>
-            <li><span>Duración:</span> {activity.activity_duration}h</li>
-            <li><span>Dificultad:</span> {activity.difficulty_level}</li>
+            {activity.available_slots > 0 && (
+              <li><span>Plazas:</span> {activity.available_slots}</li>
+            )}
+            {activity.activity_duration > 0 && (
+              <li><span>Duración:</span> {activity.activity_duration}h</li>
+            )}
+            {activity.difficulty_level && (
+              <li><span>Dificultad:</span> {activity.difficulty_level}</li>
+            )}
           </ul>
 
-          <p className={styles.activity__description}>{activity.activity_description}</p>
-          <p className={styles["activity__includes"]}><span>Incluye:</span> {activity.includes}</p>
-          <p className={styles["activity__excludes"]}><span>No incluye:</span> {activity.excludes}</p>
+          {activity.activity_description && (
+            <p className={styles.activity__description}>{activity.activity_description}</p>
+          )}
+
+          {activity.includes && (
+            <p className={styles["activity__includes"]}><span>Incluye:</span> {activity.includes}</p>
+          )}
+
+          {activity.excludes && (
+            <p className={styles["activity__excludes"]}><span>No incluye:</span> {activity.excludes}</p>
+          )}
         </div>
 
         <div className={`${styles.activity__footer} ${isFixed ? styles.fixed : ''}`}>
-          <p className={styles.activity__price}>{activity.activity_price}<span>€</span></p>
+        {activity.activity_price && (
+          <p className={styles.activity__price}>
+            {Number(activity.activity_price) === 0
+              ? 'Gratis' // If the price is 0, display 'Gratis'
+              : Number(activity.activity_price) % 1 === 0
+              ? Number(activity.activity_price) // If it's a whole number, display it without decimals
+              : Number(activity.activity_price).toFixed(2) // If it's a decimal number, show 2 decimal places
+            }
+            {Number(activity.activity_price) === 0 ? '' : <span>€</span>} {/* Only show € if price is not 'Gratis' */}
+          </p>
+        )}
           
+
           <Button
             text="Inscribirme"
             ariaLabel="Ir a la página de Inscripción"
             link={`/inscripcion/${activity.activity_id}`}
             className={styles.activity__button}
-
           />
-          
         </div>
       </div>
     </section>
+
+
   );
 };
 

@@ -1,0 +1,43 @@
+@import '@assets/styles/main.scss';
+
+.dashboard {
+    &__title {
+        font-size: rem(32);
+        font-weight: 700;
+        margin-bottom: rem(40);
+    }
+  
+    &__section:first-of-type {
+        max-width: rem(400);
+        background-color: $main-gray;
+        border-radius: rem(10);
+        padding: rem(40);
+        margin-bottom: rem(40);
+    }
+  
+    &__section-title {
+        font-size: rem(24);
+        margin-bottom: rem(20);
+        font-weight: 600;
+    }
+  
+    &__image-wrapper {
+        max-width: rem(200);
+        max-height: rem(200);
+        margin-bottom: rem(20);
+    }
+  
+    &__text {
+      margin-bottom: rem(10);
+    }
+    strong{
+        font-weight: 700;
+    }
+  
+    &__grid {
+      display: grid;
+      gap: rem(20);
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+  

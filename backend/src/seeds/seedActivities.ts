@@ -17,7 +17,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'medium',
       activity_type: 'Deportes',
       category_id: 1,
-      activity_location: 'Calle Salud 10, Madrid',
+      activity_location: 'Madrid',
+      activity_adress: 'Calle Salud 10',
       activity_images: ['zumba-1.jpg', 'zumba-2.jpg'],
       activity_videos: [],
       includes: 'Clase dirigida por un instructor profesional.',
@@ -36,7 +37,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'easy',
       activity_type: 'Bienestar y relajación',
       category_id: 2,
-      activity_location: 'Camino Sierra 23, Segovia',
+      activity_location: 'Segovia',
+      activity_adress: 'Camino Sierra 23',
       activity_images: ['yoga-1.jpg', 'yoga-2.jpg'],
       activity_videos: [],
       includes: 'Instrucción personal en poses básicas.',
@@ -55,7 +57,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'hard',
       activity_type: 'Deportes',
       category_id: 1,
-      activity_location: 'Calle Tranquila 15, Valencia',
+      activity_location: 'Valencia',
+      activity_adress: 'Calle Tranquila 15',
       activity_images: ['maraton-1.jpg'],
       activity_videos: [],
       includes: 'Kit de carrera incluido.',
@@ -74,7 +77,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'hard',
       activity_type: 'Aventura',
       category_id: 4,
-      activity_location: 'Avenida Historia 77, Sevilla',
+      activity_location: 'Sevilla',
+      activity_adress: 'Avenida Historia 77',
       activity_images: ['escalada-1.jpg', 'escalada-2.jpg'],
       activity_videos: [],
       includes: 'Equipo de escalada proporcionado.',
@@ -87,13 +91,14 @@ export const seedActivities = async (dataSource: DataSource) => {
       company_id: 2,
       activity_date: new Date('2025-05-15'),
       activity_time: '10:00:00',
-      activity_price: 20.0,
+      activity_price: 0,
       available_slots: 30,
       activity_duration: 120,
       difficulty_level: 'medium',
       activity_type: 'Cultura',
       category_id: 3,
-      activity_location: 'Plaza Mayor, Madrid',
+      activity_location: 'Madrid',
+      activity_adress: 'Plaza Mayor',
       activity_images: ['madrid-tour-1.jpg'],
       activity_videos: [],
       includes: 'Guía turístico experto incluido.',
@@ -112,7 +117,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'medium',
       activity_type: 'Aventura',
       category_id: 4,
-      activity_location: 'Río Ebro, Zaragoza',
+      activity_location: 'Zaragoza',
+      activity_adress: 'Río Ebro',
       activity_images: ['kayak-1.jpg', 'kayak-2.jpg'],
       activity_videos: [],
       includes: 'Equipo de kayak proporcionado.',
@@ -131,7 +137,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'easy',
       activity_type: 'Entretenimiento',
       category_id: 5,
-      activity_location: 'Parque Central, Barcelona',
+      activity_location: 'Barcelona',
+      activity_adress: 'Parque Central',
       activity_images: ['cine-1.jpg', 'cine-2.jpg'],
       activity_videos: [],
       includes: 'Palomitas y refresco incluidos.',
@@ -150,7 +157,8 @@ export const seedActivities = async (dataSource: DataSource) => {
       difficulty_level: 'medium',
       activity_type: 'Entretenimiento',
       category_id: 5,
-      activity_location: 'Calle Alegría 4, Valencia',
+      activity_location: 'Valencia',
+      activity_adress: 'Calle Alegría 4',
       activity_images: ['bailes-1.jpg'],
       activity_videos: [],
       includes: 'Clase dirigida por un instructor experimentado.',
@@ -160,22 +168,18 @@ export const seedActivities = async (dataSource: DataSource) => {
   ];
 
   try {
-    for (const activity of INITIAL_ACTIVITIES) {
-      const existing = await activityRepo.findOneBy({
-        activity_title: activity.activity_title,
-        company_id: activity.company_id,
-      });
 
-      if (existing) {
-        const updatedActivity = activityRepo.merge(existing, activity);
-        await activityRepo.save(updatedActivity);
-        console.log(`Actividad actualizada: ${activity.activity_title}`);
-      } else {
+    for (const activity of INITIAL_ACTIVITIES) {
+      const activityExists = await activityRepo.findOneBy({ activity_title: activity.activity_title });
+      if (!activityExists) {
+        console.log(`Insertando actividad: ${activity.activity_title}`);
         const newActivity = activityRepo.create(activity);
         await activityRepo.save(newActivity);
-        console.log(`Actividad insertada: ${activity.activity_title}`);
+      } else {
+        console.log(`La actividad "${activity.activity_title}" ya existe.`);
       }
     }
+
 
     console.log("¡Seed de actividades completado!");
   } catch (error) {

@@ -12,6 +12,7 @@ export interface Activity {
   activity_type: string;
   category_id: number;
   activity_location: string;
+  activity_adress: string;
   activity_images: string[];
   activity_videos: string[];
   includes: string;

@@ -29,7 +29,7 @@ DELETE FROM Company;
 DELETE FROM Category;
 DELETE FROM UserData;
 
-DELETE FROM Company WHERE company_id=11;
+DELETE FROM company WHERE company_id=14;
 
 ALTER TABLE Registration AUTO_INCREMENT = 1; 
 ALTER TABLE Activity AUTO_INCREMENT = 1; 

@@ -76,12 +76,15 @@ const ActivityCard: React.FC<Activity> = ({
           {company?.company_name || 'Empresa no disponible'}
         </p>
 
-        {Number(activity_price) > 0 && (
+        {Number(activity_price) >= 0 && (
           <p className={styles.activityCard__price}>
-            {Number(activity_price) % 1 === 0
-              ? Number(activity_price)
-              : Number(activity_price).toFixed(2)
-            }€
+            {Number(activity_price) === 0
+              ? 'Gratis' // If the price is 0, display 'Gratis'
+              : Number(activity_price) % 1 === 0
+              ? Number(activity_price) // If it's a whole number, display it without decimals
+              : Number(activity_price).toFixed(2) // If it's a decimal number, show 2 decimal places
+            }
+            {Number(activity_price) === 0 ? '' : <span>€</span>} {/* Only show € if price is not 'Gratis' */}
           </p>
         )}
 

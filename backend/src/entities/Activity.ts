@@ -53,6 +53,9 @@ export class Activity {
   @Column({ name: 'activity_location', type: 'text', nullable: true })
   activity_location!: string;
 
+  @Column({ name: 'activity_adress', type: 'text', nullable: true })
+  activity_adress!: string;
+
   @Column({ name: 'activity_images', type: 'json', nullable: true })
   activity_images!: string[];
 
