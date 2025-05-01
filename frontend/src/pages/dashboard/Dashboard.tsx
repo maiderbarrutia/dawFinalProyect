@@ -86,7 +86,8 @@ const Dashboard: React.FC = () => {
 
         <section className={styles['dashboard__section']}>
           <h2 className={styles['dashboard__section-title']}>Actividades creadas</h2>
-          {actividades.length > 0 ? (
+        
+          {actividades.filter((actividad) => actividad.company_id === Number(companyId)).length > 0 ? (
             <ul className={styles['dashboard__grid']}>
               {actividades
                 .filter((actividad) => actividad.company_id === Number(companyId))
@@ -99,6 +100,7 @@ const Dashboard: React.FC = () => {
           ) : (
             <p className={styles['dashboard__text']}>No hay actividades creadas aún.</p>
           )}
+
         </section>
       </div>
     </section>

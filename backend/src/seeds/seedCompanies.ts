@@ -7,19 +7,21 @@ export const seedCompanies = async (dataSource: DataSource) => {
 
   const INITIAL_COMPANIES = [
     {
+      company_id: 1,
       company_name: 'Batt Base',
       company_type: 'Gimnasio',
       company_logo: 'logo-batt-base.png',
       company_cif: 'B12345678',
       contact_person: 'Laura Sánchez',
-      company_phone: '912345678',
+      company_phone: '9123456783',
       company_address: 'Calle Salud 10, Madrid',
       company_website: 'https://battbase.es',
       company_email: 'info@battbase.es',
-      company_password: 'hashedpass1',
+      company_password: 'hashedpass15',
       privacy_policy: true,
     },
     {
+      company_id: 2,
       company_name: 'Healthy Life',
       company_type: 'Centro de Bienestar',
       company_logo: 'logo-healthy-life.png',
@@ -33,6 +35,7 @@ export const seedCompanies = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      company_id: 3,
       company_name: 'Running Club',
       company_type: 'Club Deportivo',
       company_logo: 'logo-running.png',
@@ -46,6 +49,7 @@ export const seedCompanies = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      company_id: 4,
       company_name: 'Storm Adventures',
       company_type: 'Turismo Aventura',
       company_logo: 'logo-storm.png',
@@ -59,6 +63,7 @@ export const seedCompanies = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      company_id: 5,
       company_name: 'Strike Sports',
       company_type: 'Club Deportivo',
       company_logo: 'logo-strike.png',
@@ -72,6 +77,7 @@ export const seedCompanies = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      company_id: 6,
       company_name: 'The Culture',
       company_type: 'Organización Cultural',
       company_logo: 'logo-the-culture.png',
@@ -85,6 +91,7 @@ export const seedCompanies = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      company_id: 7,
       company_name: 'Velo Max',
       company_type: 'Turismo Activo',
       company_logo: 'logo-velo-max.png',
@@ -98,6 +105,7 @@ export const seedCompanies = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      company_id: 8,
       company_name: 'Wellness Center',
       company_type: 'Bienestar y Relax',
       company_logo: 'logo-wellness.png',
@@ -113,26 +121,59 @@ export const seedCompanies = async (dataSource: DataSource) => {
   ];
 
   try {
-    
     for (const company of INITIAL_COMPANIES) {
-      const companyExists = await companyRepo.findOneBy({ company_email: company.company_email });
+      const existingCompany = await companyRepo.findOneBy({ company_id: company.company_id });
 
-      const hashedPassword = await bcrypt.hash(company.company_password, 10);
-      company.company_password = hashedPassword;
-  
-      if (!companyExists) {
-        console.log(`Insertando empresa: ${company.company_name}`);
+      if (!existingCompany) {
+        const hashedPassword = await bcrypt.hash(company.company_password, 10);
+        company.company_password = hashedPassword;
+
+        console.log(`🟢 Creando empresa: ${company.company_name}`);
         const newCompany = companyRepo.create(company);
         await companyRepo.save(newCompany);
       } else {
         
-        console.log(`La empresa "${company.company_name}" ya existe.`);
+        const passwordChanged = !(await bcrypt.compare(company.company_password, existingCompany.company_password));
+        if (passwordChanged) {
+          company.company_password = await bcrypt.hash(company.company_password, 10);
+        } else {
+          company.company_password = existingCompany.company_password;
+        }
+
+        // Comparar campos
+        const hasChanges = (
+          existingCompany.company_name !== company.company_name ||
+          existingCompany.company_type !== company.company_type ||
+          existingCompany.company_logo !== company.company_logo ||
+          existingCompany.company_cif !== company.company_cif ||
+          existingCompany.contact_person !== company.contact_person ||
+          existingCompany.company_phone !== company.company_phone ||
+          existingCompany.company_address !== company.company_address ||
+          existingCompany.company_website !== company.company_website ||
+          existingCompany.company_email !== company.company_email ||
+          existingCompany.privacy_policy !== company.privacy_policy ||
+          passwordChanged
+        );
+
+        if (hasChanges) {
+          console.log(`🟡 Actualizando empresa: ${company.company_name}`);
+          // await companyRepo.update({ company_id: company.company_id }, company);
+          await companyRepo.update(
+            { company_id: company.company_id },
+            {
+              ...company,
+              company_id: company.company_id,
+            }
+          );
+        } else {
+          console.log(`🔵 La empresa "${company.company_name}" ya existe sin cambios.`);
+        }
       }
     }
 
-    console.log("¡Seed de empresas completado!");
+    console.log("✅ ¡Seed de empresas completado!");
   } catch (error) {
-    console.error("Error durante el seed de empresas:", error);
+    console.error("❌ Error durante el seed de empresas:", error);
   }
   
 };

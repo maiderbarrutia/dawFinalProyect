@@ -6,11 +6,12 @@ export const seedActivities = async (dataSource: DataSource) => {
 
   const INITIAL_ACTIVITIES: Partial<Activity>[] = [
     {
+      activity_id: 1,
       activity_title: 'Zumba en grupo',
       activity_description: 'Clase de Zumba para todas las edades y niveles de habilidad.',
       company_id: 1,
       activity_date: new Date('2025-05-01'),
-      activity_time: '10:00:00',
+      activity_time: '10:30:00',
       activity_price: 15.0,
       available_slots: 20,
       activity_duration: 60,
@@ -26,6 +27,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 2,
       activity_title: 'Yoga para principiantes',
       activity_description: 'Sesión de yoga para aliviar el estrés y mejorar la flexibilidad.',
       company_id: 2,
@@ -46,6 +48,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 3,
       activity_title: 'Maratón 10k',
       activity_description: 'Competición de 10 kilómetros para corredores de todos los niveles.',
       company_id: 1,
@@ -66,6 +69,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 4,
       activity_title: 'Escalada',
       activity_description: 'Aventura de escalada para todos los niveles de experiencia.',
       company_id: 4,
@@ -86,6 +90,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 5,
       activity_title: 'Tour cultural por Madrid',
       activity_description: 'Recorrido guiado por los principales puntos históricos de Madrid.',
       company_id: 2,
@@ -106,6 +111,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 6,
       activity_title: 'Excursión en kayak',
       activity_description: 'Aventura en kayak por los ríos de la región.',
       company_id: 4,
@@ -126,6 +132,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 7,
       activity_title: 'Cine al aire libre',
       activity_description: 'Disfruta de una película bajo las estrellas en nuestra proyección al aire libre.',
       company_id: 5,
@@ -146,6 +153,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       privacy_policy: true,
     },
     {
+      activity_id: 8,
       activity_title: 'Bailes latinos',
       activity_description: 'Aprende a bailar salsa, bachata y merengue en esta clase divertida y enérgica.',
       company_id: 5,
@@ -168,21 +176,63 @@ export const seedActivities = async (dataSource: DataSource) => {
   ];
 
   try {
-
     for (const activity of INITIAL_ACTIVITIES) {
-      const activityExists = await activityRepo.findOneBy({ activity_title: activity.activity_title });
-      if (!activityExists) {
-        console.log(`Insertando actividad: ${activity.activity_title}`);
+      const existingActivity = await activityRepo.findOneBy({ activity_id: activity.activity_id });
+  
+      if (!existingActivity) {
+        console.log(`🟢 Creando actividad: ${activity.activity_title}`);
         const newActivity = activityRepo.create(activity);
         await activityRepo.save(newActivity);
       } else {
-        console.log(`La actividad "${activity.activity_title}" ya existe.`);
+        // Comparar si los campos de la actividad han cambiado (sin imágenes y videos)
+        const hasChanges = (
+          existingActivity.activity_title !== activity.activity_title ||
+          existingActivity.activity_description !== activity.activity_description ||
+          existingActivity.company_id !== activity.company_id ||
+          Number(existingActivity.activity_price) !== Number(activity.activity_price) ||
+          (existingActivity.activity_date && activity.activity_date &&
+            new Date(existingActivity.activity_date).getTime() !== new Date(activity.activity_date).getTime()) ||
+          (existingActivity.activity_date && !activity.activity_date) ||
+          (!existingActivity.activity_date && activity.activity_date) ||
+          existingActivity.activity_time !== activity.activity_time ||
+          existingActivity.available_slots !== activity.available_slots ||
+          existingActivity.activity_duration !== activity.activity_duration ||
+          existingActivity.difficulty_level !== activity.difficulty_level ||
+          existingActivity.activity_type !== activity.activity_type ||
+          existingActivity.category_id !== activity.category_id ||
+          existingActivity.activity_location !== activity.activity_location ||
+          existingActivity.activity_adress !== activity.activity_adress ||
+          existingActivity.includes !== activity.includes ||
+          existingActivity.excludes !== activity.excludes ||
+          existingActivity.privacy_policy !== activity.privacy_policy ||
+          (existingActivity.activity_images?.length !== activity.activity_images?.length || 
+           existingActivity.activity_images?.some((img, index) => img !== activity.activity_images?.[index])) ||
+          (existingActivity.activity_videos?.length !== activity.activity_videos?.length || 
+           existingActivity.activity_videos?.some((video, index) => video !== activity.activity_videos?.[index]))
+        );
+        
+  
+        if (hasChanges) {
+          console.log(`🟡 Actualizando actividad: ${activity.activity_title}`);
+          await activityRepo.update(
+            { activity_id: activity.activity_id },
+            { 
+              ...activity, 
+              activity_id: activity.activity_id
+            }
+          );
+        } else {
+          console.log(`🔵 La actividad "${activity.activity_title}" ya existe sin cambios.`);
+        }
       }
     }
-
-
-    console.log("¡Seed de actividades completado!");
+  
+    console.log("✅ ¡Seed de actividades completado!");
   } catch (error) {
-    console.error("Error durante el seed de actividades:", error);
+    console.error("❌ Error durante el seed de actividades:", error);
   }
+  
+  
+
+  
 };
