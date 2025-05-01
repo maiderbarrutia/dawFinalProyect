@@ -13,7 +13,7 @@ import { seedActivities } from "./seeds/seedActivities";
 import path from 'path';
 
 dotenv.config();
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
+// console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 
 const app = express();
@@ -29,15 +29,12 @@ const startServer = async () => {
 
     // Ejecutar el seed de categorías
     await seedCategories(dataSource);
-    console.log("Seed de categorías ejecutado exitosamente.");
 
     // Ejecutar el seed de empresas
     await seedCompanies(dataSource);
-    console.log("Seed de empresas ejecutado exitosamente.");
 
     // Ejecutar el seed de actividades
     await seedActivities(dataSource);
-    console.log("Seed de actividades ejecutado exitosamente.");
 
     // Registrar las rutas
     app.use("/api/usuarios", userDataRoutes);
