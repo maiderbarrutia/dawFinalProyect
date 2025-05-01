@@ -4,6 +4,7 @@ import ActivityCard from '@/components/common/ActivityCard/ActivityCard';
 import { getRequest } from '@/services/api';
 import SectionHeader from '@/components/common/SectionHeader/SectionHeader';
 import { Activity } from '@/interfaces/Activity';
+import Loading from '@/components/common/Loading/Loading';
 
 const FeaturedActivities: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -26,7 +27,8 @@ const FeaturedActivities: React.FC = () => {
     fetchActivities();
   }, []);
 
-  if (loading) return <p>Cargando actividades...</p>;
+  // if (loading) return <p>Cargando actividades...</p>;
+  if (loading) return <Loading message="Cargando..." />;
   if (error) return <p>{error}</p>;
 
   return (

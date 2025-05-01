@@ -32,7 +32,6 @@ const ActivityDetail: React.FC = () => {
         setActivity(activityData);
         setError(null);
 
-        // Fetch related company and category
         const [companyData, categoryData] = await Promise.all([
           getRequest<Company>(`/empresas/${activityData.company_id}`),
           getRequest<Category>(`/categorias/${activityData.category_id}`)
@@ -152,12 +151,12 @@ const ActivityDetail: React.FC = () => {
         {activity.activity_price && (
           <p className={styles.activity__price}>
             {Number(activity.activity_price) === 0
-              ? 'Gratis' // If the price is 0, display 'Gratis'
+              ? 'Gratis'
               : Number(activity.activity_price) % 1 === 0
-              ? Number(activity.activity_price) // If it's a whole number, display it without decimals
-              : Number(activity.activity_price).toFixed(2) // If it's a decimal number, show 2 decimal places
+              ? Number(activity.activity_price)
+              : Number(activity.activity_price).toFixed(2)
             }
-            {Number(activity.activity_price) === 0 ? '' : <span>€</span>} {/* Only show € if price is not 'Gratis' */}
+            {Number(activity.activity_price) === 0 ? '' : <span>€</span>}
           </p>
         )}
           

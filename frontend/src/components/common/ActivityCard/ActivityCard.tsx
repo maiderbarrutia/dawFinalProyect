@@ -21,7 +21,6 @@ const ActivityCard: React.FC<Activity> = ({
 }) => {
   const [category, setCategory] = useState<Category | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-  const [loading, setLoading] = useState(true);
 
   const placeholderImage = getAssetSrc(`images/default-image.jpg`);
   const imageSrc = getUploadedImageSrc(`images/${activity_images[0]}`);
@@ -36,15 +35,11 @@ const ActivityCard: React.FC<Activity> = ({
         setCompany(companyData);
       } catch (error) {
         console.error('Error al cargar la categoría o la empresa', error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchCategoryAndCompany();
   }, [category_id, company_id]);
-
-  if (loading) return <p>Cargando...</p>;
   
 
   return (
@@ -54,6 +49,7 @@ const ActivityCard: React.FC<Activity> = ({
         <div className={styles.activityCard__imageWrapper}>
         <img
           src={imageSrc}
+          loading="lazy"
           alt={activity_title}
           className={styles.activityCard__image}
           onError={(e) => {

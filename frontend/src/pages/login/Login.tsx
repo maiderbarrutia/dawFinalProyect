@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postRequest } from '../../services/api'; 
 import Button from "@components/common/Button/Button";
@@ -12,6 +12,29 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  // Verifica si el token ha caducado al cargar el componente
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        // Decodificamos el token para obtener su fecha de expiración
+        const decodedToken = jwt_decode<{ exp: number }>(token);
+        const currentTime = Math.floor(Date.now() / 1000); // Hora actual en segundos
+
+        // Si el token ha caducado
+        if (decodedToken.exp < currentTime) {
+          // Elimina el token caducado y cierra la sesión
+          localStorage.removeItem('token');
+          localStorage.removeItem('companyId');
+          login(''); // O una función para eliminar el estado de la sesión
+          navigate('/login'); // Redirige al usuario a la página de login
+        }
+      } catch (err) {
+        console.error('Error al decodificar el token', err);
+      }
+    }
+  }, [navigate, login]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,10 +51,11 @@ const Login: React.FC = () => {
   
       if (token) {
         // Decodificar el token para obtener el id de la empresa
-        const decodedToken = jwt_decode<{ id: number }>(token);  // Suponemos que el token tiene un campo 'id'
+        const decodedToken = jwt_decode<{ id: number, exp: number }>(token);
         const companyId = decodedToken.id;  // Extraemos el id de la empresa
   
-        // Almacenar el id de la empresa en localStorage junto con el token (si lo deseas)
+        // Almacenar el token y el id de la empresa en localStorage
+        localStorage.setItem('token', token);
         localStorage.setItem('companyId', companyId.toString());
   
         login(token);

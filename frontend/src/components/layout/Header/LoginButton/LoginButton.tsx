@@ -12,8 +12,8 @@ interface DecodedToken {
 }
 
 const LoginButton: React.FC = () => {
-  const { isAuthenticated, logout, token } = useAuth();  // Usamos el contexto de autenticación
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false); // Para mostrar/ocultar el submenú
+  const { isAuthenticated, logout, token } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -38,7 +38,6 @@ const LoginButton: React.FC = () => {
       .then((data) => {
         if (data) {
           const logoFile = data.company_logo;
-          console.log(data)
           const logoUrl = logoFile
             ? getUploadedImageSrc(`images/${logoFile}`)
             : getAssetSrc(`images/default-image.jpg`);
@@ -46,12 +45,12 @@ const LoginButton: React.FC = () => {
           setCompanyLogo(logoUrl);
         } else {
           console.error("No se encontró la empresa en los datos.");
-          setCompanyLogo(getAssetSrc("images/default-image.jpg")); // Si no se encuentra la empresa, también usar logo por defecto
+          setCompanyLogo(getAssetSrc("images/default-image.jpg"));
         }
       })
       .catch((error) => {
         console.error("Error al obtener los datos de la empresa", error);
-        setCompanyLogo(getAssetSrc("images/default-image.jpg")); // En caso de error, usar logo por defecto
+        setCompanyLogo(getAssetSrc("images/default-image.jpg"));
       });
   };
 
@@ -67,13 +66,19 @@ const LoginButton: React.FC = () => {
   // Cerrar sesión
   const handleLogout = () => {
     logout();
-    setCompanyLogo(null); // Limpiar el logo al cerrar sesión
+    setCompanyLogo(null);
     navigate("/login");
   };
 
   // Navegaciones del menú desplegable
-  const goToProfile = () => {navigate("/perfil");};
-  const goToCreateActivities = () => {navigate("/crear-actividad");};
+  const goToProfile = () => {
+    navigate("/perfil");
+    setIsMenuOpen(false);
+  };
+  const goToCreateActivities = () => {
+    navigate("/crear-actividad");
+    setIsMenuOpen(false);
+  };
 
   return (
     <div className={styles.loginButton}>
@@ -87,6 +92,7 @@ const LoginButton: React.FC = () => {
             >
               <img
                 src={companyLogo}
+                loading="lazy"
                 alt="Logo de la empresa"
                 className={styles.logo}
               />

@@ -5,6 +5,7 @@ import { getRequest } from '@/services/api';
 import { Company } from '@/interfaces/Company';
 import { getAssetSrc, getUploadedImageSrc } from '@/utils/srcUtils';
 import ItemsCarousel from '@/components/common/ItemsCarousel/ItemsCarousel';
+import Loading from '@/components/common/Loading/Loading';
 
 const FeaturedCompanies: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -27,7 +28,7 @@ const FeaturedCompanies: React.FC = () => {
     fetchCompanies();
   }, []);
 
-  if (loading) return <p>Cargando empresas...</p>;
+  if (loading) return <Loading message="Cargando..." />;
   if (error) return <p>{error}</p>;
 
   const logos = companies.slice(0, 8).map((company) => {

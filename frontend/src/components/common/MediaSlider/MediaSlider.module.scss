@@ -8,6 +8,10 @@
   justify-content: center;
   align-items: center;
 
+  @media (min-width: $size-tablet) {
+    flex-basis: 70%;
+  }
+
   &__content {
     width: 100%;
     position: relative;
@@ -17,12 +21,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: rem(250);
+
+    @media (min-width: $size-tablet) {
+      height: rem(500);
+    }
   }
 
   &__image {
     max-width: 100%;
-    height: auto;
-    border-radius: 8px;
+    height: 100%;
+    border-radius: rem(10);
+    object-fit: cover;
   }
 
   &__video-wrapper {

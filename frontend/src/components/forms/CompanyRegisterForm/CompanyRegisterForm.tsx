@@ -37,11 +37,21 @@ const FormField: React.FC<FieldProps> = ({ name, type, placeholder, label, requi
 const validationSchema = Yup.object({
   company_name: Yup.string().required('El nombre de la empresa es obligatorio.'),
   company_type: Yup.string(),
-  company_cif: Yup.string().required('El CIF es obligatorio.'),
+  company_cif: Yup.string()
+  .required('El CIF es obligatorio.')
+  .matches(
+    /^[ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J]$/,
+    'Número de CIF no válido.'
+  ),
   contact_person: Yup.string().required('La persona de contacto es obligatoria.'),
-  company_phone: Yup.string().required('El teléfono de la empresa es obligatorio.'),
+  company_phone: Yup.string()
+  .required('El teléfono de la empresa es obligatorio.')
+  .matches(
+    /^\+?[0-9\s\-().]{7,20}$/,
+    'Número de teléfono no válido.'
+  ),
   company_address: Yup.string().required('La dirección de la empresa es obligatoria.'),
-  company_email: Yup.string().email('Correo electrónico inválido').required('El email es obligatorio.'),
+  company_email: Yup.string().email('El email es inválido').required('El email es obligatorio.'),
   company_password: Yup.string().required('La contraseña es obligatoria.'),
   repeat_password: Yup.string()
     .oneOf([Yup.ref('company_password')], 'Las contraseñas no coinciden')

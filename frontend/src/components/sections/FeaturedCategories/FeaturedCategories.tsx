@@ -4,6 +4,7 @@ import styles from './FeaturedCategories.module.scss';
 import { getRequest } from '@/services/api';
 import { getAssetSrc, getUploadedImageSrc } from '@/utils/srcUtils';
 import Button from "@components/common/Button/Button";
+import Loading from '@/components/common/Loading/Loading';
 
 interface Category {
   category_id: number;
@@ -43,8 +44,8 @@ const FeaturedCategories: React.FC = () => {
     fetchCategories();
   });
 
-  if (loading) return <p>Cargando categorías...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <Loading message="Cargando..." />;
+  if (error) return <p>{error}</p>;
 
   return (
     <section className={`${styles['featuredCategories']} ${styles['home-section']}`}>

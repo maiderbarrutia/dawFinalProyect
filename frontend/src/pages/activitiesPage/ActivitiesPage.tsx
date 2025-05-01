@@ -6,6 +6,7 @@ import { getRequest } from '@/services/api';
 import SearchFilters from '@components/common/searchFilters/SearchFilters';
 import CategoriesFilters from '@components/common/categoriesFilters/CategoriesFilters';
 import { Activity } from '@/interfaces/Activity';
+import Loading from '@/components/common/Loading/Loading';
 
 const ActivitiesPage: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -104,8 +105,8 @@ const ActivitiesPage: React.FC = () => {
     setAppliedLocation(location);
   };
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>{error}</p>; // Mostrar el error si ocurre
+  if (loading) return <Loading message="Cargando..." />;
+  if (error) return <p>{error}</p>;
 
   return (
     <section className={styles.activitiesPage}>

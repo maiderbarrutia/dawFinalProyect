@@ -1,1 +1,5 @@
-
+@keyframes loading-spin {
+    to {
+      transform: rotate(360deg);
+    }
+}
