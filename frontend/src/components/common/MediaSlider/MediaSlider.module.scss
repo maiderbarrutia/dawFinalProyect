@@ -3,6 +3,7 @@
 .slider-container {
   position: relative;
   max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -21,7 +22,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: rem(250);
+    height: rem(300);
 
     @media (min-width: $size-tablet) {
       height: rem(500);
@@ -42,9 +43,9 @@
 
   &__video-element {
     max-width: 100%;
-    width: 800px;
+    width: rem(800);
     height: auto;
-    border-radius: 8px;
+    border-radius: rem(10);
   }
 
   &__navigation-buttons {
@@ -58,12 +59,9 @@
 
   &__nav-button {
     background-color: transparent;
-    color: white;
-    border: none;
-    padding: 10px 20px;
+    padding: rem(10) rem(20);
     cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
+    border: none;
 
     &:hover {
       opacity: 0.7;

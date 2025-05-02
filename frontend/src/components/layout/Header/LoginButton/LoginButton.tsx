@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "@components/common/Button/Button";
 import styles from "./LoginButton.module.scss";
 import { getAssetSrc, getUploadedImageSrc } from "@/utils/srcUtils";
-import { useAuth } from "@/context/AuthContext";  // Importamos el hook useAuth
+import { useAuth } from "@/context/AuthContext";
 import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
+import { getRequestById } from "@/services/api";
+import { Company } from "@/interfaces/Company";
 
 // Definir la interfaz para el token decodificado con el id de la empresa
 interface DecodedToken {
@@ -21,38 +24,35 @@ const LoginButton: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated && token) {
       fetchCompanyData(token);
+      setIsMenuOpen(false);
     }
   }, [isAuthenticated, token]);
 
-  // Obtener los datos de la empresa desde el backend usando el ID del token
-  const fetchCompanyData = (token: string) => {
-    const decodedToken: DecodedToken = jwt_decode(token);
-    const companyId = decodedToken.id;
+  const fetchCompanyData = async (token: string) => {
+    try {
+      const decodedToken: DecodedToken = jwt_decode(token);
+      const companyId = decodedToken.id;
   
-    fetch(`http://localhost:3003/api/empresas/${companyId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          const logoFile = data.company_logo;
-          const logoUrl = logoFile
-            ? getUploadedImageSrc(`images/${logoFile}`)
-            : getAssetSrc(`images/default-image.jpg`);
+      const data = await getRequestById<Company>(`/empresas`, companyId);
   
-          setCompanyLogo(logoUrl);
-        } else {
-          console.error("No se encontró la empresa en los datos.");
-          setCompanyLogo(getAssetSrc("images/default-image.jpg"));
-        }
-      })
-      .catch((error) => {
-        console.error("Error al obtener los datos de la empresa", error);
+      if (data) {
+        const logoFile = data.company_logo;
+        const logoUrl = logoFile
+          ? getUploadedImageSrc(`images/${logoFile}`)
+          : getAssetSrc("images/default-image.jpg");
+  
+        setCompanyLogo(logoUrl);
+      } else {
+        console.error("No se encontró la empresa en los datos.");
         setCompanyLogo(getAssetSrc("images/default-image.jpg"));
-      });
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos de la empresa", error);
+      setCompanyLogo(getAssetSrc("images/default-image.jpg"));
+    }
   };
+  
+  
 
   // Al hacer clic en el botón (logo o texto)
   const handleClick = () => {
@@ -70,48 +70,47 @@ const LoginButton: React.FC = () => {
     navigate("/login");
   };
 
-  // Navegaciones del menú desplegable
-  const goToProfile = () => {
-    navigate("/perfil");
-    setIsMenuOpen(false);
-  };
-  const goToCreateActivities = () => {
-    navigate("/crear-actividad");
-    setIsMenuOpen(false);
-  };
-
   return (
-    <div className={styles.loginButton}>
+    <div className={styles["login-button"]}>
       {isAuthenticated ? (
         <div>
           {companyLogo && (
-            <div
-              className={styles.logoAndArrow}
+            <button
+              className={styles["login-button__toggle"]}
               onClick={handleClick}
               aria-label="Abrir el menú de usuario"
             >
               <img
                 src={companyLogo}
                 loading="lazy"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.onerror = null;
+                  target.src = getAssetSrc("images/default-image.jpg");
+                }}
                 alt="Logo de la empresa"
-                className={styles.logo}
+                className={styles["login-button__logo"]}
               />
-              <span className={styles.arrow}>{isMenuOpen ? "▲" : "▼"}</span>
-            </div>
+              <span className={styles["login-button__arrow"]}>{isMenuOpen ? "▲" : "▼"}</span>
+            </button>
           )}
 
           {isMenuOpen && (
-            <div className={styles.dropdownMenu}>
-              <ul>
-                <li onClick={goToProfile}>Mi cuenta</li>
-                <li onClick={goToCreateActivities}>Crear actividades</li>
-                <li onClick={handleLogout}>Cerrar sesión</li>
-              </ul>
-            </div>
+            <ul className={styles["login-button__menu"]}>
+              <li className={styles["login-button__item"]}>
+                <Link to="/perfil" onClick={() => setIsMenuOpen(false)}>Mi cuenta</Link>
+              </li>
+              <li className={styles["login-button__item"]}>
+                <Link to="/crear-actividad" onClick={() => setIsMenuOpen(false)}>Crear actividades</Link>
+              </li>
+              <li className={`${styles["login-button__item"]} ${styles["login-button__item--logout"]}`}>
+                <button onClick={handleLogout}>Cerrar sesión</button>
+              </li>
+            </ul>
           )}
         </div>
       ) : (
-        <div className={styles.loginButton_submit}>
+        <div className={styles["login-button__submit"]}>
           <Button
             text="Login"
             handleClick={handleClick}

@@ -10,7 +10,6 @@ import Home from '@/pages/home/Home';
 import Footer from '@components/layout/Footer/Footer';
 
 import Login from '../pages/login/Login';
-// import Register from '../pages/___register/Register';
 import Dashboard from '../pages/dashboard/Dashboard';
 
 import FeaturedActivities from '@components/sections/FeaturedActivities/FeaturedActivities';
@@ -19,6 +18,11 @@ import ActivityDetail from '@/components/common/ActivityDetail/ActivityDetail';
 import CompaniesRegister from '@components/forms/CompanyRegisterForm/CompanyRegisterForm'
 import ActivityRegister from '@/components/forms/activityRegisterForm/activityRegisterForm';
 import RegistrationForm from '@/components/forms/RegistrationForm/RegistrationForm'
+
+import NotFound from '@/pages/notFound/NotFound';
+import PrivacyPolicy from '@/pages/privacyPolicy/PrivacyPolicy';
+import Cookies from '@/pages/cookiesPolicy/CookiesPolicy'
+import CookiesBanner from '@/components/common/CookiesBanner/CookiesBanner';
 
 
 const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -32,29 +36,21 @@ const SiteRoutes: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        {/* Header y Footer se mantienen en todas las rutas */}
         <Header />
           <Layout>
             <Routes>
-
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/register" element={<Register />} /> */}
               <Route path="/perfil" element={
                   <ProtectedRoute>
                     <Dashboard />
                   </ProtectedRoute>
                 }
               />
-            
-              {/* Ruta para la página principal donde estarán todas las secciones */}
               <Route path="/" element={<Home />} />
-              
-              {/* Ruta para las demás páginas */}
               <Route path="/" element={<FeaturedActivities />} />
               <Route path="/actividades" element={<ActivitiesPage />} />
               <Route path="/actividad/:id" element={<ActivityDetail />} />
               <Route path="/crear-cuenta-empresa" element={<CompaniesRegister />} />
-
               <Route path="/crear-actividad" element={
                 <ProtectedRoute>
                   <ActivityRegister />
@@ -62,9 +58,13 @@ const SiteRoutes: React.FC = () => {
               }
               />
               <Route path="/inscripcion/:activityId" element={<RegistrationForm />} />
+              <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
+              <Route path="/politica-de-cookies" element={<Cookies />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
+              <Route path="/404" element={<NotFound />} />
             </Routes>
           </Layout>
-        {/* <CookiesBanner /> */}
+          <CookiesBanner />
         <Footer />
       </Router>
     </AuthProvider>

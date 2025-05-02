@@ -11,7 +11,10 @@ CREATE TABLE Company (
     company_email VARCHAR(255) UNIQUE,
     company_password VARCHAR(255) NOT NULL,
     privacy_policy  BOOLEAN DEFAULT FALSE,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    INDEX idx_company_email (company_email),
+    INDEX idx_company_cif (company_cif)  
 );
 
 INSERT INTO Company (company_name, company_type, company_logo, company_cif, contact_person, company_phone, company_address, company_website, company_email, company_password, privacy_policy)

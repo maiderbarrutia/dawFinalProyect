@@ -4,7 +4,7 @@
 
   &__title {
     font-size: rem(32);
-    margin-bottom: 10px;
+    margin-bottom: rem(10);
     font-weight: bold;
   }
 
@@ -44,8 +44,8 @@
   &__info {
     flex: 1;
     background-color: $main-gray;
-    padding: 15px;
-    border-radius: 8px;
+    padding: rem(15);
+    border-radius: rem(10);
   }
 
   &__infoTitle{
@@ -58,7 +58,7 @@
 
   &__date,
   &__location {
-    margin-bottom: 15px;
+    margin-bottom: rem(15);
     display: flex;
     gap: rem(10);
     align-items: center;

@@ -3,10 +3,11 @@ CREATE TABLE Registration (
     user_id INT NOT NULL,
     activity_id INT NOT NULL,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
     FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE,
     FOREIGN KEY (activity_id) REFERENCES Activity(activity_id) ON DELETE CASCADE,
-    INDEX (user_id),
-    INDEX (activity_id)
+    INDEX idx_user_id (user_id),
+    INDEX idx_activity_id (activity_id)  
 );
 
 INSERT INTO Registration (user_id, activity_id, registration_date)

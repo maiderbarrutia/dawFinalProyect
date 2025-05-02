@@ -1,35 +1,63 @@
 @import '@assets/styles/main.scss';
 
-.logo{
-    height: rem(50);
-    border-radius: 100%;
-    width: rem(50);
-    object-fit: cover;
-}
+.login-button {
+  position: relative;
+  z-index: 1;
 
-.logoAndArrow{
+  &__toggle {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: none;
+    border: none;
     cursor: pointer;
-}
+    padding: 0;
+  }
 
-.loginButton{
-    position: relative;
-}
+  &__logo {
+    height: rem(50);
+    width: rem(50);
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
-.dropdownMenu{
+  &__arrow {
+    margin-left: rem(10);
+    font-size: rem(14);
+  }
+
+  &__menu {
     position: absolute;
-    background: white;
     top: rem(60);
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    padding: rem(10);
     right: 0;
     width: rem(200);
+    background: $white;
+    box-shadow: 1px 1px 5px rgba($main-black, 0.2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    li{
-        cursor: pointer;
-        margin-bottom: rem(10);
+  &__item {
+    a,
+    button {
+      display: inline-block;
+      width: 100%;
+      padding: rem(10) rem(20);
+      font-size: rem(14);
+      font-weight: 500;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: $main-black;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+
+      &:hover {
+        color: $primary-color;
+        background-color: $main-gray;
+      }
     }
+  }
 }
-

@@ -1,9 +1,10 @@
 CREATE TABLE Category (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL,
+    category_name VARCHAR(100) NOT NULL UNIQUE,
     category_description TEXT,
     category_image VARCHAR(255),
-    UNIQUE(category_name)
+    
+    INDEX idx_category_name (category_name)
 );
 
 INSERT INTO Category (category_name, category_description, category_image)

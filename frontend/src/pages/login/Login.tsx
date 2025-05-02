@@ -27,8 +27,8 @@ const Login: React.FC = () => {
           // Elimina el token caducado y cierra la sesión
           localStorage.removeItem('token');
           localStorage.removeItem('companyId');
-          login(''); // O una función para eliminar el estado de la sesión
-          navigate('/login'); // Redirige al usuario a la página de login
+          login('');
+          navigate('/login');
         }
       } catch (err) {
         console.error('Error al decodificar el token', err);
@@ -52,7 +52,7 @@ const Login: React.FC = () => {
       if (token) {
         // Decodificar el token para obtener el id de la empresa
         const decodedToken = jwt_decode<{ id: number, exp: number }>(token);
-        const companyId = decodedToken.id;  // Extraemos el id de la empresa
+        const companyId = decodedToken.id;
   
         // Almacenar el token y el id de la empresa en localStorage
         localStorage.setItem('token', token);
@@ -71,75 +71,80 @@ const Login: React.FC = () => {
   return (
     <section id="loginRegister" className={styles.loginRegister}>
       <div className={styles['section__container']}>
-        <div className={`${styles.container} ${styles.loginRegister__container}`}>
-          <div className={styles.loginRegister__box}>
-            
-            {/* Formulario de Login */}
-            <div className={styles.login}>
-              <h1 className={`${styles.title} ${styles.login__title}`}>Inicio de sesión</h1>
+        <div className={`${styles['loginRegister__box']}`}>
+          
+          {/* Formulario de Login */}
+          <article className={styles.login}>
+            <h1 className={styles['login__title']}>Inicio de sesión</h1>
 
-              <form onSubmit={handleSubmit} className={styles.login__form}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="email_empresa">
-                    Email: <span className={styles.required}>*</span>
-                  </label>
-                  <input
-                    type="email"
-                    id="email_empresa"
-                    value={email}
-                    placeholder="Introduce tu email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={styles.input}
-                    required
-                  />
-                </div>
+            <form onSubmit={handleSubmit} className={styles['login__form']}>
+              <div className={styles['login__form-group']}>
+                <label htmlFor="email_empresa">
+                  Email: <span className={styles['login__required']}>*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email_empresa"
+                  value={email}
+                  placeholder="Introduce tu email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={styles['login__input']}
+                  required
+                />
+              </div>
 
-                <div className={styles.formGroup}>
-                  <label htmlFor="contrasena_empresa">
-                    Contraseña: <span className={styles.required}>*</span>
-                  </label>
-                  <input
-                    type="password"
-                    id="contrasena_empresa"
-                    value={password}
-                    placeholder="Introduce tu contraseña"
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={styles.input}
-                    required
-                  />
-                </div>
+              <div className={styles['login__form-group']}>
+                <label htmlFor="contrasena_empresa">
+                  Contraseña: <span className={styles['login__required']}>*</span>
+                </label>
+                <input
+                  type="password"
+                  id="contrasena_empresa"
+                  value={password}
+                  placeholder="Introduce tu contraseña"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles['login__input']}
+                  required
+                />
+              </div>
 
-                {error && <div className={styles.error}>{error}</div>}
+              {error && <div className={styles['login__error']}>{error}</div>}
 
-                <div className={styles.formGroup}>
-                  <Button
-                    text="Iniciar sesión"
-                    type="submit"
-                    buttonStyle="primaryColor"
-                    hoverStyle="black"
-                    ariaLabel="Iniciar sesión con tus credenciales"
-                  />
-                </div>
+              <div className={styles['login__form-group']}>
+                <Button
+                  text="Iniciar sesión"
+                  type="submit"
+                  buttonStyle="primaryColor"
+                  hoverStyle="black"
+                  ariaLabel="Iniciar sesión con tus credenciales"
+                />
+              </div>
 
-                <div className={styles.formGroup}>
-                  <a href="/resetear-contrasena" className={styles.link}>
-                    ¿Has olvidado tus datos de acceso?
-                  </a>
-                </div>
-              </form>
-            </div>
+              {/* <div className={styles['login__form-group']}>
+                <a href="/resetear-contrasena" className={styles['login__link']}>
+                  ¿Has olvidado tus datos de acceso?
+                </a>
+              </div> */}
+            </form>
+          </article>
 
-            {/* Sección de Registro */}
-            <div className={styles.register}>
-              <h2 className={styles.registerTitle}>Crear cuenta empresa</h2>
-              <p className={styles.registerText}>
-                Publica tus actividades y conecta con más clientes. ¡Crea tu cuenta!
-              </p>
-              <a href="/crear-cuenta-empresa" className={styles.createAccountLink}>
-                Crear una cuenta de empresa
-              </a>
-            </div>
-          </div>
+          {/* Sección de Registro */}
+          <article className={styles.register}>
+            <h2 className={styles['register__title']}>Crear cuenta empresa</h2>
+            <p className={styles['register__text']}>
+              Publica tus actividades y conecta con más clientes. 
+              <strong>¡Crea tu cuenta!</strong>
+            </p>
+
+            <Button
+              text="Crear cuenta de empresa"
+              type="button"
+              buttonStyle="primaryColor"
+              hoverStyle="black"
+              ariaLabel="Crear una cuenta de empresa"
+              link='/crear-cuenta-empresa'
+            />
+          </article>
         </div>
       </div>
     </section>

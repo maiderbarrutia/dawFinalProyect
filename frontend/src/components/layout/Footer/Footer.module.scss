@@ -19,18 +19,18 @@
   }
 
   &__sections {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: rem(40);
-      justify-items: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: rem(40);
+    justify-items: center;
 
-      @media (min-width: $size-mobile) {
-      grid-template-columns: repeat(2, 1fr);
-      }
-      
-      @media (min-width: $size-tablet) {
-          grid-template-columns: repeat(4, 1fr);
-      }
+    @media (min-width: $size-mobile) {
+    grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (min-width: $size-tablet) {
+        grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   &__section {
@@ -87,9 +87,9 @@
   }
 
   &__scrollTopButton {
-      position: fixed;
-    bottom: 20px;
-    right: 20px;
+    position: fixed;
+    bottom: rem(20);
+    right: rem(20);
     background-color: transparent;
     border: none;
     cursor: pointer;

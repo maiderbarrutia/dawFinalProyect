@@ -128,122 +128,126 @@ const ActivityRegisterForm: React.FC = () => {
   
 
   return (
-    <Formik
-    initialValues={initialFormState}
-    validationSchema={validationSchema}
-    onSubmit={handleSubmit}
-  >
-    {({ setFieldValue, isSubmitting }) => (
-      <Form className={styles['activity-form']}>
-        <h2 className={styles['activity-form__title']}>Crear nueva actividad</h2>
+    <section className={styles['activity-form']}>
+      <div className={styles['section__container']}>
+        <Formik
+        initialValues={initialFormState}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        >
+        {({ setFieldValue, isSubmitting }) => (
+          <Form>
+            <h2 className={styles['activity-form__title']}>Crear nueva actividad</h2>
 
-        {/* Mapea los campos dinámicamente */}
-        {formFields.map((field, index) => {
-          return (
-            <div key={index} className={styles['activity-form__group']}>
-              {field.type === 'textarea' ? (
-                <>
-                  <label className={styles['activity-form__label']} htmlFor={field.name}>
-                    {field.label}
-                  </label>
-                  <Field
-                    className={styles['activity-form__input']}
-                    as="textarea"
-                    name={field.name}
-                    placeholder={field.placeholder}
-                  />
-                </>
-              ) : (
-                <>
-                  <label className={styles['activity-form__label']} htmlFor={field.name}>
-                    {field.label}
-                  </label>
-                  <Field
-                    className={styles['activity-form__input']}
-                    type={field.type}
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    step={field.step}
-                  />
-                </>
-              )}
-              <ErrorMessage name={field.name} component="div" className={styles['form-error-message']} />
+            {/* Mapea los campos dinámicamente */}
+            {formFields.map((field, index) => {
+              return (
+                <div key={index} className={styles['activity-form__group']}>
+                  {field.type === 'textarea' ? (
+                    <>
+                      <label className={styles['activity-form__label']} htmlFor={field.name}>
+                        {field.label}
+                      </label>
+                      <Field
+                        className={styles['activity-form__input']}
+                        as="textarea"
+                        name={field.name}
+                        placeholder={field.placeholder}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <label className={styles['activity-form__label']} htmlFor={field.name}>
+                        {field.label}
+                      </label>
+                      <Field
+                        className={styles['activity-form__input']}
+                        type={field.type}
+                        name={field.name}
+                        placeholder={field.placeholder}
+                        step={field.step}
+                      />
+                    </>
+                  )}
+                  <ErrorMessage name={field.name} component="div" className={styles['form-error-message']} />
+                </div>
+              );
+            })}
+
+            {/* Campo de Selección de Categorías */}
+            <div className={styles['activity-form__group']}>
+              <label className={styles['activity-form__label']} htmlFor="category_id">
+                Categoría
+              </label>
+              <Field as="select" name="category_id" className={styles['activity-form__input']}>
+                <option value="" label="Selecciona una categoría" />
+                {loadingCategories ? (
+                  <option value="" disabled>Cargando...</option>
+                ) : (
+                  categories.map((category) => (
+                    <option key={category.category_id} value={category.category_id}>
+                      {category.category_name}
+                    </option>
+                  ))
+                )}
+              </Field>
+              <ErrorMessage name="category_id" component="div" className={styles['form-error-message']} />
             </div>
-          );
-        })}
 
-        {/* Campo de Selección de Categorías */}
-        <div className={styles['activity-form__group']}>
-          <label className={styles['activity-form__label']} htmlFor="category_id">
-            Categoría
-          </label>
-          <Field as="select" name="category_id" className={styles['activity-form__input']}>
-            <option value="" label="Selecciona una categoría" />
-            {loadingCategories ? (
-              <option value="" disabled>Cargando...</option>
-            ) : (
-              categories.map((category) => (
-                <option key={category.category_id} value={category.category_id}>
-                  {category.category_name}
-                </option>
-              ))
+            {/* Campo de imágenes */}
+            <div className={styles['activity-form__group']}>
+              <label className={styles['activity-form__label']} htmlFor="activity_images">
+                Imágenes
+              </label>
+              <input
+                className={styles['activity-form__input']}
+                type="file"
+                name="activity_images"
+                accept="image/*"
+                multiple
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  const files = event.target.files;
+                  if (files) {
+                    const fileArray = Array.from(files);
+                    setFieldValue('activity_images', fileArray); // Establecer los archivos binarios en Formik
+                  }
+                }}
+              />
+              <ErrorMessage name="activity_images" component="div" className={styles['form-error-message']} />
+            </div>
+
+            {/* Política de privacidad */}
+            <div className={styles['activity-form__group']}>
+              <label className={styles['activity-form__checkbox-label']}>
+                <Field
+                  type="checkbox"
+                  name="privacy_policy"
+                  className={styles['activity-form__checkbox']}
+                />
+                Acepto la política de privacidad
+              </label>
+              <ErrorMessage name="privacy_policy" component="div" className={styles['form-error-message']} />
+            </div>
+
+            {/* Mensajes de éxito o error */}
+            {message && (
+              <PopupMessage type={message.type} message={message.text} onClose={() => setMessage(null)} />
             )}
-          </Field>
-          <ErrorMessage name="category_id" component="div" className={styles['form-error-message']} />
-        </div>
 
-        {/* Campo de imágenes */}
-        <div className={styles['activity-form__group']}>
-          <label className={styles['activity-form__label']} htmlFor="activity_images">
-            Imágenes
-          </label>
-          <input
-            className={styles['activity-form__input']}
-            type="file"
-            name="activity_images"
-            accept="image/*"
-            multiple
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              const files = event.target.files;
-              if (files) {
-                const fileArray = Array.from(files);
-                setFieldValue('activity_images', fileArray); // Establecer los archivos binarios en Formik
-              }
-            }}
-          />
-          <ErrorMessage name="activity_images" component="div" className={styles['form-error-message']} />
-        </div>
-
-        {/* Política de privacidad */}
-        <div className={styles['activity-form__group']}>
-          <label className={styles['activity-form__checkbox-label']}>
-            <Field
-              type="checkbox"
-              name="privacy_policy"
-              className={styles['activity-form__checkbox']}
-            />
-            Acepto la política de privacidad
-          </label>
-          <ErrorMessage name="privacy_policy" component="div" className={styles['form-error-message']} />
-        </div>
-
-        {/* Mensajes de éxito o error */}
-        {message && (
-          <PopupMessage type={message.type} message={message.text} onClose={() => setMessage(null)} />
+            <div className={styles['activity-form__button']}>
+              <Button
+                text="Crear actividad"
+                ariaLabel="Crear actividad"
+                className={styles['activity-form__submit']}
+                type="submit"
+                disabled={isSubmitting}
+              />
+            </div>
+          </Form>
         )}
-
-        <div className={styles['activity-form__button']}>
-          <Button
-            text="Crear actividad"
-            ariaLabel="Crear actividad"
-            className={styles['activity-form__submit']}
-            type="submit"
-            disabled={isSubmitting}
-          />
-        </div>
-      </Form>
-    )}
-  </Formik>
+      </Formik>
+    </div>
+  </section>
   );
 };
 

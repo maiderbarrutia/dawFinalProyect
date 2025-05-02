@@ -1,12 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('Category')
-@Unique(['category_name'])
 export class Category {
   @PrimaryGeneratedColumn({ name: 'category_id' })
   category_id!: number;
 
-  @Column({ name: 'category_name', type: 'varchar', length: 100, nullable: false })
+  @Column({ name: 'category_name', type: 'varchar', unique: true, length: 100, nullable: false })
   category_name!: string;
 
   @Column({ name: 'category_description', type: 'text', nullable: true })

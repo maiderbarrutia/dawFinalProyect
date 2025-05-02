@@ -28,31 +28,32 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilt
 
 // Almacenamiento personalizado
 const customStorage = {
-  _handleFile(
+  async _handleFile(
     req: Request,
     file: Express.Multer.File,
     cb: (error?: any, info?: Partial<Express.Multer.File>) => void
   ) {
-    const uploadPath = path.resolve(__dirname, '../../assets/images');
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
+    try {
+      const filename = `${Date.now()}_${path.parse(file.originalname).name}.webp`;
+      const filepath = path.join(uploadPath, filename);
 
-    const filename = `${Date.now()}_${path.parse(file.originalname).name}.webp`;
-    const filepath = path.join(uploadPath, filename);
+      const chunks: Buffer[] = [];
+      file.stream.on('data', chunk => chunks.push(chunk));
+      file.stream.on('end', async () => {
+        const buffer = Buffer.concat(chunks);
+        const image = sharp(buffer);
+        const metadata = await image.metadata();
 
-    const output = fs.createWriteStream(filepath);
+        // Solo redimensionamos si el ancho original es mayor a 1200
+        let transformer = image;
+        if ((metadata.width || 0) > 1200) {
+          transformer = transformer.resize({ width: 1200 });
+        }
 
-    const transformer = sharp()
-      .resize({ width: 1000 })   // opcional
-      .webp({ quality: 75 });    // compresión
+        await transformer
+          .webp({ quality: 75, lossless: true })
+          .toFile(filepath);
 
-    file.stream
-      .pipe(transformer)
-      .on('error', err => cb(err))
-      .pipe(output)
-      .on('error', err => cb(err))
-      .on('finish', () => {
         cb(null, {
           destination: uploadPath,
           filename,
@@ -60,6 +61,9 @@ const customStorage = {
           size: fs.statSync(filepath).size,
         });
       });
+    } catch (err) {
+      cb(err);
+    }
   },
 
   _removeFile(

@@ -5,6 +5,7 @@ import { Category } from './Category';
 @Entity('Activity')
 @Index(['category_id'])
 @Index(['activity_date'])
+@Index(['company_id'])
 export class Activity {
   @PrimaryGeneratedColumn({ name: 'activity_id' })
   activity_id!: number;

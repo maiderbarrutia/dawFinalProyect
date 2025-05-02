@@ -1,29 +1,29 @@
 @import '@assets/styles/main.scss';
 
 .loading {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(255, 255, 255, 0.85);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-  
-    &__spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid $main-gray;
-      border-top-color: $primary-color;
-      border-radius: 50%;
-      animation: loading-spin 1s linear infinite;
-      margin-bottom: 16px;
-    }
-  
-    &__message {
-      font-size: 1.2rem;
-      color: $main-black;
-      text-align: center;
-    }
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba($white, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+
+  &__spinner {
+    width: rem(50);
+    height: rem(50);
+    border: 5px solid $main-gray;
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    animation: loading-spin 1s linear infinite;
+    margin-bottom: rem(15);
+  }
+
+  &__message {
+    font-size: rem(18);
+    color: $main-black;
+    text-align: center;
+  }
 }
   

@@ -62,17 +62,17 @@
 
   &__content {
     background: $main-gray;
-    padding: 20px;
-    margin-left: 20px;
+    padding: rem(20);
+    margin-left: rem(20);
   }
 
   &__link{
     color: $main-black;
 
     &:hover{
-        color: $primary-color;
-        font-weight: 600;
-        text-decoration: none;
+      color: $primary-color;
+      font-weight: 600;
+      text-decoration: none;
     }
   }
 }

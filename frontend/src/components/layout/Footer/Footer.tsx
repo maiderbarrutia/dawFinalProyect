@@ -37,7 +37,6 @@ const Footer: React.FC = () => {
             <div className={styles.footer__section}>
               <h2 className={styles.footer__sectionTitle}>Información legal</h2>
               <ul className={styles.footer__list}>
-                <li className={styles.footer__listItem}><Link to="/aviso-legal" className={styles.footer__link}>Aviso legal</Link></li>
                 <li className={styles.footer__listItem}><Link to="/politica-de-privacidad" className={styles.footer__link}>Política de privacidad</Link></li>
                 <li className={styles.footer__listItem}><Link to="/politica-de-cookies" className={styles.footer__link}>Política de cookies</Link></li>
               </ul>
@@ -63,7 +62,6 @@ const Footer: React.FC = () => {
               <h2 className={styles.footer__sectionTitle}>Mapa del sitio</h2>
               <ul className={styles.footer__list}>
                 <li className={styles.footer__listItem}><Link to="/" className={styles.footer__link}>Inicio</Link></li>
-                <li className={styles.footer__listItem}><Link to="/categorias" className={styles.footer__link}>Categorías</Link></li>
                 <li className={styles.footer__listItem}><Link to="/actividades" className={styles.footer__link}>Actividades</Link></li>
               </ul>
             </div>

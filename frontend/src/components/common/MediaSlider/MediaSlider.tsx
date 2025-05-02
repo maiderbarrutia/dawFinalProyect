@@ -34,6 +34,11 @@ const MediaSlider: React.FC<MediaSliderProps> = ({ images, videos }) => {
               <img
                 src={media[currentIndex].src}
                 alt={media[currentIndex].alt}
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.onerror = null;
+                  target.src = getAssetSrc('images/default-image.jpg');
+                }}
                 className={styles['slider-container__image']}
               />
             ) : (

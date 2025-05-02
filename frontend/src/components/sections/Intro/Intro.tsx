@@ -7,10 +7,10 @@ import { getRequest } from '@/services/api';
 import { Activity } from '@/interfaces/Activity';
 
 const Intro: React.FC = () => {
-  const [uniqueLocations, setUniqueLocations] = useState<string[]>([]); // Ubicaciones únicas
-  const [searchText, setSearchText] = useState<string>(''); // Texto de búsqueda
-  const [location, setLocation] = useState<string>(''); // Ubicación seleccionada
-  const navigate = useNavigate(); // Para redirigir a la página de actividades
+  const [uniqueLocations, setUniqueLocations] = useState<string[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -21,10 +21,10 @@ const Intro: React.FC = () => {
           new Set(
             activitiesData
               .map((activity: Activity) => activity.activity_location)
-              .filter((location: string) => location.trim() !== '') // Filtramos ubicaciones vacías
+              .filter((location: string) => location.trim() !== '')
           )
         );
-        setUniqueLocations(locations); // Guardamos las ubicaciones únicas
+        setUniqueLocations(locations);
       } catch (error) {
         console.error('Error fetching activities:', error);
       }
@@ -35,7 +35,6 @@ const Intro: React.FC = () => {
 
   // Función para aplicar filtros
   const applyFilters = () => {
-    // Redirigimos a la página de actividades con los filtros aplicados en la URL
     navigate(`/actividades?searchText=${searchText}&location=${location}`);
   };
 

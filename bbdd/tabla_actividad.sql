@@ -19,10 +19,12 @@ CREATE TABLE Activity (
     excludes TEXT,
     privacy_policy BOOLEAN DEFAULT FALSE,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
     FOREIGN KEY (company_id) REFERENCES Company(company_id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES Category(category_id) ON DELETE SET NULL,
-    INDEX (category_id),
-    INDEX (activity_date)
+    INDEX idx_category_id (category_id),
+    INDEX idx_activity_date (activity_date),
+    INDEX idx_activity_company_id (company_id) 
 );
 
 -- Inserción de Actividades

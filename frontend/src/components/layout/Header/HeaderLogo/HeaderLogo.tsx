@@ -25,10 +25,10 @@ const HeaderLogo: React.FC<LogoProps> = ({ closeMenu}) => {
     };
 
     return (
-        <div className={styles.header__logo}>
-            <a className={styles['header__logo-link']} onClick={() => handleClick('/')} style={{ cursor: 'pointer' }}>
+        <div className={styles['header-logo']}>
+            <a className={styles['header-logo__link']} onClick={() => handleClick('/')} style={{ cursor: 'pointer' }}>
                 <img src={AisiPlanIcon} height="40"  alt="logo AisiPlan" />
-                <p className={styles['header__logo-text']}>Logo AisiPlan</p>
+                <p className={styles['header-logo__text']}>Logo AisiPlan</p>
             </a>
         </div>
     );

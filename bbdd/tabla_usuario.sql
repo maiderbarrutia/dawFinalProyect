@@ -7,7 +7,10 @@ CREATE TABLE UserData (
     user_city VARCHAR(255),
     user_password VARCHAR(255),
     privacy_policy  BOOLEAN DEFAULT FALSE,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    INDEX idx_user_email (user_email),
+    INDEX idx_user_phone (user_phone)
 );
 
 -- Inserción de Usuarios

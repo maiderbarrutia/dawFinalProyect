@@ -3,7 +3,6 @@
 
 .header {
     background-color: $white;
-    
     padding: rem(20) 0;
     box-sizing: border-box;
     transition: transform 0.3s ease, background-color 0.3s ease;
@@ -67,7 +66,7 @@
         width: 100%;
         z-index: 1;
         background-color: $white;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 1px 1px 5px rgba($main-black, 0.2);
     }
 
     &--fixed {
@@ -85,7 +84,7 @@
 
     &--scrolled, &--notHome{
         background-color: $white;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 1px 1px 5px rgba($main-black, 0.2);
     }
 }
 

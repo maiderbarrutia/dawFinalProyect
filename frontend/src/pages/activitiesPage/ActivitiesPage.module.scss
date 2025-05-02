@@ -2,30 +2,30 @@
 
 .activitiesPage {
 
-    &__title {
-      font-size: rem(32);
-      font-weight: 700;
-      margin-bottom: rem(40);
+  &__title {
+    font-size: rem(32);
+    font-weight: 700;
+    margin-bottom: rem(40);
 
-      span{
-        color: $primary-color;
-      }
-    }
-  
-    &__grid {
-      display: grid;
-      gap: rem(20);
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-
-    &__searchFilter-container{
-      margin-bottom: rem(40);
-      display: flex;
-      justify-content: center;
-    }
-
-    &__notFound{
-      text-align: center;
-      font-size: rem(18);
+    span{
+      color: $primary-color;
     }
   }
+
+  &__grid {
+    display: grid;
+    gap: rem(20);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  &__searchFilter-container{
+    margin-bottom: rem(40);
+    display: flex;
+    justify-content: center;
+  }
+
+  &__notFound{
+    text-align: center;
+    font-size: rem(18);
+  }
+}

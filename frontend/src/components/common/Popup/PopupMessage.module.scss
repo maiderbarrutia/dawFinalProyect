@@ -14,33 +14,24 @@
 }
 
 .popupMessage {
-    padding: rem(24) rem(32);
-    border-radius: rem(10);
-    font-weight: 500;
-    text-align: center;
-    background-color: $white;
-    box-shadow: 0 0 20px rgba($main-black, 0.3);
-    animation: fadeInUp 0.3s ease-in-out;
-    max-width: rem(350);
-    color: $white;
-  
-    &.success {
-      background-color: $green;
-    }
-  
-    &.error {
-      background-color: $red; 
-    }
+  padding: rem(24) rem(32);
+  border-radius: rem(10);
+  font-weight: 500;
+  text-align: center;
+  background-color: $white;
+  box-shadow: 0 0 20px rgba($main-black, 0.3);
+  animation: fadeInUp 0.3s ease-in-out;
+  max-width: rem(350);
+  color: $white;
+
+  &.success {
+    background-color: $green;
   }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+
+  &.error {
+    background-color: $red; 
   }
+}
+  
+  
   

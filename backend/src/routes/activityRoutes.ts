@@ -11,7 +11,7 @@ const activityRoutes = Router();
 
 activityRoutes.get("/", getActivities);
 activityRoutes.get("/:id", getActivityById);
-activityRoutes.post("/", authMiddleware, upload.array('activity_images', 5), createActivity);
+activityRoutes.post("/", authMiddleware, upload.array('activity_images', 20), createActivity);
 activityRoutes.put("/:id", authMiddleware, updateActivity);
 activityRoutes.delete("/:id", authMiddleware, deleteActivity);
 
