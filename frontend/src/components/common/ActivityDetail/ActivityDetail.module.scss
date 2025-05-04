@@ -44,8 +44,37 @@
   &__info {
     flex: 1;
     background-color: $main-gray;
-    padding: rem(15);
+    padding: rem(30);
     border-radius: rem(10);
+
+    &__image-wrapper {
+      max-width: rem(200);
+      max-height: rem(200);
+      margin-bottom: rem(20);
+    }
+
+    &__image {
+      max-width: rem(200);
+      max-height: rem(200);
+      object-fit: contain;
+      object-position: left;
+    }
+
+    &__text{
+      margin-bottom: rem(10);
+    }
+    strong{
+      font-weight: 600;
+    }
+
+    &__link{
+      color: $main-black;
+  
+      &:hover{
+        color: $primary-color;
+        text-decoration: none;
+      }
+    }
   }
 
   &__infoTitle{

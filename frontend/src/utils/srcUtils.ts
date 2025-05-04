@@ -5,7 +5,7 @@ const assets = import.meta.glob('/src/assets/**/*.{jpg,png,jpeg}', {
   }
 });
 
-const otherAssets = import.meta.glob('/src/assets/**/*.{gif,pdf,woff,woff2,ttf}', { eager: true });
+const otherAssets = import.meta.glob('/src/assets/**/*.{webp,svg,avif,gif,pdf,woff,woff2,ttf}', { eager: true });
 
 //IMAGENES ESTATICAS
 export const getAssetSrc = (assetPath: string): string => {

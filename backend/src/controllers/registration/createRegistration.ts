@@ -13,6 +13,12 @@ export const createRegistration = async (req: Request, res: Response): Promise<v
     return;
   }
 
+  // Validación del activity_id: asegurarse de que sea un número válido
+  if (isNaN(Number(activity_id))) {
+    res.status(400).json({ message: "ID de actividad no válido" });
+    return;
+  }
+
   try {
     // Verificar si el usuario existe
     const user = await dataSource.getRepository(UserData).findOneBy({ user_id });
@@ -48,6 +54,12 @@ export const createRegistration = async (req: Request, res: Response): Promise<v
 
     // Guardar la inscripción en la base de datos
     const savedRegistration = await dataSource.getRepository(Registration).save(registration);
+
+    // Verificar si la inscripción se guardó correctamente
+    if (!savedRegistration.registration_id) {
+      res.status(500).json({ message: "No se pudo realizar la inscripción" });
+      return;
+    }
 
     // Devolver la inscripción creada con su ID generado automáticamente
     res.status(201).json({

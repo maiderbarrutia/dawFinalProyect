@@ -20,7 +20,7 @@ export const seedActivities = async (dataSource: DataSource) => {
       category_id: 1,
       activity_location: 'Madrid',
       activity_adress: 'Calle Salud 10',
-      activity_images: ['zumba-1.webp', 'zumba-2.webp'],
+      activity_images: ['zumba-1.webp'],
       activity_videos: [],
       includes: 'Clase dirigida por un instructor profesional.',
       excludes: 'No se permite la grabación de videos durante la clase.',

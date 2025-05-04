@@ -25,6 +25,7 @@ const ActivityCard: React.FC<Activity> = ({
   const placeholderImage = getAssetSrc(`images/default-image.jpg`);
   const imageSrc = getUploadedImageSrc(`images/${activity_images[0]}`);
 
+  //Obtener los datos de categoría y empresa
   useEffect(() => {
     const fetchCategoryAndCompany = async () => {
       try {
@@ -49,7 +50,6 @@ const ActivityCard: React.FC<Activity> = ({
         <div className={styles.activityCard__imageWrapper}>
         <img
           src={imageSrc}
-          loading="lazy"
           alt={activity_title}
           className={styles.activityCard__image}
           onError={(e) => {
@@ -75,12 +75,12 @@ const ActivityCard: React.FC<Activity> = ({
         {Number(activity_price) >= 0 && (
           <p className={styles.activityCard__price}>
             {Number(activity_price) === 0
-              ? 'Gratis' // If the price is 0, display 'Gratis'
+              ? 'Gratis'
               : Number(activity_price) % 1 === 0
-              ? Number(activity_price) // If it's a whole number, display it without decimals
-              : Number(activity_price).toFixed(2) // If it's a decimal number, show 2 decimal places
+              ? Number(activity_price)
+              : Number(activity_price).toFixed(2)
             }
-            {Number(activity_price) === 0 ? '' : <span>€</span>} {/* Only show € if price is not 'Gratis' */}
+            {Number(activity_price) === 0 ? '' : <span>€</span>} 
           </p>
         )}
 

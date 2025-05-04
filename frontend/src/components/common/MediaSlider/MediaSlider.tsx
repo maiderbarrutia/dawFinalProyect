@@ -8,21 +8,21 @@ interface MediaSliderProps {
 }
 
 const MediaSlider: React.FC<MediaSliderProps> = ({ images, videos }) => {
-  // Unificar las imágenes y videos en un solo array
+  // Unir las imágenes y videos en un solo array
   const media = [
     ...images.map((image, index) => ({ type: 'image', src: getUploadedImageSrc(`images/${image}`), alt: `Imagen ${index + 1}` })),
     ...videos.map((video, index) => ({ type: 'video', src: getUploadedImageSrc(`videos/${video}`), alt: `Video ${index + 1}` }))
   ];
 
-  // Estado para manejar el índice del medio actual
+  
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextMedia = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % media.length); // Siguiente media
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % media.length);
   };
 
   const prevMedia = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + media.length) % media.length); // Media anterior
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + media.length) % media.length);
   };
 
   return (
@@ -53,7 +53,7 @@ const MediaSlider: React.FC<MediaSliderProps> = ({ images, videos }) => {
         )}
       </div>
 
-      {/* Botones de navegación */}
+      {/* Botones */}
       {media.length > 1 && (
         <div className={styles['slider-container__navigation-buttons']}>
           <button className={styles['slider-container__nav-button']} onClick={prevMedia}>

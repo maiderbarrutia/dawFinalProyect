@@ -9,6 +9,8 @@ import MediaSlider from '@components/common/MediaSlider/MediaSlider';
 import Button from '@components/common/Button/Button';
 import locationIcon from '@/assets/icons/location-icon.png';
 import timeIcon from '@/assets/icons/time-icon.png';
+import { getUploadedImageSrc, getAssetSrc } from "@/utils/srcUtils";
+import Loading from '@/components/common/Loading/Loading';
 
 const ActivityDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,13 +18,12 @@ const ActivityDetail: React.FC = () => {
   const [company, setCompany] = useState<Company | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isFixed, setIsFixed] = useState(true);
 
   useEffect(() => {
     const fetchActivity = async () => {
       if (!id) {
-        setError('ID de actividad no proporcionado');
+        console.log('ID de actividad no proporcionado');
         setLoading(false);
         return;
       }
@@ -30,7 +31,6 @@ const ActivityDetail: React.FC = () => {
       try {
         const activityData = await getRequest<Activity>(`/actividades/${id}`);
         setActivity(activityData);
-        setError(null);
 
         const [companyData, categoryData] = await Promise.all([
           getRequest<Company>(`/empresas/${activityData.company_id}`),
@@ -39,9 +39,8 @@ const ActivityDetail: React.FC = () => {
 
         setCompany(companyData);
         setCategory(categoryData);
-      } catch (err) {
-        setError((err as Error).message || 'Error al cargar la actividad');
-        console.error(err);
+      } catch (error) {
+        console.log('Error al cargar la actividad: ', error);
       } finally {
         setLoading(false);
       }
@@ -64,9 +63,8 @@ const ActivityDetail: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (loading) return <div className={styles.activity__loading}>Cargando...</div>;
-  if (error) return <div className={styles.activity__error}>{error}</div>;
-  if (!activity) return <div className={styles.activity__notFound}>Actividad no encontrada</div>;
+  if (loading) return <Loading message="Cargando..." />;
+  if (!activity) return <div>Actividad no encontrada.</div>;
 
   return (
     <section className={styles.activity}>
@@ -83,37 +81,50 @@ const ActivityDetail: React.FC = () => {
           />
 
           <div className={styles.activity__info}>
-            <h2 className={styles.activity__infoTitle}>Info</h2>
-
-            {activity.activity_date && activity.activity_time && (
-              <div className={styles.activity__date}>
-                <img src={timeIcon} alt="Icono fecha y hora" />
-                <p>{activity.activity_date} - {activity.activity_time}h</p>
+            <h2 className={styles.activity__infoTitle}>Info de la empresa</h2>
+            {company?.company_logo && (
+              <div className={styles['activity__info__image-wrapper']}>
+              <img
+                src={
+                  company.company_logo
+                    ? getUploadedImageSrc(`images/${company.company_logo}`)
+                    : getAssetSrc("images/default-image.jpg")
+                }
+                alt="Logo empresa"
+                className={styles['activity__info__image']}
+              />
               </div>
             )}
-
-            {activity.activity_location && (
-              <div className={styles.activity__location}>
-                <img src={locationIcon} alt="Icono localización" />
-                <p>
-                  {activity.activity_adress ? `${activity.activity_adress} (${activity.activity_location})` : activity.activity_location}
-                </p>
-              </div>
+            {company?.company_name && (
+            <p className={styles['activity__info__text']}><strong>Nombre empresa:</strong> {company.company_name}</p>
+            )}
+            {company?.contact_person && (
+            <p className={styles['activity__info__text']}><strong>Persona de Contacto:</strong> {company.contact_person}</p>
+            )}
+            {company?.company_phone && (
+            <p className={styles['activity__info__text']}><strong>Teléfono:</strong> {company.company_phone}</p>
+            )}
+            {company?.company_address && (
+            <p className={styles['activity__info__text']}><strong>Dirección:</strong> {company.company_address}</p>
+            )}
+            {company?.company_email && (
+              <p className={styles['activity__info__text']}>
+                <strong>Email: </strong> 
+                <a href={`mailto:${company.company_email}`} className={styles['activity__info__link']}>
+                  {company.company_email}
+                </a>
+              </p>
             )}
 
-            {activity.activity_location && ( // Solo mostramos el mapa si hay localización
-              <div className={styles.activity__map}>
-                <iframe
-                  title="Mapa"
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(
-                    activity.activity_adress 
-                      ? `${activity.activity_adress}, ${activity.activity_location}` 
-                      : activity.activity_location
-                  )}&output=embed`}
-                  className={styles.activity__mapIframe}
-                ></iframe>
-              </div>
+            {company?.company_website && (
+              <p className={styles['activity__info__text']}>
+                <strong>Sitio Web: </strong> 
+                <a href={company.company_website} target="_blank" rel="noopener noreferrer" className={styles['activity__info__link']}>
+                  {company.company_website}
+                </a>
+              </p>
             )}
+            
           </div>
         </div>
 
@@ -121,6 +132,7 @@ const ActivityDetail: React.FC = () => {
           {category?.category_name && (
             <span className={styles.activity__category}>{category.category_name}</span>
           )}
+          
 
           <ul className={styles.activity__stats}>
             {activity.available_slots > 0 && (
@@ -131,6 +143,36 @@ const ActivityDetail: React.FC = () => {
             )}
             {activity.difficulty_level && (
               <li><span>Dificultad:</span> {activity.difficulty_level}</li>
+            )}
+
+            {activity.activity_date && activity.activity_time && (
+              <li className={styles.activity__date}>
+                <img src={timeIcon} alt="Icono fecha y hora" />
+                <p>{activity.activity_date} - {activity.activity_time}h</p>
+              </li>
+            )}
+
+            {activity.activity_location && (
+              <li className={styles.activity__location}>
+                <img src={locationIcon} alt="Icono localización" />
+                <p>
+                  {activity.activity_adress ? `${activity.activity_adress} (${activity.activity_location})` : activity.activity_location}
+                </p>
+              </li>
+            )}
+
+            {activity.activity_location && ( // Solo mostramos el mapa si hay localización
+              <li className={styles.activity__map}>
+                <iframe
+                  title="Mapa"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(
+                    activity.activity_adress 
+                      ? `${activity.activity_adress}, ${activity.activity_location}` 
+                      : activity.activity_location
+                  )}&output=embed`}
+                  className={styles.activity__mapIframe}
+                ></iframe>
+              </li>
             )}
           </ul>
 

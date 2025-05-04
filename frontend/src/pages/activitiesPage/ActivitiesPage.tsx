@@ -104,7 +104,7 @@ const ActivitiesPage: React.FC = () => {
     setAppliedSearchText(searchText);
     setAppliedLocation(location);
   };
-  if (loading) return <Loading message="Cargando..." />;
+  if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
 
   return (

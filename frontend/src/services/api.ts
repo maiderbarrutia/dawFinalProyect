@@ -1,6 +1,5 @@
 const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
-
 const postRequest = async <T>(endpoint: string, data: object | FormData, includeToken: boolean = true): Promise<T> => {
   const token = localStorage.getItem('token');
   const headers: HeadersInit = {};

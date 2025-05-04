@@ -7,8 +7,9 @@ import Button from '@/components/common/Button/Button';
 import { UserData } from '@/interfaces/UserData';
 import { Registration } from '@/interfaces/Registration';
 import { postRequest } from '@/services/api';
-import PopupMessage from '@/components/common/Popup/PopupMessage';
+import PopupMessage from '@/components/common/PopupMessage/PopupMessage';
 import { useNavigate } from 'react-router-dom';
+import Loading from '@/components/common/Loading/Loading';
 
 // Validación con Yup
 const validationSchema = Yup.object({
@@ -36,70 +37,62 @@ const formFields = [
   { label: 'Correo electrónico', name: 'user_email', type: 'email' },
   { label: 'Teléfono', name: 'user_phone', type: 'tel' },
   { label: 'Ciudad', name: 'user_city', type: 'text' },
-  // Aquí agregamos el campo de política de privacidad
   { label: 'He leído y acepto la política de privacidad', name: 'privacy_policy', type: 'checkbox' },
 ];
 
 const RegistrationForm: React.FC = () => {
   const { activityId } = useParams<{ activityId: string }>();
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navigate = useNavigate();
 
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (
-    values: Omit<UserData, 'user_id' | 'user_password' | 'registration_date'>,
-    { resetForm }: FormikHelpers<Omit<UserData, 'user_id' | 'user_password' | 'registration_date'>>
+    values: typeof initialFormState,
+    { resetForm }: FormikHelpers<typeof initialFormState>
   ) => {
     setMessage(null);
-
-    // Verificar que el ID de actividad es válido
-    if (isNaN(Number(activityId)) || !activityId) {
-      setMessage({ type: 'error', text: 'ID de actividad no válido o no proporcionado.' });
-      return;
-    }
+    setLoading(true);
 
     try {
-      // Crear u obtener al usuario
+
+      // Crear usuario
       const userResponse = await postRequest<UserData>('/usuarios', {
         ...values,
         registration_date: new Date(),
       });
 
-      if (!userResponse?.user_id) {
-        setMessage({ type: 'error', text: 'No se pudo obtener un ID de usuario.' });
-        return;
-      }
-
-      // Crear la inscripción para el usuario
+      // Crear inscripción
       const registrationData: Omit<Registration, 'registration_id'> = {
         user_id: userResponse.user_id,
         activity_id: Number(activityId),
         registration_date: new Date(),
       };
 
-      // Hacer la solicitud para registrar la inscripción
-      const registrationResponse = await postRequest<Registration>('/inscripciones', registrationData);
+      await postRequest<Registration>('/inscripciones', registrationData);
 
-      if (!registrationResponse || !registrationResponse.registration_id) {
-        setMessage({ type: 'error', text: 'No se pudo realizar la inscripción.' });
-        return;
-      }
-
-      // Mensaje de éxito
       setMessage({ type: 'success', text: 'Inscripción realizada con éxito.' });
-
-      // Resetear el formulario
       resetForm();
 
-      // Redirigir después de la inscripción
-      setTimeout(() => {
-        navigate(`/actividad/${activityId}`);
-      }, 1500);
+      setTimeout(() => navigate(`/actividad/${activityId}`), 1500);
 
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Ocurrió un error inesperado.';
-      setMessage({ type: 'error', text: errorMessage });
+      if (error instanceof Error) {
+        setMessage({
+          type: 'error',
+          text: error.message || 'Error al registrarse en la actividad.',
+        });
+      } else {
+        setMessage({ type: 'error', text: 'Error al registrarse en la actividad.' });
+      }
+  
+      console.error('Error al registrarse en la actividad:', error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <Formik
@@ -107,50 +100,36 @@ const RegistrationForm: React.FC = () => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ setFieldValue, isSubmitting }) => (
+      {({ isSubmitting }) => (
         <Form className={styles['registration-form']}>
           <h2 className={styles['registration-form__title']}>Formulario de inscripción</h2>
 
-          {formFields.map((field, index) => {
-            if (field.type === "checkbox") {
-              return (
-                <div key={index} className={`${styles['registration-form__group']} ${styles['registration-form__group--checkbox']}`}>
-                  <label className={styles['registration-form__checkbox-label']}>
-                    <Field
-                      className={styles['registration-form__checkbox']}
-                      type={field.type}
-                      name={field.name}
-                    />
-                    <span>
-                      He leído y acepto la{' '}
-                      <a
-                        href="/politica-de-privacidad"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles['registration-form__link']}
-                      >
-                        Política de privacidad
-                      </a>
-                    </span>
-                  </label>
-                  <ErrorMessage name={field.name} component="div" className={styles['form-error-message']} />
-                </div>
-              );
-            } else if (field.type === 'file') {
-              return (
-                <div key={index} className={styles['registration-form__group']}>
-                  <input
-                    className={styles['registration-form__input']}
-                    type={field.type}
+          {formFields.map((field, index) => (
+            <div
+              key={index}
+              className={`${styles['registration-form__group']} ${field.type === 'checkbox' ? styles['registration-form__group--checkbox'] : ''}`}
+            >
+              {field.type === 'checkbox' ? (
+                <label className={styles['registration-form__checkbox-label']}>
+                  <Field
+                    className={styles['registration-form__checkbox']}
+                    type="checkbox"
                     name={field.name}
-                    accept="image/*"
-                    onChange={(e) => setFieldValue('user_image', e.target.files ? e.target.files[0] : null)}
                   />
-                </div>
-              );
-            } else {
-              return (
-                <div key={index} className={styles['registration-form__group']}>
+                  <span>
+                    He leído y acepto la{' '}
+                    <a
+                      href="/politica-de-privacidad"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles['registration-form__link']}
+                    >
+                      Política de privacidad
+                    </a>
+                  </span>
+                </label>
+              ) : (
+                <>
                   <label className={styles['registration-form__label']} htmlFor={field.name}>
                     {field.label}
                   </label>
@@ -160,14 +139,18 @@ const RegistrationForm: React.FC = () => {
                     name={field.name}
                     placeholder={field.label}
                   />
-                  <ErrorMessage name={field.name} component="div" className={styles['form-error-message']} />
-                </div>
-              );
-            }
-          })}
+                </>
+              )}
+              <ErrorMessage name={field.name} component="div" className={styles['form-error-message']} />
+            </div>
+          ))}
 
           {message && (
-            <PopupMessage type={message.type} message={message.text} onClose={() => setMessage(null)} />
+            <PopupMessage
+              type={message.type}
+              message={message.text}
+              onClose={() => setMessage(null)}
+            />
           )}
 
           <div className={styles['registration-form__button']}>
@@ -176,7 +159,7 @@ const RegistrationForm: React.FC = () => {
               ariaLabel="Enviar inscripción"
               className={styles['registration-form__submit']}
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || loading}
             />
           </div>
         </Form>

@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, [companyId]);
 
-  if (loading) return <Loading message="Cargando..." />;
+  if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
 
   const companyActivities = activities.filter(
@@ -111,15 +111,40 @@ const Dashboard: React.FC = () => {
                 className={styles['dashboard__image']}
               />
             </div>
+            {company.company_name && (
             <p className={styles['dashboard__text']}><strong>Nombre:</strong> {company.company_name}</p>
+            )}
+            {company.company_type && (
             <p className={styles['dashboard__text']}><strong>Tipo:</strong> {company.company_type}</p>
+            )}  
+            {company.company_cif && (
             <p className={styles['dashboard__text']}><strong>CIF:</strong> {company.company_cif}</p>
+            )}
+            {company.contact_person && (
             <p className={styles['dashboard__text']}><strong>Persona de Contacto:</strong> {company.contact_person}</p>
+            )}
+            {company.company_phone && (
             <p className={styles['dashboard__text']}><strong>Teléfono:</strong> {company.company_phone}</p>
+            )}
+            {company.company_address && (
             <p className={styles['dashboard__text']}><strong>Dirección:</strong> {company.company_address}</p>
-            <p className={styles['dashboard__text']}><strong>Correo Electrónico:</strong> {company.company_email}</p>
+            )}
+            {company.company_email && (
+              <p className={styles['dashboard__text']}>
+                <strong>Email: </strong> 
+                <a href={`mailto:${company.company_email}`} className={styles['dashboard__link']}>
+                   {company.company_email}
+                </a>
+              </p>
+            )}
+
             {company.company_website && (
-              <p className={styles['dashboard__text']}><strong>Sitio Web:</strong> {company.company_website}</p>
+              <p className={styles['dashboard__text']}>
+                <strong>Sitio Web: </strong> 
+                <a href={company.company_website} target="_blank" rel="noopener noreferrer" className={styles['dashboard__link']}>
+                   {company.company_website}
+                </a>
+              </p>
             )}
           </section>
         )}

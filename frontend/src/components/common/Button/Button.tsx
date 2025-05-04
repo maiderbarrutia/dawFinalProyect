@@ -31,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
   const buttonStyleClass = styles[`button--${buttonStyle}`];
   const hoverStyleClass = styles[`button--${hoverStyle}`];
   const ariaLabelValue = ariaLabel || text;
+
   if (link) {
     return (
       <Link to={link} aria-label={ariaLabelValue} className={`${styles.button} ${isHovered ? hoverStyleClass : buttonStyleClass} ${className}`}
@@ -41,7 +42,6 @@ const Button: React.FC<ButtonProps> = ({
     );
   }
 
- 
   return (
     <button
       type={type}

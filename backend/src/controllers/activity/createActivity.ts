@@ -14,14 +14,14 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     // Verificar la empresa existe
     const company = await dataSource.getRepository(Company).findOne({ where: { company_id } });
     if (!company) {
-      res.status(409).send("Empresa no encontrada.");
+      res.status(404).json({ message: 'Empresa no encontrada.' });  // Aquí enviamos un JSON
       return;
     }
 
     // Verificar si la categoría existe
     const category = await dataSource.getRepository(Category).findOne({ where: { category_id } });
     if (!category) {
-      res.status(409).send("Categoría no encontrada.");
+      res.status(404).json({ message: 'Categoría no encontrada.' });  // Aquí enviamos un JSON
       return;
     }
 
@@ -40,13 +40,13 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     res.status(201).json({ message: "Actividad creada exitosamente", activity });
 
   } catch (error) {
+    // Asegurándonos de que siempre respondemos con un JSON
     if (error instanceof Error) {
       console.error("Error al crear actividad:", error.message);
-      res.status(500).json({ message: "Error al crear actividad.", error: error.message });
+      res.status(500).json({ message: "Error al crear actividad.", error: error.message });  // JSON de error
     } else {
       console.error("Error desconocido al crear actividad", error);
-      res.status(500).json({ message: "Error desconocido al crear actividad" });
+      res.status(500).json({ message: "Error desconocido al crear actividad" });  // JSON de error
     }
   }
 };
-

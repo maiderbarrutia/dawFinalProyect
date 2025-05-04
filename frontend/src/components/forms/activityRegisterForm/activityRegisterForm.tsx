@@ -4,9 +4,10 @@ import * as Yup from 'yup';
 import { postRequest, getRequest } from '@/services/api';
 import styles from './ActivityRegisterForm.module.scss';
 import Button from '@/components/common/Button/Button';
-import PopupMessage from '@/components/common/Popup/PopupMessage';
+import PopupMessage from '@/components/common/PopupMessage/PopupMessage';
 import { Category } from '@/interfaces/Category';
 import { useNavigate } from 'react-router-dom';
+import Loading from '@/components/common/Loading/Loading';
 
 // Validación con Yup
 const validationSchema = Yup.object({
@@ -50,23 +51,20 @@ const formFields = [
 const ActivityRegisterForm: React.FC = () => {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await getRequest('/categorias');
-        if (Array.isArray(response)) {
-          setCategories(response);
-        } else {
-          throw new Error('Error loading categories.');
-        }
-      } catch (error) {
-        setMessage({ type: 'error', text: 'Error loading categories.' });
-        console.error(error);
-      } finally {
-        setLoadingCategories(false);
+        const response: Category[] = await getRequest('/categorias');
+        setCategories(response);
+      } 
+      catch (error) {
+          setMessage({ type: 'error', text: 'Error al cargar las categorías' });
+          console.error('Error al cargar las categorías:', error);
+      }finally {
+        setLoading(false);
       }
     };
     fetchCategories();
@@ -77,10 +75,12 @@ const ActivityRegisterForm: React.FC = () => {
     { resetForm }: FormikHelpers<typeof initialFormState>
   ) => {
     setMessage(null);
+    setLoading(true); 
   
     const companyId = localStorage.getItem('companyId');
     if (!companyId) {
       setMessage({ type: 'error', text: 'No se encontró ID de empresa. Inicia sesión nuevamente.' });
+      setLoading(false);
       return;
     }
   
@@ -108,24 +108,32 @@ const ActivityRegisterForm: React.FC = () => {
         dataToSend.append('activity_images', file);
         dataToSend.append('activity_image_names[]', file.name);
       });
-    } else {
-      setMessage({ type: 'error', text: 'Debes subir al menos una imagen.' });
-      return;
     }
   
     try {
       await postRequest('/actividades', dataToSend);
       setMessage({ type: 'success', text: 'Actividad registrada con éxito.' });
       resetForm();
+
+      setTimeout(() => navigate('/perfil'), 1500);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage({
+          type: 'error',
+          text: error.message || 'Error al registrar la actividad.',
+        });
+      } else {
+        setMessage({ type: 'error', text: 'Error al registrar la actividad.' });
+      }
   
-      setTimeout(() => {
-        navigate('/perfil');
-      }, 1500);
-    } catch {
-      setMessage({ type: 'error', text: 'Hubo un error al registrar la actividad.' });
+      console.error('Error al registrar la actividad:', error);
+    } finally {
+      setLoading(false);
     }
   };
   
+  if (loading) return <Loading />;
 
   return (
     <section className={styles['activity-form']}>
@@ -181,7 +189,7 @@ const ActivityRegisterForm: React.FC = () => {
               </label>
               <Field as="select" name="category_id" className={styles['activity-form__input']}>
                 <option value="" label="Selecciona una categoría" />
-                {loadingCategories ? (
+                {loading ? (
                   <option value="" disabled>Cargando...</option>
                 ) : (
                   categories.map((category) => (

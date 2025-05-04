@@ -6,8 +6,9 @@ import * as Yup from 'yup';
 import { postRequest } from '@/services/api';
 import styles from './CompanyRegisterForm.module.scss';
 import { Company } from '@/interfaces/Company';
-import PopupMessage from '@/components/common/Popup/PopupMessage';
+import PopupMessage from '@/components/common/PopupMessage/PopupMessage';
 import Button from '@/components/common/Button/Button';
+import Loading from '@/components/common/Loading/Loading';
 
 // Componente genérico para los campos del formulario
 interface FieldProps {
@@ -92,61 +93,56 @@ const formFields = [
 ];
 
 const CompanyRegisterForm: React.FC = () => {
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
-  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
   const navigate = useNavigate();
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
 
   const handleSubmit = async (
-    values: Omit<Company, 'company_id' | 'company_logo'> & { repeat_password: string },
-    { resetForm }: FormikHelpers<Omit<Company, 'company_id' | 'company_logo'> & { repeat_password: string }>
+    values: typeof initialFormState,
+    { resetForm }: FormikHelpers<typeof initialFormState>
   ) => {
-    setError('');
-    setSuccess('');
-  
-    const currentDate = new Date().toISOString();
-  
-    const dataToSend = new FormData();
-    dataToSend.append('company_name', values.company_name);
-    dataToSend.append('company_type', values.company_type);
-    dataToSend.append('company_cif', values.company_cif);
-    dataToSend.append('contact_person', values.contact_person);
-    dataToSend.append('company_phone', values.company_phone);
-    dataToSend.append('company_address', values.company_address);
-    dataToSend.append('company_email', values.company_email);
-    dataToSend.append('company_password', values.company_password);
-    dataToSend.append('privacy_policy', values.privacy_policy ? '1' : '0');
-    dataToSend.append('registration_date', currentDate);
-  
-    if (values.company_website) {
-      dataToSend.append('company_website', values.company_website);
-    }
-  
-    if (companyLogo) {
-      dataToSend.append('company_logo', companyLogo);
-    }
-  
+    setMessage(null);
+    setLoading(true);
+
     try {
-      await postRequest<{ company: Company }>('/empresas/register', dataToSend, false);
-      // console.clear();
-  
-      setSuccess('Empresa registrada con éxito.');
+      const formData = new FormData();
+      const registrationDate = new Date().toISOString();
+
+      Object.entries(values).forEach(([key, val]) => {
+        if (key !== 'repeat_password') {
+          formData.append(key, key === 'privacy_policy' ? (val ? '1' : '0') : val as string);
+        }
+      });
+
+      formData.append('registration_date', registrationDate);
+      if (companyLogo) formData.append('company_logo', companyLogo);
+
+      await postRequest('/empresas/register', formData, false);
+
+      setMessage({ type: 'success', text: 'Empresa registrada con éxito.' });
       resetForm();
       setCompanyLogo(null);
-  
-      setTimeout(() => {
-        navigate('/login');
-      }, 1500);
-    } catch (err) {
-      if (err && typeof err === 'object' && 'message' in err) {
-        const errorMessage = (err as { message: string }).message || 'Hubo un error al registrar la empresa.';
-        setError(errorMessage);
+
+      setTimeout(() => navigate('/login'), 1500);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage({
+          type: 'error',
+          text: error.message || 'Error al registrar la empresa.',
+        });
       } else {
-        setError('Hubo un error inesperado.');
+        setMessage({ type: 'error', text: 'Error al registrar la empresa.' });
       }
+  
+      console.error('Error al registrar la empresa:', error);
+    } finally {
+      setLoading(false);
     }
   };
   
+  if (loading) return <Loading />;
 
   return (
     <Formik
@@ -206,8 +202,9 @@ const CompanyRegisterForm: React.FC = () => {
             }
           })}
 
-          {error && <PopupMessage type="error" message={error} onClose={() => setError('')} />}
-          {success && <PopupMessage type="success" message={success} onClose={() => setSuccess('')} />}
+          {message && (
+              <PopupMessage type={message.type} message={message.text} onClose={() => setMessage(null)} />
+          )}
 
           <div className={styles['company-form__button']}>
             <Button
