@@ -21,7 +21,11 @@ interface FieldProps {
 
 const FormField: React.FC<FieldProps> = ({ name, type, placeholder, label, required }) => (
   <div className={styles['company-form__group']}>
-    {label && <label className={styles['company-form__label']} htmlFor={name}>{label}</label>}
+    {label && (
+      <label className={styles['company-form__label']} htmlFor={name}>
+        {label} {required && <span className={styles['form-required']}>*</span>}
+      </label>
+    )}
     <Field
       className={styles['company-form__input']}
       type={type}

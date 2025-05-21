@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postRequest } from '../../services/api'; 
-import Button from "@components/common/Button/Button";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import jwt_decode from 'jwt-decode';
+import { postRequest } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
+import Button from '@components/common/Button/Button';
+import Loading from '@components/common/Loading/Loading';
+import PopupMessage from '@components/common/PopupMessage/PopupMessage';
 import styles from './Login.module.scss';
-import { useAuth } from "../../context/AuthContext";
-import jwt_decode from "jwt-decode";
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email('Email inválido').required('El email es obligatorio.'),
+  password: Yup.string().required('La contraseña es obligatoria.'),
+});
+
+interface LoginValues {
+  email: string;
+  password: string;
+}
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Verifica si el token ha caducado al cargar el componente
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        // Decodificamos el token para obtener su fecha de expiración
-        const decodedToken = jwt_decode<{ exp: number }>(token);
-        const currentTime = Math.floor(Date.now() / 1000); // Hora actual en segundos
-
-        // Si el token ha caducado
-        if (decodedToken.exp < currentTime) {
-          // Elimina el token caducado y cierra la sesión
+        const decoded = jwt_decode<{ exp: number }>(token);
+        const now = Math.floor(Date.now() / 1000);
+        if (decoded.exp < now) {
           localStorage.removeItem('token');
           localStorage.removeItem('companyId');
           login('');
@@ -36,113 +44,125 @@ const Login: React.FC = () => {
     }
   }, [navigate, login]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
-  
+  const initialValues: LoginValues = {
+    email: '',
+    password: '',
+  };
+
+  const handleSubmit = async (values: LoginValues) => {
+    setMessage(null);
+    setLoading(true);
+
     try {
-      const { token, message } = await postRequest<{ token: string; message?: string }>(
+      const { token, message: serverMessage } = await postRequest<{ token: string; message?: string }>(
         '/empresas/login',
         {
-          company_email: email,
-          company_password: password,
+          company_email: values.email,
+          company_password: values.password,
         }
       );
-  
+      
+
       if (token) {
-        // Decodificar el token para obtener el id de la empresa
-        const decodedToken = jwt_decode<{ id: number, exp: number }>(token);
-        const companyId = decodedToken.id;
-  
-        // Almacenar el token y el id de la empresa en localStorage
+        const decoded = jwt_decode<{ id: number; exp: number }>(token);
+        const companyId = decoded.id;
         localStorage.setItem('token', token);
         localStorage.setItem('companyId', companyId.toString());
-  
         login(token);
-        navigate('/perfil');
+
+        setMessage({ type: 'success', text: 'Sesión iniciada correctamente'});
+        
+        setTimeout(() => navigate('/perfil'), 1500);
+        
       } else {
-        setError(message ?? 'No se pudo iniciar sesión.');
+        setMessage({ type: 'error', text: serverMessage ?? 'No se pudo iniciar sesión.' });
       }
     } catch {
-      setError('Credenciales incorrectas o error de servidor.');
+      setMessage({ type: 'error', text: 'Credenciales incorrectas o error del servidor.' });
+      console.log()
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <section id="loginRegister" className={styles.loginRegister}>
       <div className={styles['section__container']}>
-        <div className={`${styles['loginRegister__box']}`}>
-          
-          {/* Formulario de Login */}
+        <div className={styles['loginRegister__box']}>
           <article className={styles.login}>
             <h1 className={styles['login__title']}>Inicio de sesión</h1>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={LoginSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting }) => (
+                <Form className={styles['login__form']}>
+                  <div className={styles['login__form-group']}>
+                    <label htmlFor="email">
+                      Email: <span className={styles['form-required']}>*</span>
+                    </label>
+                    <Field
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="Introduce tu email"
+                      className={styles['login__input']}
+                    />
+                    <ErrorMessage name="email" component="div" className={styles['form-error-message']} />
+                  </div>
 
-            <form onSubmit={handleSubmit} className={styles['login__form']}>
-              <div className={styles['login__form-group']}>
-                <label htmlFor="email_empresa">
-                  Email: <span className={styles['login__required']}>*</span>
-                </label>
-                <input
-                  type="email"
-                  id="email_empresa"
-                  value={email}
-                  placeholder="Introduce tu email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={styles['login__input']}
-                  required
-                />
-              </div>
+                  <div className={styles['login__form-group']}>
+                    <label htmlFor="password">
+                      Contraseña: <span className={styles['form-required']}>*</span>
+                    </label>
+                    <Field
+                      id="password"
+                      name="password"
+                      type="password"
+                      placeholder="Introduce tu contraseña"
+                      className={styles['login__input']}
+                    />
+                    <ErrorMessage name="password" component="div" className={styles['form-error-message']} />
+                  </div>
 
-              <div className={styles['login__form-group']}>
-                <label htmlFor="contrasena_empresa">
-                  Contraseña: <span className={styles['login__required']}>*</span>
-                </label>
-                <input
-                  type="password"
-                  id="contrasena_empresa"
-                  value={password}
-                  placeholder="Introduce tu contraseña"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={styles['login__input']}
-                  required
-                />
-              </div>
+                  {message && (
+                    <PopupMessage
+                      type={message.type}
+                      message={message.text}
+                      onClose={() => setMessage(null)}
+                    />
+                  )}
 
-              {error && <div className={styles['login__error']}>{error}</div>}
-
-              <div className={styles['login__form-group']}>
-                <Button
-                  text="Iniciar sesión"
-                  type="submit"
-                  buttonStyle="primaryColor"
-                  hoverStyle="black"
-                  ariaLabel="Iniciar sesión con tus credenciales"
-                />
-              </div>
-
-              {/* <div className={styles['login__form-group']}>
-                <a href="/resetear-contrasena" className={styles['login__link']}>
-                  ¿Has olvidado tus datos de acceso?
-                </a>
-              </div> */}
-            </form>
+                  <div className={styles['login__form-group']}>
+                    <Button
+                      text="Iniciar sesión"
+                      type="submit"
+                      buttonStyle="primaryColor"
+                      hoverStyle="black"
+                      ariaLabel="Iniciar sesión con tus credenciales"
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </article>
 
-          {/* Sección de Registro */}
           <article className={styles.register}>
             <h2 className={styles['register__title']}>Crear cuenta empresa</h2>
             <p className={styles['register__text']}>
-              Publica tus actividades y conecta con más clientes. 
-              <strong>¡Crea tu cuenta!</strong>
+              Publica tus actividades y conecta con más clientes. <strong>¡Crea tu cuenta!</strong>
             </p>
-
             <Button
               text="Crear cuenta de empresa"
               type="button"
               buttonStyle="primaryColor"
               hoverStyle="black"
               ariaLabel="Crear una cuenta de empresa"
-              link='/crear-cuenta-empresa'
+              link="/crear-cuenta-empresa"
             />
           </article>
         </div>

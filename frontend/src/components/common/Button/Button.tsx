@@ -26,7 +26,6 @@ const Button: React.FC<ButtonProps> = ({
   link,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-
  
   const buttonStyleClass = styles[`button--${buttonStyle}`];
   const hoverStyleClass = styles[`button--${hoverStyle}`];

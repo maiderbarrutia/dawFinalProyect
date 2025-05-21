@@ -14,9 +14,12 @@ const dataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: isProduction
-    ? [__dirname + "/../entities/*.js"]  // Usar .js para producción
-    : [__dirname + "/../entities/*.ts"], // Usar .ts para desarrollo
-  synchronize: false, // Cambiar a false en producción
+    ? [__dirname + "/../entities/*.js"]
+    : [__dirname + "/../entities/*.ts"],
+  migrations: isProduction
+    ? [__dirname + "/../migrations/*.js"]
+    : [__dirname + "/../migrations/*.ts"], 
+  synchronize: false,
   logging: false,
 });
 

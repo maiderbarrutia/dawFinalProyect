@@ -18,9 +18,9 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   } = req.body;
 
   // Recuperar el logo de la empresa si se ha subido un archivo (usamos undefined si no hay archivo)
-  const company_logo = req.file ? req.file.filename : undefined;  // Use undefined instead of null
+  const company_logo = req.file ? req.file.filename : undefined;
 
-  // Validar de campos obligatorios
+  // Validar campos obligatorios
   if (!company_name || !company_cif || !company_email || !company_password) {
     res.status(400).send("El nombre, CIF, email y contraseña de la empresa son obligatorios.");
     return;
@@ -29,21 +29,19 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   try {
     const CompanyRepo = dataSource.getRepository(Company);
 
-    // Verificar si el email existe
     const emailExists = await CompanyRepo.findOne({ where: { company_email } });
     if (emailExists) {
       res.status(409).send("El correo electrónico ya está en uso.");
       return;
     }
 
-    // Verificar si el CIF existe
     const CIFexist = await CompanyRepo.findOne({ where: { company_cif } });
     if (CIFexist) {
       res.status(409).send("El CIF ya está en uso.");
       return;
     }
 
-    // CreaR un hash de la contraseña utilizando bcrypt para asegurarla
+    // Crear un hash de la contraseña utilizando bcrypt para asegurarla
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(company_password, salt);
 

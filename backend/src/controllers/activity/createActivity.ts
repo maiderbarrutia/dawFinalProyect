@@ -40,7 +40,6 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
     res.status(201).json({ message: "Actividad creada exitosamente", activity });
 
   } catch (error) {
-    // Asegurándonos de que siempre respondemos con un JSON
     if (error instanceof Error) {
       console.error("Error al crear actividad:", error.message);
       res.status(500).json({ message: "Error al crear actividad.", error: error.message });  // JSON de error

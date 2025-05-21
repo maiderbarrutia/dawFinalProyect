@@ -5,14 +5,13 @@ import dataSource from "../../config/database";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-// Cargar las variables de entorno
 dotenv.config();
 
 export const loginCompany = async (req: Request, res: Response): Promise<void> => { 
     const { company_email, company_password } = req.body;
 
     try {
-        // Verificar que los datos estén presentes
+        // Verificar que los datos se han introducido
         if (!company_email || !company_password) {
             res.status(400).json({ message: 'Por favor, ingresa tanto el correo electrónico como la contraseña.' });
             return;
@@ -22,7 +21,6 @@ export const loginCompany = async (req: Request, res: Response): Promise<void> =
         const repo = dataSource.getRepository(Company);
         const company = await repo.findOne({ where: { company_email } });
 
-        // Si no existe la empresa, devolver error
         if (!company) {
             res.status(404).json({ message: 'Empresa no encontrada' });
             return;
@@ -42,13 +40,12 @@ export const loginCompany = async (req: Request, res: Response): Promise<void> =
 
         // Devolver el token al cliente
         res.status(200).json({ token });
+
     } catch (error) {
-        // Comprobar que el error es un objeto Error y acceder a sus propiedades
         if (error instanceof Error) {
-            console.error("Error en login:", error.message);  // Log de error en el servidor
+            console.error("Error en login:", error.message);
             res.status(500).json({ message: 'Error en login. Inténtalo más tarde.', error: error.message });
         } else {
-            // En caso de que el error no sea un Error, podemos devolver un mensaje genérico
             console.error("Error inesperado:", error);
             res.status(500).json({ message: 'Error inesperado en el servidor.' });
         }

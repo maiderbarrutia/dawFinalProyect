@@ -157,7 +157,6 @@ export const seedCompanies = async (dataSource: DataSource) => {
 
         if (hasChanges) {
           console.log(`🟡 Actualizando empresa: ${company.company_name}`);
-          // await companyRepo.update({ company_id: company.company_id }, company);
           await companyRepo.update(
             { company_id: company.company_id },
             {

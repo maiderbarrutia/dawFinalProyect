@@ -39,6 +39,7 @@ const ActivityDetail: React.FC = () => {
 
         setCompany(companyData);
         setCategory(categoryData);
+
       } catch (error) {
         console.log('Error al cargar la actividad: ', error);
       } finally {
@@ -64,7 +65,16 @@ const ActivityDetail: React.FC = () => {
   }, []);
 
   if (loading) return <Loading message="Cargando..." />;
-  if (!activity) return <div>Actividad no encontrada.</div>;
+
+  if (!activity) {
+    return (
+      <section className={styles.activity}>
+        <div className={styles['section__container']}>
+          <h2>Actividad no encontrada.</h2>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.activity}>
@@ -82,31 +92,38 @@ const ActivityDetail: React.FC = () => {
 
           <div className={styles.activity__info}>
             <h2 className={styles.activity__infoTitle}>Info de la empresa</h2>
+
             {company?.company_logo && (
               <div className={styles['activity__info__image-wrapper']}>
-              <img
-                src={
-                  company.company_logo
-                    ? getUploadedImageSrc(`images/${company.company_logo}`)
-                    : getAssetSrc("images/default-image.jpg")
-                }
-                alt="Logo empresa"
-                className={styles['activity__info__image']}
-              />
+                <img
+                  src={getUploadedImageSrc(`images/${company.company_logo}`)}
+                  alt="Logo empresa"
+                  className={styles['activity__info__image']}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = getAssetSrc("images/default-image.jpg");
+                  }}
+                />
               </div>
             )}
+
             {company?.company_name && (
             <p className={styles['activity__info__text']}><strong>Nombre empresa:</strong> {company.company_name}</p>
             )}
+
             {company?.contact_person && (
             <p className={styles['activity__info__text']}><strong>Persona de Contacto:</strong> {company.contact_person}</p>
             )}
+
             {company?.company_phone && (
             <p className={styles['activity__info__text']}><strong>Teléfono:</strong> {company.company_phone}</p>
             )}
+
             {company?.company_address && (
             <p className={styles['activity__info__text']}><strong>Dirección:</strong> {company.company_address}</p>
             )}
+
             {company?.company_email && (
               <p className={styles['activity__info__text']}>
                 <strong>Email: </strong> 
@@ -129,18 +146,21 @@ const ActivityDetail: React.FC = () => {
         </div>
 
         <div className={styles.activity__details}>
+
           {category?.category_name && (
             <span className={styles.activity__category}>{category.category_name}</span>
           )}
-          
 
           <ul className={styles.activity__stats}>
+
             {activity.available_slots > 0 && (
               <li><span>Plazas:</span> {activity.available_slots}</li>
             )}
+
             {activity.activity_duration > 0 && (
               <li><span>Duración:</span> {activity.activity_duration}h</li>
             )}
+
             {activity.difficulty_level && (
               <li><span>Dificultad:</span> {activity.difficulty_level}</li>
             )}
@@ -174,6 +194,7 @@ const ActivityDetail: React.FC = () => {
                 ></iframe>
               </li>
             )}
+
           </ul>
 
           {activity.activity_description && (
@@ -190,18 +211,17 @@ const ActivityDetail: React.FC = () => {
         </div>
 
         <div className={`${styles.activity__footer} ${isFixed ? styles.fixed : ''}`}>
-        {activity.activity_price && (
-          <p className={styles.activity__price}>
-            {Number(activity.activity_price) === 0
-              ? 'Gratis'
-              : Number(activity.activity_price) % 1 === 0
-              ? Number(activity.activity_price)
-              : Number(activity.activity_price).toFixed(2)
-            }
-            {Number(activity.activity_price) === 0 ? '' : <span>€</span>}
-          </p>
-        )}
-          
+          {activity.activity_price && (
+            <p className={styles.activity__price}>
+              {Number(activity.activity_price) === 0
+                ? 'Gratis'
+                : Number(activity.activity_price) % 1 === 0
+                ? Number(activity.activity_price)
+                : Number(activity.activity_price).toFixed(2)
+              }
+              {Number(activity.activity_price) === 0 ? '' : <span>€</span>}
+            </p>
+          )}
 
           <Button
             text="Inscribirme"
@@ -210,10 +230,9 @@ const ActivityDetail: React.FC = () => {
             className={styles.activity__button}
           />
         </div>
+
       </div>
     </section>
-
-
   );
 };
 

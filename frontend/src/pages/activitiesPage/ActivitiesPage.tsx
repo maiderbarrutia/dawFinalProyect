@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom'; 
-import styles from './ActivitiesPage.module.scss';
-import ActivityCard from '@/components/common/ActivityCard/ActivityCard';
-import { getRequest } from '@/services/api';
-import SearchFilters from '@components/common/searchFilters/SearchFilters';
-import CategoriesFilters from '@components/common/categoriesFilters/CategoriesFilters';
-import { Activity } from '@/interfaces/Activity';
-import Loading from '@/components/common/Loading/Loading';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import styles from "./ActivitiesPage.module.scss";
+import ActivityCard from "@/components/common/ActivityCard/ActivityCard";
+import { getRequest } from "@/services/api";
+import SearchFilters from "@components/common/searchFilters/SearchFilters";
+import CategoriesFilters from "@components/common/categoriesFilters/CategoriesFilters";
+import { Activity } from "@/interfaces/Activity";
+import Loading from "@/components/common/Loading/Loading";
 
 const ActivitiesPage: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [filteredActivities, setFilteredActivities] = useState<Activity[]>([]);
-  const [categories, setCategories] = useState<{ category_id: number; category_name: string }[]>([]);
+  const [categories, setCategories] = useState<
+    { category_id: number; category_name: string }[]
+  >([]);
   const [uniqueLocations, setUniqueLocations] = useState<string[]>([]);
 
-  const [searchText, setSearchText] = useState<string>('');
-  const [location, setLocation] = useState<string>('');
-  const [appliedSearchText, setAppliedSearchText] = useState<string>('');
-  const [appliedLocation, setAppliedLocation] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [appliedSearchText, setAppliedSearchText] = useState<string>("");
+  const [appliedLocation, setAppliedLocation] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -25,17 +27,18 @@ const ActivitiesPage: React.FC = () => {
 
   // Leer parámetros de la URL
   const query = new URLSearchParams(useLocation().search);
-  const searchTextFromUrl = query.get('searchText') || '';
-  const locationFromUrl = query.get('location') || '';
-  const categoryFromUrl = query.get('category'); // Leer el parámetro 'category'
+  const searchTextFromUrl = query.get("searchText") || "";
+  const locationFromUrl = query.get("location") || "";
+  const categoryFromUrl = query.get("category"); // Leer el parámetro 'category'
 
   // Cargar actividades y categorías
   useEffect(() => {
     const fetchActivitiesAndCategories = async () => {
       try {
-        const activitiesData: Activity[] = await getRequest('/actividades');
-        const categoriesData: { category_id: number; category_name: string }[] = await getRequest('/categorias');
-        
+        const activitiesData: Activity[] = await getRequest("/actividades");
+        const categoriesData: { category_id: number; category_name: string }[] =
+          await getRequest("/categorias");
+
         setActivities(activitiesData);
         setCategories(categoriesData);
 
@@ -44,13 +47,13 @@ const ActivitiesPage: React.FC = () => {
           new Set(
             activitiesData
               .map((activity) => activity.activity_location)
-              .filter((location: string) => location.trim() !== '') // Filtrar vacíos
+              .filter((location: string) => location.trim() !== "") // Filtrar vacíos
           )
         );
         setUniqueLocations(locations);
       } catch (error) {
-        setError('Error al cargar actividades o categorias');
-        console.error('Error al recuperar actividades:', error);
+        setError("Error al cargar actividades o categorias");
+        console.error("Error al recuperar actividades:", error);
       } finally {
         setLoading(false);
       }
@@ -81,19 +84,27 @@ const ActivitiesPage: React.FC = () => {
     if (appliedSearchText) {
       filtered = filtered.filter(
         (activity) =>
-          activity.activity_title.toLowerCase().includes(appliedSearchText.toLowerCase()) ||
-          activity.activity_description.toLowerCase().includes(appliedSearchText.toLowerCase())
+          activity.activity_title
+            .toLowerCase()
+            .includes(appliedSearchText.toLowerCase()) ||
+          activity.activity_description
+            .toLowerCase()
+            .includes(appliedSearchText.toLowerCase())
       );
     }
 
     if (appliedLocation) {
       filtered = filtered.filter((activity) =>
-        activity.activity_location.toLowerCase().includes(appliedLocation.toLowerCase())
+        activity.activity_location
+          .toLowerCase()
+          .includes(appliedLocation.toLowerCase())
       );
     }
 
     if (selectedCategory !== null) {
-      filtered = filtered.filter((activity) => activity.category_id === selectedCategory);
+      filtered = filtered.filter(
+        (activity) => activity.category_id === selectedCategory
+      );
     }
 
     setFilteredActivities(filtered);
@@ -105,13 +116,21 @@ const ActivitiesPage: React.FC = () => {
     setAppliedLocation(location);
   };
   if (loading) return <Loading />;
-  if (error) return <p>{error}</p>;
+
+  if (error) {
+    return (
+      <section className={styles.activitiesPage}>
+        <div className={styles["section__container"]}>
+          <h2>{error}</h2>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.activitiesPage}>
-      <div className={styles['section__container']}>
-
-        <div className={styles['activitiesPage__searchFilter-container']}>
+      <div className={styles["section__container"]}>
+        <div className={styles["activitiesPage__searchFilter-container"]}>
           <SearchFilters
             searchText={searchText}
             setSearchText={setSearchText}
@@ -130,7 +149,7 @@ const ActivitiesPage: React.FC = () => {
               Actividades en <span>{appliedLocation}</span>
             </>
           ) : (
-            'Actividades'
+            "Actividades"
           )}
         </h1>
 
@@ -140,14 +159,18 @@ const ActivitiesPage: React.FC = () => {
           categories={categories}
         />
 
-        <div className={filteredActivities.length > 0 ? styles.activitiesPage__grid : ''}>
+        <div
+          className={
+            filteredActivities.length > 0 ? styles.activitiesPage__grid : ""
+          }
+        >
           {filteredActivities.length > 0 ? (
             filteredActivities.map((activity: Activity) => (
               <ActivityCard key={activity.activity_id} {...activity} />
             ))
           ) : (
             <p className={styles.activitiesPage__notFound}>
-              Actividades no encontradas con los filtros seleccionados
+              Actividades no encontradas
             </p>
           )}
         </div>

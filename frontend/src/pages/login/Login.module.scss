@@ -46,18 +46,6 @@
     border: 1px solid $light-gray;
   }
 
-  &__required {
-    color: $red;
-  }
-
-  &__error {
-    background-color: $red;
-    color: $white;
-    padding: rem(10);
-    border-radius: rem(5);
-    margin-top: rem(10);
-  }
-
   &__link {
     color: $primary-color;
     text-decoration: none;

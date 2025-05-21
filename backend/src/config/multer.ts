@@ -44,7 +44,7 @@ const customStorage = {
         const image = sharp(buffer);
         const metadata = await image.metadata();
 
-        // Solo redimensionamos si el ancho original es mayor a 1200
+        // Solo redimensionar si el ancho original es mayor a 1200
         let transformer = image;
         if ((metadata.width || 0) > 1200) {
           transformer = transformer.resize({ width: 1200 });

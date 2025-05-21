@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
-import AisiPlanIcon from '@/assets/icons/logo-aisiplan.svg';
+import AisiPlanWhiteIcon from '@/assets/icons/logo-aisiplan-blanco.svg';
 import { getAssetSrc } from '@/utils/srcUtils';
 import facebookIcon from '@assets/icons/facebook-icon.png'
 import linkedinIcon from '@assets/icons/linkedin-icon.png'
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
       <div className={styles.section__container}>
         <div className={styles.footer__container}>
           <div className={styles.footer__logoSection}>
-            <img src={AisiPlanIcon} alt="AisiPlan Logo" className={styles.footer__logoImage} />
+            <img src={AisiPlanWhiteIcon} alt="AisiPlan Logo" className={styles.footer__logoImage} />
           </div>
           <div className={styles.footer__sections}>
             <div className={styles.footer__section}>
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className={styles.footer__scrollTopButton}
         >
-          <img src={getAssetSrc('icons/arrow-up.png')} alt="" />
+          <img className={styles.footer__arrowUp} src={getAssetSrc('icons/arrow-up.svg')} alt="Ir al inicio" />
         </button>
         )}
 

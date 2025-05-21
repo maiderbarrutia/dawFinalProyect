@@ -27,8 +27,8 @@ const CategoriesFilters: React.FC<CategoriesFiltersProps> = ({
           >
             {category.category_name}
           </button>
-          
         ))}
+
         <button
           onClick={() => setSelectedCategory(null)}
           className={

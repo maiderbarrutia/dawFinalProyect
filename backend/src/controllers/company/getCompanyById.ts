@@ -19,6 +19,7 @@ import dataSource from "../../config/database";
       const { company_password, ...rest } = company;
   
       res.status(200).json(rest);
+      
     } catch (error) {
       res.status(500).json({ message: "Error al obtener empresa", error });
     }

@@ -18,7 +18,6 @@ const ItemsCarousel: React.FC<ItemsCarouselProps> = ({ items, visibleCount }) =>
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
   const getVisibleCount = () => {
     if (windowWidth >= 1200) return visibleCount.large || 5;
     if (windowWidth >= 992) return visibleCount.desktop || 4;
@@ -49,6 +48,7 @@ const ItemsCarousel: React.FC<ItemsCarouselProps> = ({ items, visibleCount }) =>
 
   return (
     <div className={styles.carousel__wrapper}>
+      
       {currentIndex > 0 && (
         <button className={styles.carousel__arrow} onClick={prevSlide}>
           <img src={getAssetSrc('icons/arrow-left.png')} alt="Anterior" />

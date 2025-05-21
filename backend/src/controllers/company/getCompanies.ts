@@ -11,6 +11,7 @@ export const getCompanies = async (req: Request, res: Response) => {
     const cleaned = companies.map(({ company_password, ...rest }) => rest);
 
     res.status(200).json(cleaned);
+    
   } catch (error) {
     res.status(500).json({ message: "Error al obtener empresas", error });
   }

@@ -60,17 +60,22 @@ const ActivityCard: React.FC<Activity> = ({
       </Link>
 
       <div className={styles.activityCard__content}>
-        <p className={styles.activityCard__category}>
-          {category?.category_name || 'Categoría no disponible'}
-        </p>
+        {category?.category_name && (
+          <p className={styles.activityCard__category}>
+            {category.category_name}
+          </p>
+        )}
 
         <Link to={`/actividad/${activity_id}`} className={styles.activityCard__titleLink}>
           <h3 className={styles.activityCard__title}>{activity_title}</h3>
         </Link>
 
-        <p className={styles.activityCard__provider}>
-          {company?.company_name || 'Empresa no disponible'}
-        </p>
+        {company?.company_name && (
+          <p className={styles.activityCard__provider}>
+            {company.company_name}
+          </p>
+        )}
+
 
         {Number(activity_price) >= 0 && (
           <p className={styles.activityCard__price}>
@@ -90,13 +95,20 @@ const ActivityCard: React.FC<Activity> = ({
           )}
           {activity_date && activity_time && activity_time !== '00:00:00' && ' | '}
           {activity_time && activity_time !== '00:00:00' && (
-            <span className={styles.activityCard__time}>{activity_time.slice(0, 5)}</span>
+            <span className={styles.activityCard__time}>{activity_time.slice(0, 5)} h</span>
           )}
         </div>
         {Number(activity_duration) > 0 && (
           <p className={styles.activityCard__duration}>{activity_duration} minutos</p>
         )}
-        <p className={styles.activityCard__location}>📍 {activity_location}</p>
+        <p className={styles.activityCard__location}>
+          <img
+            src={getAssetSrc('icons/location-icon.png')}
+            alt="Icono de localización"
+            className={styles.activityCard__locationImage}
+          />
+          {activity_location}
+        </p>
       </div>
     </article>
   );
