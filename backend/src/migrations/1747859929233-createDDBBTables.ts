@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateDDBBTables1747845472401 implements MigrationInterface {
-    name = 'CreateDDBBTables1747845472401'
+export class CreateDDBBTables1747859929233 implements MigrationInterface {
+    name = 'CreateDDBBTables1747859929233'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`UserData\` (\`user_id\` int NOT NULL AUTO_INCREMENT, \`first_name\` varchar(100) NOT NULL, \`last_name\` varchar(100) NULL, \`user_email\` varchar(255) NOT NULL, \`user_phone\` varchar(20) NULL, \`user_city\` varchar(255) NULL, \`user_password\` varchar(255) NULL, \`privacy_policy\` tinyint NOT NULL DEFAULT 0, \`registration_date\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, INDEX \`IDX_ea3d81ec97fdbf23adeb0d0952\` (\`user_phone\`), UNIQUE INDEX \`IDX_2e423c17923b09b183e5cebe2c\` (\`user_email\`), PRIMARY KEY (\`user_id\`)) ENGINE=InnoDB`);

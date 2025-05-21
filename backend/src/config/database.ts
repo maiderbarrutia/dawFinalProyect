@@ -15,10 +15,10 @@ const dataSource = new DataSource({
   database: process.env.DB_DATABASE,
   entities: isProduction
     ? [__dirname + "/../entities/*.js"]
-    : [__dirname + "/../entities/*.ts"],
+    : [__dirname + `/../entities/*.{ts,js}`],
   migrations: isProduction
     ? [__dirname + "/../migrations/*.js"]
-    : [__dirname + "/../migrations/*.ts"], 
+    : [__dirname + `/../migrations/*.{ts,js}`],
   synchronize: false,
   logging: false,
 });
