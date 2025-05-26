@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -14,11 +15,11 @@ const dataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: isProduction
-    ? [__dirname + "/../entities/*.js"]
-    : [__dirname + `/../entities/*.{ts,js}`],
+    ? [path.resolve(__dirname, "../entities/*.js")]
+    : [path.resolve(__dirname, "../entities/*.{ts,js}")],
   migrations: isProduction
-    ? [__dirname + "/../migrations/*.js"]
-    : [__dirname + `/../migrations/*.{ts,js}`],
+    ? [path.resolve(__dirname, "../migrations/*.js")]
+    : [path.resolve(__dirname, "../migrations/*.{ts,js}")],
   synchronize: false,
   logging: false,
 });

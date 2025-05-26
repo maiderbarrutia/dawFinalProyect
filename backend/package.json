@@ -2,8 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
+    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "migration:generate": "ts-node --esm ./node_modules/typeorm/cli.js migration:generate -d ./src/config/database.ts src/migrations/createDDBBTables",
+    "migration:run": "typeorm migration:run -d ./dist/config/database.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -39,7 +39,23 @@ const ActivitiesPage: React.FC = () => {
         const categoriesData: { category_id: number; category_name: string }[] =
           await getRequest("/categorias");
 
-        setActivities(activitiesData);
+        const now = new Date();
+
+        // Hacer que solo se muestren actividades que aún no han pasado
+        const upcomingActivities = activitiesData.filter(activity => {
+          const dateTimeString = `${activity.activity_date}T${activity.activity_time}`;
+          const startDateTime = new Date(dateTimeString);
+          return startDateTime > now;
+        });
+
+        // Ordenar las actividades por fecha y hora más próximas
+        const sortedActivities = upcomingActivities.sort((a, b) => {
+          const aDateTime = new Date(`${a.activity_date}T${a.activity_time}`);
+          const bDateTime = new Date(`${b.activity_date}T${b.activity_time}`);
+          return aDateTime.getTime() - bDateTime.getTime();
+        });
+
+        setActivities(sortedActivities);
         setCategories(categoriesData);
 
         // Extraer ubicaciones únicas
@@ -47,7 +63,7 @@ const ActivitiesPage: React.FC = () => {
           new Set(
             activitiesData
               .map((activity) => activity.activity_location)
-              .filter((location: string) => location.trim() !== "") // Filtrar vacíos
+              .filter((location: string) => location.trim() !== "")
           )
         );
         setUniqueLocations(locations);
@@ -66,14 +82,14 @@ const ActivitiesPage: React.FC = () => {
   useEffect(() => {
     if (searchTextFromUrl) {
       setAppliedSearchText(searchTextFromUrl);
-      setSearchText(searchTextFromUrl); // Actualiza el estado de searchText
+      setSearchText(searchTextFromUrl);
     }
     if (locationFromUrl) {
       setAppliedLocation(locationFromUrl);
       setLocation(locationFromUrl);
     }
     if (categoryFromUrl) {
-      setSelectedCategory(Number(categoryFromUrl)); // Establece el filtro de categoría desde la URL
+      setSelectedCategory(Number(categoryFromUrl));
     }
   }, [searchTextFromUrl, locationFromUrl, categoryFromUrl]);
 
@@ -110,7 +126,7 @@ const ActivitiesPage: React.FC = () => {
     setFilteredActivities(filtered);
   }, [appliedSearchText, appliedLocation, selectedCategory, activities]);
 
-  // Aplicar filtros manualmente (cuando el usuario hace cambios)
+  // Aplicar filtros manualmente cuando el usuario hace cambios
   const applyFilters = () => {
     setAppliedSearchText(searchText);
     setAppliedLocation(location);
@@ -134,7 +150,7 @@ const ActivitiesPage: React.FC = () => {
           <SearchFilters
             searchText={searchText}
             setSearchText={setSearchText}
-            location={location} // El filtro de ubicación debe mostrar este valor
+            location={location} 
             setLocation={setLocation}
             uniqueLocations={uniqueLocations}
             applyFilters={applyFilters}
@@ -142,7 +158,6 @@ const ActivitiesPage: React.FC = () => {
           />
         </div>
 
-        {/* Título con ubicación de la URL */}
         <h1 className={styles.activitiesPage__title}>
           {appliedLocation ? (
             <>

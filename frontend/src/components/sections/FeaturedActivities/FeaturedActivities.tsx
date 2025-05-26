@@ -15,7 +15,16 @@ const FeaturedActivities: React.FC = () => {
     const fetchActivities = async () => {
       try {
         const data: Activity[] = await getRequest('/actividades');
-        setActivities(data);
+
+        // Ordenar las actividades por fecha y hora más próximas
+        const sorted = data.sort((a, b) => {
+          const aDateTime = new Date(`${a.activity_date}T${a.activity_time}`);
+          const bDateTime = new Date(`${b.activity_date}T${b.activity_time}`);
+          return aDateTime.getTime() - bDateTime.getTime();
+        });
+
+        setActivities(sorted);
+
       } catch (error) {
         console.error('Error al cargar actividades:', error);
         setError('No se pudieron cargar las actividades.');
