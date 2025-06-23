@@ -30,10 +30,10 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
     
 
-    const handleClick = (link: string) => {
-        handleNavigateToSection(link);
-        closeMenu(link);
-    };
+    // const handleClick = (link: string) => {
+    //     handleNavigateToSection(link);
+    //     closeMenu(link);
+    // };
 
     return (
         <>
@@ -42,10 +42,13 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                 <Link 
                     to="/actividades"
                     className={`${styles['header__mainMenu-link']} ${selectedLink === '/actividades' ? styles['header__mainMenu-link--selected'] : ''}`}
-                    onClick={() => handleClick('/actividades')}
-                >
+                    onClick={(e) => {
+                        closeMenu('/actividades');
+                    }}
+                    >
                     Actividades
                 </Link>
+
                 
                 </li>
                 
