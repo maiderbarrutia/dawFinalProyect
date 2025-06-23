@@ -2,13 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-declare module 'jsonwebtoken' {
-  export interface JwtPayload {
-    [key: string]: any;
-  }
-}
-
-
 // Cargar las variables de entorno
 dotenv.config();
 
