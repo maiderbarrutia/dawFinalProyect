@@ -13,3 +13,4 @@ userDataRoutes.post("/", createUserData_1.createUserData);
 userDataRoutes.put("/:id", updateUserData_1.updateUserData);
 userDataRoutes.delete("/:id", deleteUserData_1.deleteUserData);
 exports.default = userDataRoutes;
+//# sourceMappingURL=userDataRoutes.js.map

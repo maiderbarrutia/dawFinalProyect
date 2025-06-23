@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -36,37 +27,35 @@ const fileFilter = (req, file, cb) => {
 };
 // Almacenamiento personalizado
 const customStorage = {
-    _handleFile(req, file, cb) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const filename = `${Date.now()}_${path_1.default.parse(file.originalname).name}.webp`;
-                const filepath = path_1.default.join(resourcePaths_1.uploadImagePath, filename);
-                const chunks = [];
-                file.stream.on('data', chunk => chunks.push(chunk));
-                file.stream.on('end', () => __awaiter(this, void 0, void 0, function* () {
-                    const buffer = Buffer.concat(chunks);
-                    const image = (0, sharp_1.default)(buffer);
-                    const metadata = yield image.metadata();
-                    // Solo redimensionar si el ancho original es mayor a 1200
-                    let transformer = image;
-                    if ((metadata.width || 0) > 1200) {
-                        transformer = transformer.resize({ width: 1200 });
-                    }
-                    yield transformer
-                        .webp({ quality: 75, lossless: true })
-                        .toFile(filepath);
-                    cb(null, {
-                        destination: resourcePaths_1.uploadImagePath,
-                        filename,
-                        path: filepath,
-                        size: fs_1.default.statSync(filepath).size,
-                    });
-                }));
-            }
-            catch (err) {
-                cb(err);
-            }
-        });
+    async _handleFile(req, file, cb) {
+        try {
+            const filename = `${Date.now()}_${path_1.default.parse(file.originalname).name}.webp`;
+            const filepath = path_1.default.join(resourcePaths_1.uploadImagePath, filename);
+            const chunks = [];
+            file.stream.on('data', chunk => chunks.push(chunk));
+            file.stream.on('end', async () => {
+                const buffer = Buffer.concat(chunks);
+                const image = (0, sharp_1.default)(buffer);
+                const metadata = await image.metadata();
+                // Solo redimensionar si el ancho original es mayor a 1200
+                let transformer = image;
+                if ((metadata.width || 0) > 1200) {
+                    transformer = transformer.resize({ width: 1200 });
+                }
+                await transformer
+                    .webp({ quality: 75, lossless: true })
+                    .toFile(filepath);
+                cb(null, {
+                    destination: resourcePaths_1.uploadImagePath,
+                    filename,
+                    path: filepath,
+                    size: fs_1.default.statSync(filepath).size,
+                });
+            });
+        }
+        catch (err) {
+            cb(err);
+        }
     },
     _removeFile(req, file, cb) {
         fs_1.default.unlink(file.path, cb);
@@ -80,3 +69,4 @@ exports.upload = (0, multer_1.default)({
         fileSize: 10 * 1024 * 1024,
     }
 });
+//# sourceMappingURL=multer.js.map

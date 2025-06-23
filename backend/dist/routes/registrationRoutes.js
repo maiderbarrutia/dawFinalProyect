@@ -13,3 +13,4 @@ registrationRoutes.post("/", createRegistration_1.createRegistration);
 registrationRoutes.put("/:id", updateRegistration_1.updateRegistration);
 registrationRoutes.delete("/:id", deleteRegistration_1.deleteRegistration);
 exports.default = registrationRoutes;
+//# sourceMappingURL=registrationRoutes.js.map

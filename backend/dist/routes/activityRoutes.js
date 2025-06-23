@@ -15,3 +15,4 @@ activityRoutes.post("/", authMiddleware_1.authMiddleware, multer_1.upload.array(
 activityRoutes.put("/:id", authMiddleware_1.authMiddleware, updateActivity_1.updateActivity);
 activityRoutes.delete("/:id", authMiddleware_1.authMiddleware, deleteActivity_1.deleteActivity);
 exports.default = activityRoutes;
+//# sourceMappingURL=activityRoutes.js.map

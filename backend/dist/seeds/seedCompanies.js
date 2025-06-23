@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedCompanies = void 0;
 const Company_1 = require("../entities/Company");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const seedCompanies = (dataSource) => __awaiter(void 0, void 0, void 0, function* () {
+const seedCompanies = async (dataSource) => {
     const companyRepo = dataSource.getRepository(Company_1.Company);
     const INITIAL_COMPANIES = [
         {
@@ -133,18 +124,18 @@ const seedCompanies = (dataSource) => __awaiter(void 0, void 0, void 0, function
     ];
     try {
         for (const company of INITIAL_COMPANIES) {
-            const existingCompany = yield companyRepo.findOneBy({ company_id: company.company_id });
+            const existingCompany = await companyRepo.findOneBy({ company_id: company.company_id });
             if (!existingCompany) {
-                const hashedPassword = yield bcrypt_1.default.hash(company.company_password, 10);
+                const hashedPassword = await bcrypt_1.default.hash(company.company_password, 10);
                 company.company_password = hashedPassword;
                 console.log(`🟢 Creando empresa: ${company.company_name}`);
                 const newCompany = companyRepo.create(company);
-                yield companyRepo.save(newCompany);
+                await companyRepo.save(newCompany);
             }
             else {
-                const passwordChanged = !(yield bcrypt_1.default.compare(company.company_password, existingCompany.company_password));
+                const passwordChanged = !(await bcrypt_1.default.compare(company.company_password, existingCompany.company_password));
                 if (passwordChanged) {
-                    company.company_password = yield bcrypt_1.default.hash(company.company_password, 10);
+                    company.company_password = await bcrypt_1.default.hash(company.company_password, 10);
                 }
                 else {
                     company.company_password = existingCompany.company_password;
@@ -163,7 +154,10 @@ const seedCompanies = (dataSource) => __awaiter(void 0, void 0, void 0, function
                     passwordChanged);
                 if (hasChanges) {
                     console.log(`🟡 Actualizando empresa: ${company.company_name}`);
-                    yield companyRepo.update({ company_id: company.company_id }, Object.assign(Object.assign({}, company), { company_id: company.company_id }));
+                    await companyRepo.update({ company_id: company.company_id }, {
+                        ...company,
+                        company_id: company.company_id,
+                    });
                 }
                 else {
                     console.log(`🔵 La empresa "${company.company_name}" ya existe sin cambios.`);
@@ -175,5 +169,6 @@ const seedCompanies = (dataSource) => __awaiter(void 0, void 0, void 0, function
     catch (error) {
         console.error("❌ Error durante el seed de empresas:", error);
     }
-});
+};
 exports.seedCompanies = seedCompanies;
+//# sourceMappingURL=seedCompanies.js.map

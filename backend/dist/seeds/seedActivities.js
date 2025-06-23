@@ -1,18 +1,8 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedActivities = void 0;
 const Activity_1 = require("../entities/Activity");
-const seedActivities = (dataSource) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f;
+const seedActivities = async (dataSource) => {
     const activityRepo = dataSource.getRepository(Activity_1.Activity);
     const INITIAL_ACTIVITIES = [
         {
@@ -186,11 +176,11 @@ const seedActivities = (dataSource) => __awaiter(void 0, void 0, void 0, functio
     ];
     try {
         for (const activity of INITIAL_ACTIVITIES) {
-            const existingActivity = yield activityRepo.findOneBy({ activity_id: activity.activity_id });
+            const existingActivity = await activityRepo.findOneBy({ activity_id: activity.activity_id });
             if (!existingActivity) {
                 console.log(`🟢 Creando actividad: ${activity.activity_title}`);
                 const newActivity = activityRepo.create(activity);
-                yield activityRepo.save(newActivity);
+                await activityRepo.save(newActivity);
             }
             else {
                 // Comparar si los campos de la actividad han cambiado (sin imágenes y videos)
@@ -213,13 +203,16 @@ const seedActivities = (dataSource) => __awaiter(void 0, void 0, void 0, functio
                     existingActivity.includes !== activity.includes ||
                     existingActivity.excludes !== activity.excludes ||
                     existingActivity.privacy_policy !== activity.privacy_policy ||
-                    (((_a = existingActivity.activity_images) === null || _a === void 0 ? void 0 : _a.length) !== ((_b = activity.activity_images) === null || _b === void 0 ? void 0 : _b.length) ||
-                        ((_c = existingActivity.activity_images) === null || _c === void 0 ? void 0 : _c.some((img, index) => { var _a; return img !== ((_a = activity.activity_images) === null || _a === void 0 ? void 0 : _a[index]); }))) ||
-                    (((_d = existingActivity.activity_videos) === null || _d === void 0 ? void 0 : _d.length) !== ((_e = activity.activity_videos) === null || _e === void 0 ? void 0 : _e.length) ||
-                        ((_f = existingActivity.activity_videos) === null || _f === void 0 ? void 0 : _f.some((video, index) => { var _a; return video !== ((_a = activity.activity_videos) === null || _a === void 0 ? void 0 : _a[index]); }))));
+                    (existingActivity.activity_images?.length !== activity.activity_images?.length ||
+                        existingActivity.activity_images?.some((img, index) => img !== activity.activity_images?.[index])) ||
+                    (existingActivity.activity_videos?.length !== activity.activity_videos?.length ||
+                        existingActivity.activity_videos?.some((video, index) => video !== activity.activity_videos?.[index])));
                 if (hasChanges) {
                     console.log(`🟡 Actualizando actividad: ${activity.activity_title}`);
-                    yield activityRepo.update({ activity_id: activity.activity_id }, Object.assign(Object.assign({}, activity), { activity_id: activity.activity_id }));
+                    await activityRepo.update({ activity_id: activity.activity_id }, {
+                        ...activity,
+                        activity_id: activity.activity_id
+                    });
                 }
                 else {
                     console.log(`🔵 La actividad "${activity.activity_title}" ya existe sin cambios.`);
@@ -231,5 +224,6 @@ const seedActivities = (dataSource) => __awaiter(void 0, void 0, void 0, functio
     catch (error) {
         console.error("❌ Error durante el seed de actividades:", error);
     }
-});
+};
 exports.seedActivities = seedActivities;
+//# sourceMappingURL=seedActivities.js.map

@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,7 +10,7 @@ const database_1 = __importDefault(require("../../config/database"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 dotenv_1.default.config();
-const loginCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const loginCompany = async (req, res) => {
     const { company_email, company_password } = req.body;
     try {
         // Verificar que los datos se han introducido
@@ -29,13 +20,13 @@ const loginCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         // Buscar la empresa por el email
         const repo = database_1.default.getRepository(Company_1.Company);
-        const company = yield repo.findOne({ where: { company_email } });
+        const company = await repo.findOne({ where: { company_email } });
         if (!company) {
             res.status(404).json({ message: 'Empresa no encontrada' });
             return;
         }
         // Verificar si la contraseña es correcta usando bcrypt.compare
-        const validPass = yield bcrypt_1.default.compare(company_password, company.company_password);
+        const validPass = await bcrypt_1.default.compare(company_password, company.company_password);
         // Si la contraseña es incorrecta
         if (!validPass) {
             res.status(401).json({ message: 'Contraseña incorrecta' });
@@ -56,5 +47,6 @@ const loginCompany = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             res.status(500).json({ message: 'Error inesperado en el servidor.' });
         }
     }
-});
+};
 exports.loginCompany = loginCompany;
+//# sourceMappingURL=loginCompany.js.map

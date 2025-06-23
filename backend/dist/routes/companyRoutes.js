@@ -17,3 +17,4 @@ companyRoutes.get("/:id", getCompanyById_1.getCompanyById);
 companyRoutes.put("/:id", authMiddleware_1.authMiddleware, updateCompany_1.updateCompany);
 companyRoutes.delete("/:id", authMiddleware_1.authMiddleware, deleteCompany_1.deleteCompany);
 exports.default = companyRoutes;
+//# sourceMappingURL=companyRoutes.js.map

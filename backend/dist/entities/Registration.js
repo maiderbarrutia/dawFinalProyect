@@ -47,3 +47,4 @@ exports.Registration = Registration = __decorate([
     (0, typeorm_1.Index)(['user_id']),
     (0, typeorm_1.Index)(['activity_id'])
 ], Registration);
+//# sourceMappingURL=Registration.js.map

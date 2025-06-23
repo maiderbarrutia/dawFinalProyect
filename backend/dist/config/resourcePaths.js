@@ -8,3 +8,4 @@ const path_1 = __importDefault(require("path"));
 const basePath = process.env.UPLOAD_RESOURCES_PATH || './public/';
 exports.uploadImagePath = path_1.default.resolve(basePath, 'images');
 exports.uploadVideoPath = path_1.default.resolve(basePath, 'videos');
+//# sourceMappingURL=resourcePaths.js.map

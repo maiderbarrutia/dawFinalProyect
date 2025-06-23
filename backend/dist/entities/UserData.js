@@ -54,3 +54,4 @@ exports.UserData = UserData = __decorate([
     (0, typeorm_1.Entity)('UserData'),
     (0, typeorm_1.Index)(['user_phone'])
 ], UserData);
+//# sourceMappingURL=UserData.js.map

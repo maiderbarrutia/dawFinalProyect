@@ -14,3 +14,4 @@ categoriaRoutes.post("/", authMiddleware_1.authMiddleware, createCategory_1.crea
 categoriaRoutes.put("/:id", authMiddleware_1.authMiddleware, updateCategory_1.updateCategory);
 categoriaRoutes.delete("/:id", authMiddleware_1.authMiddleware, deleteCategory_1.deleteCategory);
 exports.default = categoriaRoutes;
+//# sourceMappingURL=categoryRoutes.js.map

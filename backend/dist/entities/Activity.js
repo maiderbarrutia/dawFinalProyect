@@ -112,3 +112,4 @@ exports.Activity = Activity = __decorate([
     (0, typeorm_1.Index)(['activity_date']),
     (0, typeorm_1.Index)(['company_id'])
 ], Activity);
+//# sourceMappingURL=Activity.js.map
