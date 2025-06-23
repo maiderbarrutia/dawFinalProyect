@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { postRequest, getRequest } from '@/services/api';
-import styles from './ActivityRegisterForm.module.scss';
+import styles from './activityRegisterForm.module.scss';
 import Button from '@/components/common/Button/Button';
 import PopupMessage from '@/components/common/PopupMessage/PopupMessage';
 import { Category } from '@/interfaces/Category';
