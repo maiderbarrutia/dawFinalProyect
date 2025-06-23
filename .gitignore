@@ -16,7 +16,8 @@ yarn-error.log*
 Thumbs.db
 
 # Variables de entorno
-# .env
+.env.production
+# .env*
 
 # Cache
 .cache/

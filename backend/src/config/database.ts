@@ -3,7 +3,8 @@ import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 import path from "path";
 
-dotenv.config();
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.development";
+dotenv.config({ path: path.resolve(__dirname, `../../${envFile}`) });
 
 const isProduction = process.env.NODE_ENV === "production";
 
