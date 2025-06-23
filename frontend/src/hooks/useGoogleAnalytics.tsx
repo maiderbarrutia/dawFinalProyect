@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useEffect } from 'react';
+// import { useLocation } from 'react-router-dom';
 
-const useGoogleAnalytics = (trackingId: string) => {
-  const location = useLocation();
+// const useGoogleAnalytics = (trackingId: string) => {
+//   const location = useLocation();
 
-  useEffect(() => {
-    if (typeof window.gtag === 'function') {
-      window.gtag('config', trackingId, {
-        page_path: location.pathname,
-      });
-    }
-  }, [location, trackingId]);
-};
+//   useEffect(() => {
+//     if (typeof window.gtag === 'function') {
+//       window.gtag('config', trackingId, {
+//         page_path: location.pathname,
+//       });
+//     }
+//   }, [location, trackingId]);
+// };
 
-export default useGoogleAnalytics;
+// export default useGoogleAnalytics;
 
