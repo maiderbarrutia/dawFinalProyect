@@ -1,4 +1,4 @@
-import styles from './cookiesPolicy.module.scss';
+import styles from './CookiesPolicy.module.scss';
 
 const PrivacyPolicy: React.FC = () => {
 
