@@ -36,5 +36,8 @@
     "cross-env": "^7.0.3",
     "sharp": "^0.34.2",
     "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
