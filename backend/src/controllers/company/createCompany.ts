@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Company } from "../../entities/Company";
 import dataSource from "../../config/database";
 import bcrypt from "bcrypt";
+import { uploadToCloudinary } from '../../services/cloudinaryService';
 
 export const createCompany = async (req: Request, res: Response): Promise<void> => {
   const {
@@ -18,7 +19,20 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   } = req.body;
 
   // Recuperar el logo de la empresa si se ha subido un archivo (usamos undefined si no hay archivo)
-  const company_logo = req.file ? req.file.filename : undefined;
+  // const company_logo = req.file ? req.file.filename : undefined;
+  let company_logo = undefined;
+
+  if (req.file && req.file.path) {
+    const cloudinaryUrl = await uploadToCloudinary(req.file.path);
+
+    if (cloudinaryUrl) {
+      company_logo = cloudinaryUrl;
+    } else {
+      // usar filename local
+      company_logo = req.file.filename;
+    }
+  }
+
 
   // Validar campos obligatorios
   if (!company_name || !company_cif || !company_email || !company_password) {

@@ -3,12 +3,27 @@ import { Activity } from '../../entities/Activity';
 import { Company } from '../../entities/Company';
 import { Category } from '../../entities/Category';
 import dataSource from '../../config/database';
+import { uploadToCloudinary } from '../../services/cloudinaryService';
 
 export const createActivity = async (req: Request, res: Response): Promise<void> => {
   const { company_id, category_id, ...activityData } = req.body;
   
   // Recibe las imágenes subidas por multer
+  // const activityImages = req.files as Express.Multer.File[];
+
   const activityImages = req.files as Express.Multer.File[];
+const imageUrls: string[] = [];
+
+for (const file of activityImages) {
+  const cloudinaryUrl = await uploadToCloudinary(file.path);
+
+  if (cloudinaryUrl) {
+    imageUrls.push(cloudinaryUrl);
+  } else {
+    // usar filename local
+    imageUrls.push(file.filename);
+  }
+}
 
   try {
     // Verificar la empresa existe
@@ -30,7 +45,8 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
       ...activityData,
       company,
       category,
-      activity_images: activityImages.map((file) => `${file.filename}`),
+      // activity_images: activityImages.map((file) => `${file.filename}`),
+      activity_images: imageUrls,
     });
 
     // Guardar la actividad en la base de datos
