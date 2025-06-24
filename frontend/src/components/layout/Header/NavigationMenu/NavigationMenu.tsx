@@ -5,13 +5,11 @@ import SocialLinks from '../SocialLinks/SocialLinks';
 
 interface NavigationMenuProps {
     closeMenu: (link: string) => void;
-    handleNavigateToSection: (link: string) => void;
     selectedLink: string;
 }
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ 
-    closeMenu, 
-    handleNavigateToSection, 
+    closeMenu,
     selectedLink 
 }) => {
     const MOBILE_BREAKPOINT = 768;
@@ -28,13 +26,6 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    
-
-    // const handleClick = (link: string) => {
-    //     handleNavigateToSection(link);
-    //     closeMenu(link);
-    // };
-
     return (
         <>
             <ul className={styles.header__mainMenu}>
@@ -43,6 +34,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
                     to="/actividades"
                     className={`${styles['header__mainMenu-link']} ${selectedLink === '/actividades' ? styles['header__mainMenu-link--selected'] : ''}`}
                     onClick={(e) => {
+                        e.preventDefault();
                         closeMenu('/actividades');
                     }}
                     >
