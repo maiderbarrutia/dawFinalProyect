@@ -8,12 +8,21 @@ cloudinary.config({
 });
 
 /**
- * Sube una imagen a Cloudinary y elimina el archivo local.
- * @param filePath Ruta local absoluta
+ * Sube un archivo a Cloudinary en la carpeta aisiplan/images o aisiplan/videos según el tipo,
+ * luego elimina el archivo local.
+ * 
+ * @param filePath Ruta local absoluta del archivo
+ * @param type 'images' | 'videos' — define la carpeta donde se guardará el archivo
+ * @returns URL segura del archivo subido en Cloudinary
  */
-export const uploadToCloudinary = (filePath: string): Promise<string> => {
+export const uploadToCloudinary = (filePath: string, type: 'images' | 'videos' = 'images'): Promise<string> => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(filePath, { resource_type: 'image' }, (error, result) => {
+    const options: Record<string, any> = {
+      resource_type: type === 'videos' ? 'video' : 'image',
+      folder: `aisiplan/${type}`,
+    };
+
+    cloudinary.uploader.upload(filePath, options, (error, result) => {
       // Borrar archivo local después de subir
       fs.unlink(filePath, (err) => {
         if (err) console.warn('No se pudo eliminar el archivo local:', err.message);

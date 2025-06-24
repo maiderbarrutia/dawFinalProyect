@@ -23,7 +23,7 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   let company_logo = undefined;
 
   if (req.file && req.file.path) {
-    const cloudinaryUrl = await uploadToCloudinary(req.file.path);
+    const cloudinaryUrl = await uploadToCloudinary(req.file.path, 'images');
 
     if (cloudinaryUrl) {
       company_logo = cloudinaryUrl;

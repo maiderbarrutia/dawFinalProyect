@@ -15,7 +15,8 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
 const imageUrls: string[] = [];
 
 for (const file of activityImages) {
-  const cloudinaryUrl = await uploadToCloudinary(file.path);
+  const cloudinaryUrl = await uploadToCloudinary(file.path, 'images');
+
 
   if (cloudinaryUrl) {
     imageUrls.push(cloudinaryUrl);
