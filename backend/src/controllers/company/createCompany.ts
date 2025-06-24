@@ -23,15 +23,20 @@ export const createCompany = async (req: Request, res: Response): Promise<void> 
   let company_logo = undefined;
 
   if (req.file && req.file.path) {
+  try {
     const cloudinaryUrl = await uploadToCloudinary(req.file.path, 'images');
 
     if (cloudinaryUrl) {
       company_logo = cloudinaryUrl;
     } else {
-      // usar filename local
       company_logo = req.file.filename;
     }
+  } catch (err) {
+    console.error("Error subiendo a Cloudinary:", err);
+    company_logo = req.file.filename;
   }
+}
+
 
 
   // Validar campos obligatorios

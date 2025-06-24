@@ -7,30 +7,29 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/**
- * Sube un archivo a Cloudinary en la carpeta aisiplan/images o aisiplan/videos según el tipo,
- * luego elimina el archivo local.
- * 
- * @param filePath Ruta local absoluta del archivo
- * @param type 'images' | 'videos' — define la carpeta donde se guardará el archivo
- * @returns URL segura del archivo subido en Cloudinary
- */
-export const uploadToCloudinary = (filePath: string, type: 'images' | 'videos' = 'images'): Promise<string> => {
+export const uploadToCloudinary = (
+  filePath: string,
+  type: 'images' | 'videos' = 'images'
+): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const options: Record<string, any> = {
-      resource_type: type === 'videos' ? 'video' : 'image',
+    const resourceType: 'image' | 'video' = type === 'videos' ? 'video' : 'image';
+
+    const options = {
+      resource_type: resourceType,
       folder: `aisiplan/${type}`,
     };
 
     cloudinary.uploader.upload(filePath, options, (error, result) => {
-      // Borrar archivo local después de subir
+      console.log("🌩️ Resultado de Cloudinary:", result);
+
       fs.unlink(filePath, (err) => {
-        if (err) console.warn('No se pudo eliminar el archivo local:', err.message);
+        if (err) console.warn('⚠️ No se pudo eliminar el archivo local:', err.message);
       });
 
       if (error) return reject(error);
       if (result?.secure_url) return resolve(result.secure_url);
-      return reject(new Error('No se obtuvo URL de Cloudinary'));
+
+      return reject(new Error('❌ No se obtuvo secure_url de Cloudinary'));
     });
   });
 };

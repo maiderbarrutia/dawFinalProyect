@@ -12,19 +12,22 @@ export const createActivity = async (req: Request, res: Response): Promise<void>
   // const activityImages = req.files as Express.Multer.File[];
 
   const activityImages = req.files as Express.Multer.File[];
-const imageUrls: string[] = [];
+  const imageUrls: string[] = [];
 
-for (const file of activityImages) {
-  const cloudinaryUrl = await uploadToCloudinary(file.path, 'images');
+  for (const file of activityImages) {
+    try {
+      const cloudinaryUrl = await uploadToCloudinary(file.path, 'images');
 
-
-  if (cloudinaryUrl) {
-    imageUrls.push(cloudinaryUrl);
-  } else {
-    // usar filename local
-    imageUrls.push(file.filename);
+      if (cloudinaryUrl) {
+        imageUrls.push(cloudinaryUrl);
+      } else {
+        imageUrls.push(file.filename); // fallback local
+      }
+    } catch (err) {
+      console.error("Error subiendo imagen a Cloudinary:", err);
+      imageUrls.push(file.filename);
+    }
   }
-}
 
   try {
     // Verificar la empresa existe
