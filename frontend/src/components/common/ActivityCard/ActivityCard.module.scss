@@ -82,4 +82,13 @@
     width: rem(15);
     margin-right: rem(5);
   }
+
+  &__deleteButton{
+    background-color: $red;
+    width: 100%;
+
+    &:hover{
+      background-color: $main-black;
+    }
+  }
 }

@@ -3,7 +3,7 @@ import { Activity } from "@/interfaces/Activity";
 import { Company } from "@/interfaces/Company";
 import { UserData } from "@/interfaces/UserData";
 import { Registration } from "@/interfaces/Registration";
-import { getRequest, getRequestById } from "@/services/api";
+import { getRequest, getRequestById, deleteRequest } from "@/services/api";
 import ActivityCard from "@/components/common/ActivityCard/ActivityCard";
 import { getUploadedImageSrc, getAssetSrc } from "@/utils/srcUtils";
 import styles from './Dashboard.module.scss';
@@ -92,6 +92,23 @@ const Dashboard: React.FC = () => {
     };
   });
 
+  const handleDeleteActivity = async (id: number) => {
+  const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar esta actividad?");
+  if (!confirmDelete) return;
+
+  try {
+    // Suponiendo que tienes un método `deleteRequest`
+    await deleteRequest(`/actividades/${id}`);
+    
+    // Actualiza el estado local
+    setActivities(prev => prev.filter(activity => activity.activity_id !== id));
+  } catch (err) {
+    console.error("Error al eliminar la actividad:", err);
+    alert("Hubo un error al eliminar la actividad.");
+  }
+};
+
+
   return (
     <section className={styles.dashboard}>
       <div className={styles['section__container']}>
@@ -104,7 +121,10 @@ const Dashboard: React.FC = () => {
               <img
                 src={
                   company.company_logo
-                    ? getUploadedImageSrc(`images/${company.company_logo}`)
+                    ? (company.company_logo.startsWith("http://") || company.company_logo.startsWith("https://")
+                        ? company.company_logo
+                        : getUploadedImageSrc(`images/${company.company_logo}`)
+                      )
                     : getAssetSrc("images/default-image.jpg")
                 }
                 alt=""
@@ -156,7 +176,9 @@ const Dashboard: React.FC = () => {
             <ul className={styles['dashboard__grid']}>
               {companyActivities.map((activity) => (
                 <li key={activity.activity_id} className={styles['dashboard__activity-item']}>
-                  <ActivityCard {...activity} />
+                  <ActivityCard {...activity} 
+                  onDelete={(id) => handleDeleteActivity(id)}
+                  />
                 </li>
               ))}
             </ul>

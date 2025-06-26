@@ -128,5 +128,32 @@ const getRequestById = async <T>(endpoint: string, companyId: string): Promise<T
   }
 };
 
+const deleteRequest = async (endpoint: string, includeToken: boolean = true): Promise<void> => {
+  const token = localStorage.getItem('token');
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
 
-export { postRequest, postRequestById, getRequest, getRequestById };
+  if (includeToken && token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'DELETE',
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Error en la solicitud DELETE: ${errorMessage || response.statusText}`);
+    }
+  } catch (error) {
+    console.error('Error en la solicitud DELETE:', error);
+    throw error instanceof Error ? error : new Error('Error desconocido en la solicitud DELETE');
+  }
+};
+
+
+
+export { postRequest, postRequestById, getRequest, getRequestById, deleteRequest };

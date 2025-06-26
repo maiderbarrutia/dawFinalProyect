@@ -37,15 +37,28 @@ const LoginButton: React.FC = () => {
   
       if (data) {
         const logoFile = data.company_logo;
-        const logoUrl = logoFile
-          ? getUploadedImageSrc(`images/${logoFile}`)
-          : getAssetSrc("images/default-image.jpg");
-  
+
+        let logoUrl = getAssetSrc("images/default-image.jpg"); // fallback por defecto
+
+        if (logoFile) {
+          // Detectar si es URL absoluta (http:// o https://)
+          const isAbsoluteUrl = logoFile.startsWith("http://") || logoFile.startsWith("https://");
+
+          if (isAbsoluteUrl) {
+            // URL completa externa (Cloudinary u otro)
+            logoUrl = logoFile;
+          } else {
+            // Ruta local, construir URL con helper
+            logoUrl = getUploadedImageSrc(`images/${logoFile}`);
+          }
+        }
+
         setCompanyLogo(logoUrl);
       } else {
         console.error("No se encontró la empresa en los datos.");
         setCompanyLogo(getAssetSrc("images/default-image.jpg"));
       }
+
     } catch (error) {
       console.error("Error al obtener los datos de la empresa", error);
       setCompanyLogo(getAssetSrc("images/default-image.jpg"));

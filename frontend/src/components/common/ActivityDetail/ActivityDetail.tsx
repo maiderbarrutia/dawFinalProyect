@@ -93,20 +93,23 @@ const ActivityDetail: React.FC = () => {
           <div className={styles.activity__info}>
             <h2 className={styles.activity__infoTitle}>Info de la empresa</h2>
 
-            {company?.company_logo && (
-              <div className={styles['activity__info__image-wrapper']}>
-                <img
-                  src={getUploadedImageSrc(`images/${company.company_logo}`)}
-                  alt="Logo empresa"
-                  className={styles['activity__info__image']}
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.onerror = null;
-                    target.src = getAssetSrc("images/default-image.jpg");
-                  }}
-                />
-              </div>
-            )}
+            <div className={styles['activity__info__image-wrapper']}>
+              <img
+                src={
+                  company?.company_logo
+                    ? company.company_logo.startsWith("http://") || company.company_logo.startsWith("https://")
+                      ? company.company_logo
+                      : getUploadedImageSrc(`images/${company.company_logo}`)
+                    : getAssetSrc("images/default-image.jpg")
+                }
+                alt="Logo empresa"
+                className={styles['activity__info__image']}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = getAssetSrc("images/default-image.jpg");
+                }}
+              />
+            </div>
 
             {company?.company_name && (
             <p className={styles['activity__info__text']}><strong>Nombre empresa:</strong> {company.company_name}</p>

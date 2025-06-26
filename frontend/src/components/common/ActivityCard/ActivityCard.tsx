@@ -6,8 +6,13 @@ import { Category } from '@/interfaces/Category';
 import { Company } from '@/interfaces/Company';
 import { Activity } from '@/interfaces/Activity';
 import { getRequest } from '@/services/api';
+import Button from '../Button/Button';
 
-const ActivityCard: React.FC<Activity> = ({
+interface ActivityCardProps extends Activity {
+  onDelete?: (id: number) => void;
+}
+
+const ActivityCard: React.FC<ActivityCardProps> = ({
   activity_id,
   activity_title,
   category_id,
@@ -18,12 +23,25 @@ const ActivityCard: React.FC<Activity> = ({
   activity_duration,
   activity_location,
   activity_images,
+  onDelete,
 }) => {
   const [category, setCategory] = useState<Category | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
 
-  const placeholderImage = getAssetSrc(`images/default-image.jpg`);
-  const imageSrc = getUploadedImageSrc(`images/${activity_images[0]}`);
+  const placeholderImage = getAssetSrc("images/default-image.jpg");
+
+let imageSrc = placeholderImage;
+
+if (activity_images && activity_images.length > 0) {
+  const firstImage = activity_images[0];
+
+  if (firstImage.startsWith("http://") || firstImage.startsWith("https://")) {
+    imageSrc = firstImage; // Imagen alojada en Cloudinary u otro CDN
+  } else {
+    imageSrc = getUploadedImageSrc(`images/${firstImage}`); // Imagen local
+  }
+}
+
 
   //Obtener los datos de categoría y empresa
   useEffect(() => {
@@ -110,6 +128,15 @@ const ActivityCard: React.FC<Activity> = ({
           {activity_location}
         </p>
       </div>
+      {onDelete && (
+        
+        <Button
+            text="Eliminar"
+            className={styles.activityCard__deleteButton}
+            handleClick={() => onDelete(activity_id)}
+            ariaLabel="Eliminar actividad"
+          />
+      )}
     </article>
   );
 };
